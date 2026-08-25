@@ -26,9 +26,20 @@ const config: Config = {
         "orange-2": "#ff8958",
         lime:    "rgb(108,194,0)",
         ink: {
-          DEFAULT: "#0a0604",
-          dim:     "#4a3030",
-          muted:   "#8a7070",
+          DEFAULT: "#241919",
+          dark:    "#241919",
+          earth:   "#3e352a",
+          olive:   "#514a38",
+          body:    "#454545",
+          muted:   "#747474",
+          dim:     "#454545",
+        },
+        stone: {
+          dark:    "#241919",
+          earth:   "#3e352a",
+          olive:   "#514a38",
+          body:    "#454545",
+          muted:   "#747474",
         },
       },
       fontFamily: {

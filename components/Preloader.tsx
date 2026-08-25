@@ -1,145 +1,148 @@
 "use client";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
 export default function Preloader({ onDone }: { onDone?: () => void }) {
-  const [pct, setPct] = useState(0);
-  const [exiting, setExiting] = useState(false);
-  const [done, setDone] = useState(false);
+  const [stage, setStage] = useState(0); // 0: enter, 1: shimmer, 2: exit, 3: done
 
   useEffect(() => {
-    let currentPct = 0;
-    const interval = setInterval(() => {
-      // Smooth natural increment
-      currentPct += Math.random() * 5 + 3.2;
+    // Phase 1: Brand Typography & Emblem Rise
+    const t1 = setTimeout(() => setStage(1), 600);
 
-      if (currentPct >= 100) {
-        currentPct = 100;
-        clearInterval(interval);
-        setPct(100);
+    // Phase 2: Shimmer & Horizon expansion
+    const t2 = setTimeout(() => setStage(2), 1800);
 
-        // Smooth exit delay
-        setTimeout(() => {
-          setExiting(true);
-          setTimeout(() => {
-            setDone(true);
-            onDone?.();
-          }, 600);
-        }, 350);
-      } else {
-        setPct(Math.min(100, Math.floor(currentPct)));
-      }
-    }, 45);
+    // Phase 3: Smooth Cinematic Shutter Reveal
+    const t3 = setTimeout(() => {
+      setStage(3);
+      onDone?.();
+    }, 2600);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+    };
   }, [onDone]);
 
-  if (done) return null;
+  if (stage === 3) return null;
+
+  const isExiting = stage === 2;
 
   return (
-    <div
-      className="fixed inset-0 z-[99999] flex flex-col items-center justify-center pointer-events-auto overflow-hidden select-none"
-      style={{
-        background: "linear-gradient(155deg, #180705 0%, #2a0b0b 45%, #150504 100%)",
-        transform: exiting ? "translateY(-100%)" : "translateY(0)",
-        transition: exiting ? "transform 0.6s cubic-bezier(0.76, 0, 0.24, 1)" : "none",
-        willChange: "transform",
-      }}
-    >
-      {/* Ambient background glow orb */}
+    <div className="fixed inset-0 z-[99999] pointer-events-auto select-none overflow-hidden flex flex-col items-center justify-center bg-[#0d0909]">
+      
+      {/* ── TOP ARCHITECTURAL SHUTTER CURTAIN ── */}
       <div
+        className="absolute top-0 left-0 right-0 h-1/2 bg-[#0d0909] transition-transform duration-1000 ease-[cubic-bezier(0.85,0,0.15,1)]"
+        style={{
+          transform: isExiting ? "translateY(-100%)" : "translateY(0)",
+          willChange: "transform",
+        }}
+      />
+
+      {/* ── BOTTOM ARCHITECTURAL SHUTTER CURTAIN ── */}
+      <div
+        className="absolute bottom-0 left-0 right-0 h-1/2 bg-[#0d0909] transition-transform duration-1000 ease-[cubic-bezier(0.85,0,0.15,1)]"
+        style={{
+          transform: isExiting ? "translateY(100%)" : "translateY(0)",
+          willChange: "transform",
+        }}
+      />
+
+      {/* ── AMBIENT CINEMATIC WARM GLOW ── */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.85 }}
+        animate={{ opacity: isExiting ? 0 : 1, scale: 1 }}
+        transition={{ duration: 1.2, ease: "easeOut" }}
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 65% 55% at 50% 50%, rgba(255,68,58,0.22) 0%, rgba(255,110,143,0.08) 40%, transparent 70%)",
+            "radial-gradient(ellipse 65% 55% at 50% 50%, rgba(139,69,19,0.25) 0%, rgba(216,195,165,0.06) 45%, transparent 70%)",
         }}
       />
 
-      {/* Subtle grid pattern */}
-      <div
-        className="absolute inset-0 opacity-[0.04] pointer-events-none"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(252,248,241,1) 1px, transparent 1px), linear-gradient(90deg, rgba(252,248,241,1) 1px, transparent 1px)",
-          backgroundSize: "50px 50px",
-        }}
-      />
+      {/* ── MAIN CINEMATIC BRAND SHOWCASE (GENEROUS SAFE BOUNDS) ── */}
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: isExiting ? 0 : 1, y: 0 }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        className="relative z-10 flex flex-col items-center text-center space-y-4 sm:space-y-6 w-full max-w-6xl px-6 sm:px-12"
+      >
+        {/* Heritage Mark */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 0.15 }}
+          className="flex items-center justify-center gap-2 sm:gap-4 text-[#d8c3a5] text-[9px] sm:text-[10.5px] font-mono uppercase font-semibold tracking-[0.2em] sm:tracking-[0.35em] whitespace-nowrap"
+        >
+          <span className="w-4 sm:w-8 h-px bg-[#d8c3a5]/40 flex-none" />
+          <span>ESTABLISHED 1994 · INDIA</span>
+          <span className="w-4 sm:w-8 h-px bg-[#d8c3a5]/40 flex-none" />
+        </motion.div>
 
-      <div className="relative z-10 flex flex-col items-center max-w-5xl px-6 w-full">
-        {/* Top Tagline */}
-        <div className="flex items-center gap-3 mb-6 opacity-60">
-          <span className="w-6 h-px bg-[#ff443a]" />
-          <span className="text-[10px] tracking-[0.4em] uppercase text-[#fcf8f1] font-medium">
-            Natural Stone Excellence · Est. 1994
-          </span>
-          <span className="w-6 h-px bg-[#ff443a]" />
-        </div>
-
-        {/* ── PIXEL-PERFECT OUTLINE + FILL OVERLAY (NO MULTI-LINE COLLISION) ── */}
-        <div className="relative inline-block text-center mb-6 max-w-full">
-          {/* Base Layer: White Stroked Text */}
-          <h1
-            className="font-display font-light uppercase tracking-[0.16em] sm:tracking-[0.22em] leading-none text-transparent whitespace-nowrap"
+        {/* Grand Brand Title (Completely Unclipped) */}
+        <div className="relative py-1 w-full flex items-center justify-center">
+          <motion.h1
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+            className="font-display font-light uppercase text-[#f7f2ea] leading-none select-none tracking-[0.14em] sm:tracking-[0.2em] whitespace-nowrap text-center"
             style={{
-              fontSize: "clamp(26px, 6.8vw, 96px)",
-              WebkitTextStroke: "1.5px rgba(252, 248, 241, 0.85)",
+              fontSize: "clamp(22px, 5.2vw, 68px)",
+              textShadow: "0 4px 25px rgba(0,0,0,0.8)",
             }}
           >
-            Pavan Groups
-          </h1>
+            PAVAN GROUPS
+          </motion.h1>
 
-          {/* Fill Layer: Left-to-Right Animated Pink/Coral Fill (Locked at left-0 top-0) */}
-          <div
-            className="absolute left-0 top-0 bottom-0 overflow-hidden pointer-events-none"
+          {/* Liquid Specular Light Sweep */}
+          <motion.div
+            initial={{ x: "-100%" }}
+            animate={{ x: "150%" }}
+            transition={{ duration: 1.5, delay: 0.6, ease: "easeInOut" }}
+            className="absolute inset-0 pointer-events-none opacity-35 mix-blend-overlay"
             style={{
-              width: `${pct}%`,
-              transition: "width 0.05s linear",
+              background:
+                "linear-gradient(90deg, transparent 0%, rgba(216,195,165,0.9) 50%, transparent 100%)",
             }}
-          >
-            <h1
-              className="font-display font-light uppercase tracking-[0.16em] sm:tracking-[0.22em] leading-none whitespace-nowrap absolute left-0 top-0"
-              style={{
-                fontSize: "clamp(26px, 6.8vw, 96px)",
-                background: "linear-gradient(90deg, #ff443a 0%, #ff6e8f 50%, #ff8958 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                filter: "drop-shadow(0 0 25px rgba(255, 68, 58, 0.65))",
-              }}
-            >
-              Pavan Groups
-            </h1>
-
-            {/* Diamond Sparkle Light on leading fill edge */}
-            <div
-              className="absolute top-1/2 -translate-y-1/2 right-0 translate-x-1/2 text-white sparkle-anim pointer-events-none"
-              style={{
-                fontSize: "20px",
-                filter: "drop-shadow(0 0 10px #ffffff) drop-shadow(0 0 20px #ff6e8f)",
-              }}
-            >
-              ✦
-            </div>
-          </div>
+          />
         </div>
 
-        {/* Progress Metric & Sleek Track */}
-        <div className="flex flex-col items-center gap-3 w-full max-w-xs">
-          <div className="w-full h-[2px] bg-white/10 relative overflow-hidden">
-            <div
-              className="absolute inset-y-0 left-0 bg-gradient-to-r from-[#ff443a] via-[#ff6e8f] to-white"
-              style={{
-                width: `${pct}%`,
-                transition: "width 0.05s linear",
-                boxShadow: "0 0 12px rgba(255, 68, 58, 0.8)",
-              }}
-            />
-          </div>
+        {/* Expanding Golden Horizon Divider */}
+        <motion.div
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ duration: 1, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="w-24 sm:w-48 h-px bg-gradient-to-r from-transparent via-[#d8c3a5] to-transparent origin-center"
+        />
 
-          <div className="flex justify-between items-center w-full text-[10px] tracking-[0.28em] text-[#fcf8f1]/50 tabular-nums font-mono">
-            <span className="uppercase text-[9px] text-[#ff443a]">Direct Quarry Extractions</span>
-            <span>{String(pct).padStart(3, "0")}%</span>
-          </div>
-        </div>
-      </div>
+        {/* 3 Conglomerate Divisions Lineage */}
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, delay: 0.7 }}
+          className="flex items-center justify-center gap-2 sm:gap-5 text-[9px] sm:text-[11px] font-mono tracking-[0.18em] sm:tracking-[0.28em] uppercase text-[#d8c3a5]/80 font-light whitespace-nowrap"
+        >
+          <span>SLATE</span>
+          <span className="text-[#8b4513]">•</span>
+          <span>LIMESTONE</span>
+          <span className="text-[#8b4513]">•</span>
+          <span>GRANITE</span>
+        </motion.div>
+
+        {/* Bottom Tagline */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.7 }}
+          transition={{ duration: 0.9, delay: 0.9 }}
+          className="text-[8px] sm:text-[9.5px] font-mono tracking-[0.16em] sm:tracking-[0.32em] uppercase text-[#f7f2ea]/60 font-light pt-1 text-center"
+        >
+          QUARRIES · FABRICATION · GLOBAL EXPORTS
+        </motion.p>
+
+      </motion.div>
+
     </div>
   );
 }

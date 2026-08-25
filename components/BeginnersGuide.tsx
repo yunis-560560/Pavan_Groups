@@ -411,7 +411,7 @@ export default function BeginnersGuide() {
   return (
     <section
       id="guide"
-      className="relative py-20 md:py-32 px-4 sm:px-6 md:px-12 lg:px-16 bg-[#fcf8f1] text-[#140d0a] border-t border-[#140d0a]/10 overflow-hidden"
+      className="relative py-12 md:py-20 px-4 sm:px-6 md:px-12 lg:px-16 bg-[#fcf8f1] text-[#140d0a] border-t border-[#140d0a]/10 overflow-hidden"
     >
       {/* Ambient architectural grid */}
       <div className="absolute inset-0 pointer-events-none opacity-[0.035]">

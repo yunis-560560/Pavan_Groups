@@ -1,78 +1,72 @@
 "use client";
 import { motion } from "framer-motion";
+import { ArrowRight, Phone, Mail } from "lucide-react";
 
 export default function CTA() {
   return (
     <section
       id="contact"
-      className="py-24 md:py-36 px-6 md:px-14 lg:px-20 relative overflow-hidden"
-      style={{ background: "#190806" }}
+      className="py-24 md:py-36 px-6 md:px-14 lg:px-20 relative overflow-hidden bg-[#140e0e] text-[#f7f2ea]"
     >
-      {/* Glow orb */}
+      {/* Ambient Warm Rust Radial Glow */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 60% 55% at 80% 50%, rgba(255,68,58,0.12) 0%, rgba(246,99,60,0.05) 45%, transparent 70%)",
+            "radial-gradient(ellipse 60% 55% at 80% 50%, rgba(139,69,19,0.25) 0%, rgba(216,195,165,0.05) 45%, transparent 70%)",
         }}
       />
 
-      {/* Grid */}
-      <div
-        className="absolute inset-0 opacity-[0.03] pointer-events-none"
-        style={{
-          backgroundImage: "linear-gradient(rgba(252,248,241,1) 1px, transparent 1px), linear-gradient(90deg, rgba(252,248,241,1) 1px, transparent 1px)",
-          backgroundSize: "60px 60px",
-        }}
-      />
-
-      <div className="relative z-10 max-w-3xl">
-        <span className="text-[9px] tracking-[0.32em] uppercase text-[#ff443a] font-medium mb-6 block">
-          Start Your Project
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.15 }}
+        transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
+        className="relative z-10 max-w-4xl mx-auto will-change-transform space-y-6"
+      >
+        <span className="text-[10px] font-mono tracking-[0.35em] uppercase text-[#d8c3a5] font-semibold block">
+          COMMENCE YOUR SPECIFICATION
         </span>
+
         <h2
-          className="font-display font-light italic leading-[1.06] tracking-[-0.015em] text-[#fcf8f1] mb-8"
-          style={{ fontSize: "clamp(34px,4.5vw,72px)" }}
+          className="font-display font-light leading-[1.04] tracking-[-0.015em] text-[#f7f2ea]"
+          style={{ fontSize: "clamp(36px, 5vw, 76px)" }}
         >
-          Let&apos;s build something
-          <br />
-          <span style={{ color: "#ff443a" }}>extraordinary</span>
+          Let&apos;s engineer something{" "}
+          <span className="italic font-normal text-[#c86a3b]">monumental</span>
         </h2>
-        <p className="text-[15px] leading-[1.8] mb-12 max-w-xl" style={{ color: "rgba(252,248,241,0.5)" }}>
-          Whether you are an architect specifying materials, a developer sourcing at scale, or a
-          homeowner seeking something singular — our team is here to guide you from selection
-          to delivery.
+
+        <p className="text-[15px] sm:text-[16px] leading-[1.8] text-[#f7f2ea]/70 font-light max-w-2xl">
+          Whether you are an architect specifying dimensional stone, an importer sourcing FCL containers at scale, or a developer seeking bespoke CNC detailing — our technical export desk is at your disposal.
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-4">
+        <div className="flex flex-col sm:flex-row gap-4 pt-4">
           <a
-            href="mailto:info@pavangroups.com"
-            className="inline-flex items-center gap-3 px-10 py-4 text-[10px] font-medium tracking-[0.26em] uppercase text-white hover:bg-[#e83530] transition-colors duration-300"
-            style={{ background: "#ff443a" }}
+            href="mailto:exports@pavangroups.com"
+            className="inline-flex items-center justify-center gap-3 px-9 py-4 text-xs font-mono uppercase tracking-[0.2em] font-bold bg-[#8b4513] hover:bg-[#a0522d] text-[#ffffff] transition-all shadow-md hover:scale-[1.02] active:scale-[0.98]"
           >
-            Request a Quote
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            <Mail className="w-4 h-4 text-[#d8c3a5]" />
+            <span>Request Container Quote</span>
+            <ArrowRight className="w-4 h-4 text-[#d8c3a5]" />
           </a>
+
           <a
             href="tel:+919876543210"
-            className="inline-flex items-center gap-3 px-10 py-4 border text-[10px] font-medium tracking-[0.26em] uppercase transition-all duration-300"
-            style={{ borderColor: "rgba(252,248,241,0.18)", color: "rgba(252,248,241,0.65)" }}
+            className="inline-flex items-center justify-center gap-3 px-9 py-4 border border-[#d8c3a5]/30 text-xs font-mono uppercase tracking-[0.2em] font-semibold text-[#f7f2ea] hover:bg-white/5 transition-all hover:border-[#d8c3a5]"
           >
-            +91 98765 43210
+            <Phone className="w-4 h-4 text-[#d8c3a5]" />
+            <span>+91 98765 43210</span>
           </a>
         </div>
 
-        {/* Trust badges */}
-        <div className="mt-14 flex flex-wrap gap-8 items-center">
-          {["ISO 9001:2015", "SGS Certified", "MSME Registered", "Export Excellence Award 2023"].map((b) => (
-            <span key={b} className="text-[9px] tracking-[0.24em] uppercase" style={{ color: "rgba(252,248,241,0.22)" }}>
-              {b}
-            </span>
-          ))}
+        {/* Trust Badges */}
+        <div className="pt-10 flex flex-wrap gap-6 sm:gap-10 items-center border-t border-[#d8c3a5]/15 text-[10px] font-mono tracking-[0.25em] uppercase text-[#d8c3a5]/60">
+          <span>● ISO 9001:2015 CERTIFIED</span>
+          <span>● ISPM-15 CRATING</span>
+          <span>● 100% DRY-LAY AUDIT</span>
+          <span>● GLOBAL FCL LOGISTICS</span>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

@@ -1,281 +1,194 @@
 "use client";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "framer-motion";
+import {
+  Ship,
+  MapPin,
+  Clock,
+  ShieldCheck,
+  Building2,
+  FileCheck,
+  CheckCircle2,
+  Package,
+  Layers,
+  ArrowRight,
+  Anchor,
+  Truck,
+  Sparkles,
+  Route,
+  Table as TableIcon,
+  Globe,
+  Compass,
+} from "lucide-react";
+import { GLOBAL_PORTS_DATA } from "@/lib/portsData";
 import { scrollToHash } from "@/components/SmoothScroll";
 
-// Real Leaflet Interactive Map loaded purely on the client
-const RealInteractiveMap = dynamic(() => import("./RealInteractiveMap"), {
-  ssr: false,
-  loading: () => (
-    <div className="w-full h-full min-h-[400px] bg-[#ece5d8] flex items-center justify-center text-xs font-mono text-[#140d0a]/60">
-      <div className="flex items-center gap-2">
-        <span className="w-2 h-2 rounded-full bg-[#ff443a] animate-ping" />
-        <span>Loading Real Interactive Map...</span>
+// Dynamically import Leaflet map to prevent SSR window issues
+const RealInteractiveMap = dynamic(
+  () => import("@/components/RealInteractiveMap"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-full min-h-[440px] flex flex-col items-center justify-center bg-[#f7f2ea] text-[#747474] font-mono text-xs gap-3">
+        <div className="w-7 h-7 border-2 border-[#8b4513] border-t-transparent rounded-full animate-spin" />
+        <span className="tracking-wider uppercase font-semibold text-[#8b4513]">
+          INITIALIZING GLOBAL MARITIME RADAR...
+        </span>
       </div>
-    </div>
-  ),
-});
+    ),
+  }
+);
 
-// ── 1. THE 8-STEP JOURNEY DATA ──
-interface JourneyStep {
-  stepNum: number;
-  title: string;
-  subtitle: string;
-  timeframe: string;
-  description: string;
-  location: string;
-  icon: string;
-  tag: string;
-}
-
-const JOURNEY_STEPS: JourneyStep[] = [
+// ── RICH 8-STAGE FACTORY TO JOBSITE SUPPLY CHAIN DATA ──
+const JOURNEY_STEPS_RICH = [
   {
-    stepNum: 1,
-    title: "Order Confirmed",
-    subtitle: "Spec & Volume Lock",
-    timeframe: "Day 0",
-    description: "Buyer places order, we confirm specs, thickness, size, quantity.",
-    location: "Markapur HQ",
-    icon: "📋",
-    tag: "Commercial Agreement",
+    num: "01",
+    stepNumber: 1,
+    phaseGroup: "Quarry & Order Engineering",
+    title: "Order Finalization & Technical Specification",
+    subtitle: "Stone Extraction Batch Approval",
+    icon: FileCheck,
+    timeframe: "1–3 Days",
+    location: "Markapur & Chimakurthy Quarry Offices",
+    description:
+      "Client approves architectural bill of quantities (BOQ), mineral finishes, caliper thickness (+/-1mm tolerance), and stone lot color variation parameters.",
+    sopStandard: "IS:1121 & ASTM C615 Stone Testing",
+    deliverables: ["Signed Tech Spec Sheet", "Approved Color Master Samples", "Lot Allocation Number"],
   },
   {
-    stepNum: 2,
-    title: "Production",
-    subtitle: "Precision Quarry Fabrication",
-    timeframe: "3–10 days",
-    description: "Stones are cut, finished, quality checked at our factory in Markapur.",
-    location: "Markapur Processing Yard",
-    icon: "⚙️",
-    tag: "ISO Quality Inspection",
+    num: "02",
+    stepNumber: 2,
+    phaseGroup: "Quarry & Order Engineering",
+    title: "Precision Quarry Extraction & CNC Calibration",
+    subtitle: "Gangsaw Slicing & Edge Profiling",
+    icon: Layers,
+    timeframe: "7–14 Days",
+    location: "Pavan Group Gangsaw & CNC Units",
+    description:
+      "Blocks sliced on multi-blade gangsaw frames, calibrated to exact mm thickness, precision edge-profiled, and given specified surface finish (Cleft, Honed, Polished, or Tumbled).",
+    sopStandard: "Digital Caliper & Surface Flatness QC",
+    deliverables: ["Precision Sized Slabs/Tiles", "Calibrated Edge Profiles", "Batch Uniformity Audit"],
   },
   {
-    stepNum: 3,
-    title: "Packing",
-    subtitle: "Biosecurity Compliance",
-    timeframe: "1–2 days",
-    description: "Stones packed in ISPM-15 certified wooden crates (biosecurity compliant).",
-    location: "Packaging Facility",
-    icon: "📦",
-    tag: "ISPM-15 Certified",
+    num: "03",
+    stepNumber: 3,
+    phaseGroup: "Quarry & Order Engineering",
+    title: "100% Dry-Lay Staging & Quality Audit",
+    subtitle: "Pre-Pack Visual & Dimension Verification",
+    icon: Sparkles,
+    timeframe: "2–3 Days",
+    location: "Covered Dry-Lay Staging Facility",
+    description:
+      "Entire shipment dry-laid across factory staging floor to verify tonal harmony, pattern blend, and zero hairline fissures before crating.",
+    sopStandard: "4K Video & High-Res Photo Dossier",
+    deliverables: ["Full Lot Layout Photos", "Client Video Walkthrough", "Pre-Shipment Signoff"],
   },
   {
-    stepNum: 4,
-    title: "Inland Transport",
-    subtitle: "Quarry to Ocean Terminal",
-    timeframe: "1–2 days",
-    description: "Truck from Markapur to Chennai Port (~500 km).",
-    location: "Chennai Corridor",
-    icon: "🚚",
-    tag: "~500 km Highway",
+    num: "04",
+    stepNumber: 4,
+    phaseGroup: "Export Logistics & Packing",
+    title: "Export Packing & ISPM-15 Fumigation",
+    subtitle: "Seaworthy Heavy-Duty Timber Crates",
+    icon: Package,
+    timeframe: "2–3 Days",
+    location: "Factory Loading & Packing Bay",
+    description:
+      "Tiles packed with high-density thermocol separators, moisture-proof plastic wrap, and heavy-duty ISPM-15 certified heat-treated pinewood crates with steel strapping.",
+    sopStandard: "ISPM-15 Phytosanitary Compliance",
+    deliverables: ["ISPM-15 Heat-Treatment Stamp", "Reinforced Steel Corner Straps", "Fumigation Certificate"],
   },
   {
-    stepNum: 5,
-    title: "Port & Loading",
-    subtitle: "Customs & Vessel Stowing",
-    timeframe: "2–5 days",
-    description: "Export documentation prepared, container loaded onto ship at Chennai.",
-    location: "Chennai Ocean Port",
-    icon: "⚓",
-    tag: "Customs Cleared",
+    num: "05",
+    stepNumber: 5,
+    phaseGroup: "Export Logistics & Packing",
+    title: "Container Stuffing & Chennai Port Dispatch",
+    subtitle: "Direct Highway Transit & Terminal Gate-In",
+    icon: Truck,
+    timeframe: "2–4 Days",
+    location: "Chennai / Krishnapatnam Ocean Terminal",
+    description:
+      "Crates stuffed into 20ft/40ft ocean containers with pneumatic dunnage air bags, customs cleared, and sealed with tamper-evident container bolt seal.",
+    sopStandard: "ISO 17712 High-Security Bolt Seal",
+    deliverables: ["Container Stuffing Photos", "Port Gate-In Pass", "Shipping Bill & Bill of Lading"],
   },
   {
-    stepNum: 6,
-    title: "Sea Freight",
-    subtitle: "Indian Ocean Transit",
-    timeframe: "12–25 days",
-    description: "Ship travels Indian Ocean to Australia (depends on destination port).",
-    location: "Indian Ocean Sealane",
-    icon: "🚢",
-    tag: "Direct Vessel Route",
+    num: "06",
+    stepNumber: 6,
+    phaseGroup: "Ocean & Jobsite Handover",
+    title: "Ocean Transit to Destination Port",
+    subtitle: "Global Maritime Container Freight",
+    icon: Ship,
+    timeframe: "12–28 Days",
+    location: "International Ocean Shipping Lanes",
+    description:
+      "Container vessel navigates designated maritime sealanes directly to destination ports across UAE (6–9d), Europe (20–26d), UK (20–25d), USA (22–30d), or Australia (12–22d).",
+    sopStandard: "Bonded Marine Cargo Insurance",
+    deliverables: ["Direct Ocean Freight Lines", "Continuous Satellite Tracking", "Comprehensive Transit Cover"],
   },
   {
-    stepNum: 7,
-    title: "Australian Port",
-    subtitle: "Biosecurity & Clearance",
-    timeframe: "3–7 days",
-    description: "Ship arrives, biosecurity inspection, customs clearance.",
-    location: "Australian Destination Port",
-    icon: "🛃",
-    tag: "DAFF / Customs Gate",
+    num: "07",
+    stepNumber: 7,
+    phaseGroup: "Ocean & Jobsite Handover",
+    title: "Destination Port Customs & Quarantine",
+    subtitle: "Terminal Handling & Clearance",
+    icon: ShieldCheck,
+    timeframe: "3–7 Days",
+    location: "Destination Ocean Container Terminal",
+    description:
+      "Vessel arrives and offloads container; local customs authorities and biosecurity officers inspect documentation and release cargo from terminal.",
+    sopStandard: "Local Customs & Quarantine Release",
+    deliverables: ["Terminal Handling (THC)", "Quarantine / Biosecurity Clear", "Commercial Release Gate Pass"],
   },
   {
-    stepNum: 8,
-    title: "Local Delivery",
-    subtitle: "Direct to Project Site",
-    timeframe: "1–3 days",
-    description: "Truck from port to buyer's project site in Australia.",
-    location: "Buyer Site / Jobsite",
-    icon: "🏗️",
-    tag: "Jobsite Unloading",
+    num: "08",
+    stepNumber: 8,
+    phaseGroup: "Ocean & Jobsite Handover",
+    title: "Direct Jobsite Delivery & Handover",
+    subtitle: "Final Offloading at Project Site",
+    icon: Building2,
+    timeframe: "1–3 Days",
+    location: "Buyer Project / Construction Site",
+    description:
+      "Flatbed truck transports crates from port terminal directly to buyer's residential or commercial jobsite for immediate installation.",
+    sopStandard: "Turnkey Final Jobsite Handover",
+    deliverables: ["Direct-to-Site Haulage", "Safe Ground-Level Offloading", "Final Material Verification"],
   },
 ];
 
-// ── 2. AUSTRALIA PORTS & ROUTES DATA ──
-interface PortRoute {
-  id: string;
-  city: string;
-  code: string;
-  state: string;
-  cost20ft: string;
-  cost40ft: string;
-  transitTime: string;
-  buyerNote: string;
-  nauticalMiles: string;
-  description: string;
+type RegionKey = "all" | "australia" | "uae" | "uk" | "europe" | "usa";
+
+interface RegionTab {
+  key: RegionKey;
+  label: string;
+  flag: string;
 }
 
-const AUSTRALIAN_PORTS: PortRoute[] = [
-  {
-    id: "perth",
-    city: "Perth",
-    code: "AUFRE",
-    state: "Western Australia (WA)",
-    cost20ft: "USD $1,200–$2,000",
-    cost40ft: "USD $2,500–$4,500",
-    transitTime: "12–18 days",
-    nauticalMiles: "~3,400 nmi",
-    buyerNote: "Closest Aus port to India — fastest ocean transit.",
-    description: "Direct shipping line from Chennai via Sunda Strait to Fremantle Port, serving Perth, Margaret River & WA architectural developments.",
-  },
-  {
-    id: "sydney",
-    city: "Sydney",
-    code: "AUSYD",
-    state: "New South Wales (NSW)",
-    cost20ft: "USD $1,500–$2,500",
-    cost40ft: "USD $2,500–$4,500",
-    transitTime: "18–22 days",
-    nauticalMiles: "~4,850 nmi",
-    buyerNote: "For NSW buyers — high volume container frequency.",
-    description: "Servicing Sydney Metro, Greater Western Sydney, Newcastle, and regional NSW luxury residential developments via Port Botany.",
-  },
-  {
-    id: "melbourne",
-    city: "Melbourne",
-    code: "AUMEL",
-    state: "Victoria (VIC)",
-    cost20ft: "USD $1,500–$2,500",
-    cost40ft: "USD $2,500–$4,500",
-    transitTime: "20–25 days",
-    nauticalMiles: "~4,600 nmi",
-    buyerNote: "For Victoria buyers — key hub for architectural limestone.",
-    description: "Discharging at Port of Melbourne with swift metropolitan container transport across Victoria, Mornington Peninsula and Geelong.",
-  },
-  {
-    id: "brisbane",
-    city: "Brisbane",
-    code: "AUBNE",
-    state: "Queensland (QLD)",
-    cost20ft: "USD $1,800–$2,800",
-    cost40ft: "USD $2,500–$4,500",
-    transitTime: "20–25 days",
-    nauticalMiles: "~4,950 nmi",
-    buyerNote: "For Queensland buyers — ideal for resort & pool projects.",
-    description: "Direct access to Brisbane, Gold Coast and Sunshine Coast pool paving, limestone terraces, and luxury resort projects.",
-  },
-];
-
-// ── 3. FULL LANDED COST BREAKDOWN ITEMS ──
-interface LandedCostItem {
-  id: number;
-  item: string;
-  costRange: string;
-  paidByNotes: string;
-  stage: "india" | "ocean" | "aus";
-  stageLabel: string;
-  icon: string;
-}
-
-const LANDED_COST_ITEMS: LandedCostItem[] = [
-  { id: 1, item: "Stone Product (FOB India)", costRange: "USD $8–$35 per sqm", paidByNotes: "Depends on stone type & finish", stage: "india", stageLabel: "Quarry & Fabrication", icon: "🏛️" },
-  { id: 2, item: "Inland Transport (India)", costRange: "USD $100–$200", paidByNotes: "Factory to Chennai port (truck)", stage: "india", stageLabel: "Inland Logistics", icon: "🚚" },
-  { id: 3, item: "Sea Freight (20ft FCL)", costRange: "USD $1,500–$2,500", paidByNotes: "India to Australian port", stage: "ocean", stageLabel: "Ocean Sealane", icon: "🚢" },
-  { id: 4, item: "Marine Insurance", costRange: "~0.5–1% of cargo value", paidByNotes: "Strongly recommended", stage: "ocean", stageLabel: "Cargo Protection", icon: "🛡️" },
-  { id: 5, item: "Australian Port Handling (THC)", costRange: "AUD $400–$800", paidByNotes: "Terminal fee at destination port", stage: "aus", stageLabel: "Port Terminal", icon: "⚓" },
-  { id: 6, item: "Biosecurity Inspection (DAFF)", costRange: "AUD $200–$600", paidByNotes: "Mandatory government inspection", stage: "aus", stageLabel: "DAFF Inspection", icon: "🔬" },
-  { id: 7, item: "Australian Customs Duty", costRange: "0–5% of cargo value", paidByNotes: "Most natural stone = 0% duty", stage: "aus", stageLabel: "Customs Tariff", icon: "🛃" },
-  { id: 8, item: "GST (Australia)", costRange: "10% of total landed cost", paidByNotes: "Paid by Australian importer (claimable)", stage: "aus", stageLabel: "Australian Tax", icon: "🧾" },
-  { id: 9, item: "Local Delivery (port to site)", costRange: "AUD $300–$800", paidByNotes: "Truck from port to buyer's site", stage: "aus", stageLabel: "Direct Site Haulage", icon: "🏗️" },
-];
-
-// ── 4. TRADE INCOTERMS DATA ──
-interface TradeTerm {
-  code: string;
-  title: string;
-  summary: string;
-  responsibility: string;
-  idealFor: string;
-  pavanHandles: string[];
-  buyerHandles: string[];
-}
-
-const TRADE_TERMS: TradeTerm[] = [
-  {
-    code: "FOB",
-    title: "Free On Board",
-    summary: "Our price includes goods + loading onto the ship in India. Buyer manages international shipping and local clearance.",
-    responsibility: "Split at Indian Port Loading Line",
-    idealFor: "Experienced importers who have their own preferred freight forwarder and customs broker.",
-    pavanHandles: ["Quarry Fabrication & QC", "ISPM-15 Crating", "Inland Transport to Chennai", "Port Loading & Export Docs"],
-    buyerHandles: ["Ocean Sea Freight", "Marine Insurance", "Australian Customs & Biosecurity", "Local Site Delivery Trucking"],
-  },
-  {
-    code: "CIF",
-    title: "Cost Insurance Freight",
-    summary: "Our price includes goods + sea freight + insurance to Australian port. Buyer pays for customs + local delivery only.",
-    responsibility: "Handed over at Australian Destination Port",
-    idealFor: "Buyers who want competitive ocean shipping arranged by us, but handle their own domestic customs clearing.",
-    pavanHandles: ["Fabrication & Crating", "Inland Transport to Chennai", "Ocean Sea Freight to Aus Port", "Marine Transit Insurance"],
-    buyerHandles: ["Australian Port Terminal Fees (THC)", "Customs Duty & Biosecurity", "Final Trucking to Project Site"],
-  },
-  {
-    code: "DDP",
-    title: "Delivered Duty Paid",
-    summary: "We handle EVERYTHING. Buyer just receives goods at their site. Most convenient, zero hassle.",
-    responsibility: "100% End-to-End Pavan Stones Turnkey",
-    idealFor: "Architects, builders, and homeowners who want a completely hassle-free turnkey delivery right to their jobsite.",
-    pavanHandles: ["Quarry Extraction & Packaging", "Ocean Transit & Insurance", "Australian Customs & Biosecurity", "Direct Jobsite Delivery Offloading"],
-    buyerHandles: ["Simply receive crates at jobsite — Zero paperwork or logistics"],
-  },
-];
-
-const ESTIMATOR_STONE_OPTIONS = [
-  { id: "slate", name: "Natural Slate Stone", avgRateUsd: 14, category: "Pavan Impex" },
-  { id: "limestone", name: "Calcareous Limestone", avgRateUsd: 22, category: "Sai Balaji Impex" },
-  { id: "granite", name: "Monolithic Granite", avgRateUsd: 32, category: "Pavan Granite" },
+const REGION_TABS: RegionTab[] = [
+  { key: "all", label: "All Ports", flag: "🌍" },
+  { key: "australia", label: "Australia", flag: "🇦🇺" },
+  { key: "uae", label: "UAE & Gulf", flag: "🇦🇪" },
+  { key: "uk", label: "United Kingdom", flag: "🇬🇧" },
+  { key: "europe", label: "Europe", flag: "🇪🇺" },
+  { key: "usa", label: "United States", flag: "🇺🇸" },
 ];
 
 export default function ShippingAustralia() {
-  const [activeStepIndex, setActiveStepIndex] = useState<number>(0);
-  const [selectedPortId, setSelectedPortId] = useState<string>("sydney");
+  const [selectedPortId, setSelectedPortId] = useState<string>("syd");
   const [containerSize, setContainerSize] = useState<"20ft" | "40ft">("20ft");
-  const [activeIncoterm, setActiveIncoterm] = useState<string>("DDP");
-  
-  // Phase 3 Landed Cost Estimator State
-  const [orderSqmInput, setOrderSqmInput] = useState<number>(300);
-  const [selectedStoneSpec, setSelectedStoneSpec] = useState<string>("slate");
-  const [costStageFilter, setCostStageFilter] = useState<"all" | "india" | "ocean" | "aus">("all");
+  const [selectedRegion, setSelectedRegion] = useState<RegionKey>("all");
+  const [activeStepIndex, setActiveStepIndex] = useState<number>(0);
+  const [journeyViewMode, setJourneyViewMode] = useState<"visual" | "grid">("visual");
 
-  const activeStep = JOURNEY_STEPS[activeStepIndex];
-  const selectedPort = AUSTRALIAN_PORTS.find((p) => p.id === selectedPortId) || AUSTRALIAN_PORTS[1];
-  const currentIncoterm = TRADE_TERMS.find((t) => t.code === activeIncoterm) || TRADE_TERMS[2];
-  const currentStone = ESTIMATOR_STONE_OPTIONS.find((s) => s.id === selectedStoneSpec) || ESTIMATOR_STONE_OPTIONS[0];
+  const activeStep = JOURNEY_STEPS_RICH[activeStepIndex];
 
-  // Dynamic calculations
-  const estimatedContainers20ft = Math.max(1, Math.ceil(orderSqmInput / 325));
-  const materialCostAud = Math.round(orderSqmInput * currentStone.avgRateUsd * 1.52);
-  const freightCostAud = Math.round(estimatedContainers20ft * (selectedPortId === "perth" ? 2200 : 2900));
-  const portHandlingAud = Math.round(estimatedContainers20ft * 650 + 400); // THC + DAFF
-  const gstAud = Math.round((materialCostAud + freightCostAud + portHandlingAud) * 0.1);
-  const localTruckAud = Math.round(estimatedContainers20ft * 550);
-  const totalLandedAud = materialCostAud + freightCostAud + portHandlingAud + gstAud + localTruckAud;
-  const landedRatePerSqmAud = Math.round(totalLandedAud / orderSqmInput);
+  const filteredPorts = useMemo(() => {
+    if (selectedRegion === "all") return GLOBAL_PORTS_DATA;
+    return GLOBAL_PORTS_DATA.filter((p) => p.region === selectedRegion);
+  }, [selectedRegion]);
 
-  const filteredCostItems = costStageFilter === "all"
-    ? LANDED_COST_ITEMS
-    : LANDED_COST_ITEMS.filter((i) => i.stage === costStageFilter);
+  const selectedPort =
+    GLOBAL_PORTS_DATA.find((p) => p.id === selectedPortId) || GLOBAL_PORTS_DATA[0];
 
   const handleContactScroll = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -286,754 +199,720 @@ export default function ShippingAustralia() {
   return (
     <section
       id="shipping"
-      className="relative py-20 md:py-32 px-4 sm:px-6 md:px-12 lg:px-16 bg-[#fcf8f1] text-[#140d0a] border-t border-[#140d0a]/10 overflow-hidden"
+      className="relative py-12 md:py-20 px-4 sm:px-6 md:px-12 lg:px-16 bg-[#ffffff] text-[#241919] border-t border-[#747474]/15 overflow-hidden"
     >
-      {/* Ambient architectural grid */}
-      <div className="absolute inset-0 pointer-events-none opacity-[0.035]">
-        <div
-          className="w-full h-full"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(20,13,10,1) 1px, transparent 1px), linear-gradient(90deg, rgba(20,13,10,1) 1px, transparent 1px)",
-            backgroundSize: "48px 48px",
-          }}
-        />
-      </div>
-
-      <div className="max-w-7xl mx-auto relative z-10 space-y-16 md:space-y-24">
+      <div className="max-w-7xl mx-auto relative z-10 space-y-12 md:space-y-16">
         
-        {/* ── SECTION 4 HEADER ── */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between pb-6 border-b border-[#140d0a]/10 gap-6">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-white border border-[#140d0a]/10 shadow-sm mb-3">
-              <span className="w-2 h-2 rounded-full bg-[#ff443a] animate-pulse" />
-              <span className="text-[9.5px] font-mono uppercase tracking-[0.24em] font-semibold text-[#140d0a]">
-                SECTION 4 — AUSTRALIA DIRECT EXPORT &amp; LOGISTICS
-              </span>
-            </div>
-
-            <h2
-              className="font-display font-light text-[#140d0a] leading-[1.08] tracking-[-0.015em]"
-              style={{ fontSize: "clamp(30px, 3.8vw, 54px)" }}
-            >
-              Shipping to Australia —{" "}
-              <span className="italic font-normal text-[#ff443a]">Full Breakdown.</span>
-            </h2>
-
-            <p className="text-[13.5px] sm:text-[15px] text-[#140d0a]/75 font-light mt-2 max-w-2xl leading-relaxed">
-              Transparent factory-to-jobsite logistics from Markapur quarries to major Australian ports. Inspect timelines, interactive sea routes, freight rates, and landed cost models.
-            </p>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <button
-              onClick={handleContactScroll}
-              className="inline-flex items-center gap-2 px-5 py-2.5 text-[9.5px] uppercase tracking-[0.2em] font-semibold bg-[#ff443a] text-white hover:bg-[#e6352b] transition-all shadow-sm cursor-pointer border-none"
-            >
-              <span>Get Freight &amp; Port Quote</span>
-              <span>→</span>
-            </button>
-          </div>
-        </div>
-
-        {/* ══════════════════════════════════════════════════════════════
-            PHASE 1: THE JOURNEY — FACTORY TO BUYER'S SITE (INTERACTIVE TIMELINE)
-        ══════════════════════════════════════════════════════════════ */}
-        <div className="space-y-6">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-4 border-b border-[#140d0a]/10">
-            <div>
-              <span className="text-[9.5px] font-mono uppercase tracking-[0.24em] text-[#ff443a] font-bold block mb-1">
-                STEP-BY-STEP LOGISTICS PIPELINE
-              </span>
-              <h3 className="font-display text-2xl sm:text-3xl text-[#140d0a] font-light">
-                1. The Journey: Factory to Buyer&apos;s Site
-              </h3>
-            </div>
-
-            <div className="flex items-center gap-2 px-3 py-1.5 bg-[#faf6ef] border border-[#140d0a]/10 text-xs font-mono">
-              <span className="text-[#ff443a] font-bold">TOTAL DURATION:</span>
-              <span className="font-semibold text-[#140d0a]">30–45 Days Typical</span>
-            </div>
-          </div>
-
-          {/* Stepper Progress Bar */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2">
-            {JOURNEY_STEPS.map((step, idx) => {
-              const isActive = activeStepIndex === idx;
-              const isPast = activeStepIndex > idx;
-
-              return (
-                <button
-                  key={step.stepNum}
-                  onClick={() => setActiveStepIndex(idx)}
-                  className={`p-3 text-left transition-all border cursor-pointer flex flex-col justify-between ${
-                    isActive
-                      ? "bg-white border-[#ff443a] shadow-md ring-1 ring-[#ff443a]"
-                      : isPast
-                      ? "bg-[#faf6ef] border-[#140d0a]/20 hover:bg-white"
-                      : "bg-white/60 border-[#140d0a]/10 hover:bg-white"
-                  }`}
-                >
-                  <div className="flex items-center justify-between mb-1">
-                    <span
-                      className={`text-[9.5px] font-mono font-bold px-1.5 py-0.5 ${
-                        isActive ? "bg-[#ff443a] text-white" : "bg-[#140d0a]/10 text-[#140d0a]"
-                      }`}
-                    >
-                      0{step.stepNum}
-                    </span>
-                    <span className="text-xs">{step.icon}</span>
-                  </div>
-
-                  <div>
-                    <h4 className="font-display text-xs font-medium text-[#140d0a] leading-tight truncate">
-                      {step.title}
-                    </h4>
-                    <span className="text-[9px] font-mono text-[#140d0a]/60 block mt-0.5">
-                      {step.timeframe}
-                    </span>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Active Step Detailed Showcase Panel */}
-          <motion.div
-            key={activeStep.stepNum}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
-            className="p-6 sm:p-8 bg-white border border-[#140d0a]/10 shadow-sm relative overflow-hidden"
-          >
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-              
-              <div className="md:col-span-8 space-y-3">
-                <div className="flex items-center gap-2.5 flex-wrap">
-                  <span className="px-2.5 py-1 text-[9.5px] font-mono font-bold bg-[#ff443a] text-white uppercase">
-                    STEP 0{activeStep.stepNum} OF 08
-                  </span>
-                  <span className="text-xs font-mono text-[#140d0a]/60">
-                    Location: <strong>{activeStep.location}</strong>
-                  </span>
-                  <span className="text-[#140d0a]/30">•</span>
-                  <span className="px-2 py-0.5 bg-[#faf6ef] border border-[#140d0a]/10 text-[9.5px] font-mono font-bold text-[#140d0a]">
-                    ⏱ {activeStep.timeframe}
-                  </span>
-                </div>
-
-                <h3 className="font-display text-2xl sm:text-3xl text-[#140d0a] font-medium">
-                  {activeStep.title} — {activeStep.subtitle}
-                </h3>
-
-                <p className="text-[14px] text-[#140d0a]/85 leading-relaxed font-light">
-                  {activeStep.description}
-                </p>
-
-                <div className="pt-2 flex items-center gap-3 text-xs font-mono text-[#140d0a]/70">
-                  <span className="text-[#ff443a]">✔ Standard Operating Procedure:</span>
-                  <span>{activeStep.tag}</span>
-                </div>
+        {/* ── SECTION HEADER & EXECUTIVE MARITIME STATS ── */}
+        <div className="space-y-8 pb-8 border-b border-[#747474]/15">
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+            <div className="max-w-3xl space-y-3">
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#514a38] text-white shadow-xs rounded-sm">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#d8c3a5] animate-pulse" />
+                <span className="text-[9.5px] font-mono uppercase tracking-[0.24em] font-bold">
+                  GLOBAL MARITIME DISPATCH · EST. 1994
+                </span>
               </div>
 
-              {/* Step Navigation Controls */}
-              <div className="md:col-span-4 p-5 bg-[#faf6ef] border border-[#140d0a]/10 flex flex-col justify-between gap-4">
-                <div>
-                  <span className="text-[9px] font-mono uppercase text-[#140d0a]/50 block font-bold mb-1">
-                    PIPELINE CONTROLS
-                  </span>
-                  <span className="text-xs font-medium text-[#140d0a]">
-                    Click steps above or jump to next stage
-                  </span>
-                </div>
+              <h2
+                className="font-display font-light text-[#241919] leading-[1.02] tracking-[-0.015em]"
+                style={{ fontSize: "clamp(36px, 4.6vw, 58px)" }}
+              >
+                <span className="text-[#241919]">Shipping Routes &amp; Freight Rates</span>{" "}
+                <span className="text-[#8b4513] italic font-normal">(India ➔ Worldwide)</span>
+              </h2>
 
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => setActiveStepIndex(Math.max(0, activeStepIndex - 1))}
-                    disabled={activeStepIndex === 0}
-                    className="px-3 py-1.5 text-xs font-mono border border-[#140d0a]/15 bg-white disabled:opacity-30 cursor-pointer disabled:cursor-not-allowed"
-                  >
-                    ← Previous
-                  </button>
-
-                  <button
-                    onClick={() => setActiveStepIndex(Math.min(JOURNEY_STEPS.length - 1, activeStepIndex + 1))}
-                    disabled={activeStepIndex === JOURNEY_STEPS.length - 1}
-                    className="px-4 py-1.5 text-xs font-mono bg-[#140d0a] text-white disabled:opacity-30 cursor-pointer disabled:cursor-not-allowed flex-1"
-                  >
-                    Next Stage →
-                  </button>
-                </div>
-              </div>
-
-            </div>
-          </motion.div>
-        </div>
-
-        {/* ══════════════════════════════════════════════════════════════
-            PHASE 2: REAL INTERACTIVE LEAFLET MAP & PORT FREIGHT EXPLORER
-        ══════════════════════════════════════════════════════════════ */}
-        <div className="space-y-6">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-4 border-b border-[#140d0a]/10">
-            <div>
-              <span className="text-[9.5px] font-mono uppercase tracking-[0.24em] text-[#ff443a] font-bold block mb-1">
-                REAL GEOGRAPHIC SEALANE RADAR &amp; DIRECT FREIGHT
-              </span>
-              <h3 className="font-display text-2xl sm:text-3xl text-[#140d0a] font-light">
-                2. Shipping Routes &amp; Estimated Freight Costs (India → Australia)
-              </h3>
+              <p className="text-[14px] sm:text-[15.5px] text-[#454545] font-light leading-relaxed">
+                Direct factory-to-port ocean container logistics from Chennai and Krishnapatnam terminals to 40+ key sea ports across <strong>UAE, Europe, United Kingdom, United States, and Australia</strong>.
+              </p>
             </div>
 
-            {/* 20ft vs 40ft Container Toggle */}
-            <div className="flex items-center gap-1.5 p-1 bg-white border border-[#140d0a]/10 shadow-sm">
-              <span className="text-[9px] font-mono text-[#140d0a]/60 uppercase px-2 font-bold">
-                CONTAINER SPEC:
-              </span>
+            <div className="flex items-center gap-3 flex-none">
               <button
-                onClick={() => setContainerSize("20ft")}
-                className={`px-3 py-1 text-xs font-mono font-bold cursor-pointer border-none transition-all ${
-                  containerSize === "20ft"
-                    ? "bg-[#ff443a] text-white shadow-sm"
-                    : "bg-transparent text-[#140d0a]/70 hover:text-[#140d0a]"
-                }`}
+                type="button"
+                onClick={handleContactScroll}
+                className="inline-flex items-center gap-2 px-7 py-3.5 text-xs font-mono uppercase tracking-wider font-bold bg-[#241919] hover:bg-[#3e352a] text-[#f7f2ea] transition-all shadow-md cursor-pointer border-none rounded"
               >
-                20ft FCL (~300–350 sqm)
-              </button>
-              <button
-                onClick={() => setContainerSize("40ft")}
-                className={`px-3 py-1 text-xs font-mono font-bold cursor-pointer border-none transition-all ${
-                  containerSize === "40ft"
-                    ? "bg-[#ff443a] text-white shadow-sm"
-                    : "bg-transparent text-[#140d0a]/70 hover:text-[#140d0a]"
-                }`}
-              >
-                40ft FCL (~650–700 sqm)
+                <span>Request Custom FOB/CIF Rate</span>
+                <ArrowRight className="w-3.5 h-3.5 text-[#d8c3a5]" />
               </button>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          {/* Executive 4-Point Maritime Trust KPIs */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-2">
+            <div className="p-3.5 bg-[#fcfaf7] border border-[#747474]/15 rounded-lg flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-[#241919] text-[#d8c3a5] flex items-center justify-center flex-none text-xs">
+                <Globe className="w-4 h-4" />
+              </div>
+              <div>
+                <span className="text-xs font-mono font-bold text-[#241919] block">40+ Sea Ports</span>
+                <span className="text-[10px] text-[#747474]">Direct Destination Calls</span>
+              </div>
+            </div>
+
+            <div className="p-3.5 bg-[#fcfaf7] border border-[#747474]/15 rounded-lg flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-[#241919] text-[#d8c3a5] flex items-center justify-center flex-none text-xs">
+                <Clock className="w-4 h-4" />
+              </div>
+              <div>
+                <span className="text-xs font-mono font-bold text-[#241919] block">12–28 Days</span>
+                <span className="text-[10px] text-[#747474]">Direct Ocean Transit</span>
+              </div>
+            </div>
+
+            <div className="p-3.5 bg-[#fcfaf7] border border-[#747474]/15 rounded-lg flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-[#241919] text-[#d8c3a5] flex items-center justify-center flex-none text-xs">
+                <ShieldCheck className="w-4 h-4" />
+              </div>
+              <div>
+                <span className="text-xs font-mono font-bold text-[#241919] block">ISPM-15 Certified</span>
+                <span className="text-[10px] text-[#747474]">Heat-Treated Timber</span>
+              </div>
+            </div>
+
+            <div className="p-3.5 bg-[#fcfaf7] border border-[#747474]/15 rounded-lg flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-[#241919] text-[#d8c3a5] flex items-center justify-center flex-none text-xs">
+                <Anchor className="w-4 h-4" />
+              </div>
+              <div>
+                <span className="text-xs font-mono font-bold text-[#241919] block">100% Insured</span>
+                <span className="text-[10px] text-[#747474]">All-Risk Marine Cargo</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ══════════════════════════════════════════════════════════════
+            GLOBAL FREIGHT CONSOLE: CONTROLS + INTERACTIVE MAP + PROFILE
+        ══════════════════════════════════════════════════════════════ */}
+        <div className="space-y-6">
+          
+          {/* Top Integrated Control Bar */}
+          <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 p-3 bg-[#f7f2ea] rounded-xl border border-[#747474]/20 shadow-xs">
             
-            {/* Left: Interactive Real Leaflet Map UI (7 Cols) */}
-            <div className="lg:col-span-7 bg-white border border-[#140d0a]/10 shadow-sm overflow-hidden flex flex-col">
+            {/* Region Filter Segmented Tabs */}
+            <div className="flex items-center gap-1.5 flex-wrap">
+              {REGION_TABS.map((tab) => {
+                const isActive = selectedRegion === tab.key;
+                return (
+                  <button
+                    key={tab.key}
+                    type="button"
+                    onClick={() => {
+                      setSelectedRegion(tab.key);
+                      const firstOfRegion =
+                        tab.key === "all"
+                          ? GLOBAL_PORTS_DATA[0]
+                          : GLOBAL_PORTS_DATA.find((p) => p.region === tab.key);
+                      if (firstOfRegion) setSelectedPortId(firstOfRegion.id);
+                    }}
+                    className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-sans font-medium transition-all cursor-pointer ${
+                      isActive
+                        ? "bg-[#241919] text-[#f7f2ea] shadow-sm font-semibold"
+                        : "text-[#454545] hover:text-[#241919] hover:bg-white/70"
+                    }`}
+                  >
+                    <span>{tab.flag}</span>
+                    <span>{tab.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Container Specification Switcher */}
+            <div className="flex items-center gap-1 bg-white p-1 rounded-lg border border-[#747474]/20 self-start xl:self-auto shadow-2xs">
+              <span className="text-[9px] font-mono text-[#747474] uppercase px-2 font-bold">
+                VOLUME:
+              </span>
+              <button
+                type="button"
+                onClick={() => setContainerSize("20ft")}
+                className={`px-3 py-1.5 text-xs font-mono font-bold cursor-pointer rounded-md transition-all ${
+                  containerSize === "20ft"
+                    ? "bg-[#241919] text-white shadow-xs"
+                    : "bg-transparent text-[#454545] hover:text-[#241919]"
+                }`}
+              >
+                20ft FCL (~350 sqm)
+              </button>
+              <button
+                type="button"
+                onClick={() => setContainerSize("40ft")}
+                className={`px-3 py-1.5 text-xs font-mono font-bold cursor-pointer rounded-md transition-all ${
+                  containerSize === "40ft"
+                    ? "bg-[#241919] text-white shadow-xs"
+                    : "bg-transparent text-[#454545] hover:text-[#241919]"
+                }`}
+              >
+                40ft FCL (~700 sqm)
+              </button>
+            </div>
+
+          </div>
+
+          {/* Main 2-Column Console Layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+            
+            {/* Left Column: Interactive Map Canvas (7 Cols) */}
+            <div className="lg:col-span-7 bg-white border border-[#747474]/20 rounded-xl shadow-xs overflow-hidden flex flex-col min-h-[520px]">
               
-              {/* Map Browser Window Header */}
-              <div className="px-4 py-3 bg-[#140d0a] text-white flex items-center justify-between border-b border-[#140d0a]/10 flex-wrap gap-2">
-                <div className="flex items-center gap-2">
-                  <div className="flex items-center gap-1.5">
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f56]" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#27c93f]" />
-                  </div>
-                  <span className="text-[10px] font-mono text-white/80 font-bold ml-2">
-                    🌍 LIVE MAP · CHENNAI (IN) ➔ AUSTRALIA PORTS
-                  </span>
-                </div>
-
-                <div className="text-[9.5px] font-mono text-[#ff443a] font-bold">
-                  ● ACTIVE SEALANE: {selectedPort.city.toUpperCase()} ({selectedPort.code})
-                </div>
-              </div>
-
-              {/* Real Interactive Leaflet Map Canvas */}
-              <div className="w-full h-96 sm:h-[420px] relative bg-[#ece5d8] overflow-hidden">
+              {/* Map Canvas Container */}
+              <div className="w-full flex-1 min-h-[460px] relative bg-[#f7f2ea] overflow-hidden">
                 <RealInteractiveMap
                   selectedPortId={selectedPortId}
                   onSelectPort={setSelectedPortId}
+                  filteredPorts={filteredPorts}
                 />
               </div>
 
-              {/* Note Footer */}
-              <div className="p-3.5 bg-[#faf6ef] border-t border-[#140d0a]/10 text-xs text-[#140d0a]/80 flex items-center justify-between flex-wrap gap-2">
-                <span>
-                  <strong>Container Volume: </strong>1×20ft FCL holds ~300–350 sqm · 1×40ft FCL holds ~650–700 sqm
-                </span>
-                <span className="text-[10px] font-mono text-[#ff443a] font-semibold">
-                  Click any port pin on map to switch route
+              {/* Bottom Live Route Status Bar */}
+              <div className="p-4 bg-[#faf6ef] border-t border-[#747474]/15 flex items-center justify-between text-xs text-[#241919] flex-wrap gap-2 flex-none">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-[#8b4513] animate-pulse" />
+                  <span className="font-mono text-[11px]">
+                    <strong>Origin:</strong> Chennai Port (INMAA) ➔ <strong>Destination:</strong> {selectedPort.name}
+                  </span>
+                </div>
+
+                <span className="text-[10px] font-mono uppercase tracking-wider text-[#8b4513] font-bold">
+                  {selectedPort.transit} Ocean Transit
                 </span>
               </div>
+
             </div>
 
-            {/* Right: Selected Port Specifications & Rates (5 Cols) */}
-            <div className="lg:col-span-5 space-y-4">
+            {/* Right Column: Destination Hubs & Port Logistics Profile (5 Cols) */}
+            <div className="lg:col-span-5 flex flex-col justify-between gap-4">
               
-              {/* Port Selector Chips */}
-              <div className="grid grid-cols-2 gap-2">
-                {AUSTRALIAN_PORTS.map((port) => {
-                  const isSelected = selectedPortId === port.id;
-                  return (
-                    <button
-                      key={port.id}
-                      onClick={() => setSelectedPortId(port.id)}
-                      className={`p-3 text-left border transition-all cursor-pointer ${
-                        isSelected
-                          ? "bg-white border-[#ff443a] shadow-sm ring-1 ring-[#ff443a]"
-                          : "bg-white/60 border-[#140d0a]/10 hover:bg-white"
-                      }`}
-                    >
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs font-display font-medium text-[#140d0a]">{port.city}</span>
-                        <span className="text-[9px] font-mono text-[#ff443a] font-bold">{port.code}</span>
-                      </div>
-                      <span className="text-[9px] font-mono text-[#140d0a]/50 block truncate">{port.state}</span>
-                    </button>
-                  );
-                })}
+              {/* Destination Port Selectors (Clean Horizontal Pills) */}
+              <div className="space-y-2">
+                <span className="text-[10px] font-mono uppercase tracking-wider font-bold text-[#747474] block">
+                  SELECT DESTINATION PORT ({filteredPorts.length} AVAILABLE):
+                </span>
+
+                <div className="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto p-1 bg-[#f7f2ea] rounded-lg border border-[#747474]/15">
+                  {filteredPorts.map((port) => {
+                    const isSelected = selectedPortId === port.id;
+                    return (
+                      <button
+                        key={port.id}
+                        type="button"
+                        onClick={() => setSelectedPortId(port.id)}
+                        className={`p-3 text-left border rounded-lg transition-all cursor-pointer flex flex-col justify-between ${
+                          isSelected
+                            ? "bg-[#241919] text-white border-[#241919] shadow-sm"
+                            : "bg-white text-[#241919] border-[#747474]/20 hover:border-[#8b4513]/50"
+                        }`}
+                      >
+                        <div className="flex items-center justify-between gap-1 mb-1">
+                          <span className="text-xs font-sans font-bold leading-tight truncate">
+                            {port.name.split(" ")[0]}
+                          </span>
+                          <span
+                            className={`text-[9.5px] font-mono font-bold px-1.5 py-0.5 rounded ${
+                              isSelected
+                                ? "bg-[#d8c3a5] text-[#241919]"
+                                : "bg-[#f7f2ea] text-[#8b4513]"
+                            }`}
+                          >
+                            {port.code}
+                          </span>
+                        </div>
+
+                        <span
+                          className={`text-[10px] font-mono block truncate ${
+                            isSelected ? "text-white/70" : "text-[#747474]"
+                          }`}
+                        >
+                          {port.country} · {port.transit}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
 
-              {/* Active Port Rate Card */}
-              <div className="p-6 bg-white border border-[#140d0a]/10 shadow-sm space-y-4">
-                <div>
+              {/* Active Port Detailed Logistics Dossier */}
+              <div className="p-6 bg-white border border-[#747474]/20 rounded-xl shadow-xs space-y-5 flex-1 flex flex-col justify-between">
+                
+                <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-[9.5px] font-mono uppercase tracking-wider text-[#ff443a] font-bold">
-                      DESTINATION SPECIFICATIONS
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-[#8b4513] font-bold">
+                      PORT LOGISTICS PROFILE
                     </span>
-                    <span className="px-2 py-0.5 bg-[#faf6ef] border border-[#140d0a]/10 text-[9px] font-mono font-bold">
-                      {selectedPort.state}
+                    <span className="px-2.5 py-1 bg-[#f7f2ea] border border-[#747474]/20 text-[9.5px] font-mono font-bold text-[#241919] rounded">
+                      {selectedPort.country} · {selectedPort.code}
                     </span>
                   </div>
 
-                  <h4 className="font-display text-2xl text-[#140d0a] font-medium mt-1">
-                    Port of {selectedPort.city} ({selectedPort.code})
-                  </h4>
+                  <h3 className="font-display text-2xl sm:text-[26px] text-[#241919] font-medium leading-snug">
+                    {selectedPort.name}
+                  </h3>
 
-                  <p className="text-xs leading-relaxed text-[#140d0a]/80 font-light mt-1">
+                  <p className="text-xs leading-relaxed text-[#454545] font-light">
                     {selectedPort.description}
                   </p>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3 pt-2 border-t border-[#140d0a]/10">
-                  <div className="p-3 bg-[#faf6ef] border border-[#140d0a]/10">
-                    <span className="text-[9px] font-mono uppercase text-[#140d0a]/50 block font-bold mb-0.5">
-                      {containerSize} FREIGHT COST:
+                {/* 2 Key Metric Boxes (Price & Days) */}
+                <div className="grid grid-cols-2 gap-3 pt-3 border-t border-[#747474]/15">
+                  
+                  <div className="p-3.5 bg-[#f7f2ea] border border-[#747474]/15 rounded-lg space-y-1">
+                    <span className="text-[9px] font-mono uppercase text-[#747474] block font-bold">
+                      {containerSize} FREIGHT ESTIMATE:
                     </span>
-                    <span className="font-mono text-base font-bold text-[#ff443a]">
+                    <span className="font-mono text-base font-bold text-[#8b4513] block">
                       {containerSize === "20ft" ? selectedPort.cost20ft : selectedPort.cost40ft}
                     </span>
                   </div>
 
-                  <div className="p-3 bg-[#faf6ef] border border-[#140d0a]/10">
-                    <span className="text-[9px] font-mono uppercase text-[#140d0a]/50 block font-bold mb-0.5">
+                  <div className="p-3.5 bg-[#f7f2ea] border border-[#747474]/15 rounded-lg space-y-1">
+                    <span className="text-[9px] font-mono uppercase text-[#747474] block font-bold">
                       OCEAN TRANSIT TIME:
                     </span>
-                    <span className="font-mono text-base font-bold text-[#140d0a]">
-                      {selectedPort.transitTime}
+                    <span className="font-mono text-base font-bold text-[#241919] block">
+                      {selectedPort.transit}
                     </span>
+                  </div>
+
+                </div>
+
+                {/* Logistics Key Points */}
+                <div className="space-y-1.5 text-xs text-[#454545]">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-[#8b4513] flex-none" />
+                    <span>Weekly scheduled container vessel sailings</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-[#8b4513] flex-none" />
+                    <span>In-house Master Bill of Lading &amp; Customs clearance</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-[#8b4513] flex-none" />
+                    <span>ISPM-15 fumigated seaworthy wooden crate packaging</span>
                   </div>
                 </div>
 
-                <div className="p-3 bg-[#faf6ef] border border-[#140d0a]/10 text-xs text-[#140d0a]/85">
-                  <strong className="text-[#140d0a]">Regional Guidance: </strong>
-                  {selectedPort.buyerNote}
-                </div>
-
+                {/* Big Action Button */}
                 <button
+                  type="button"
                   onClick={handleContactScroll}
-                  className="w-full py-2.5 text-[9.5px] uppercase tracking-[0.2em] font-semibold bg-[#140d0a] text-white hover:bg-[#ff443a] transition-all cursor-pointer border-none shadow-sm text-center block"
+                  className="w-full py-3.5 px-4 text-xs font-mono uppercase tracking-wider font-bold bg-[#241919] hover:bg-[#3e352a] text-[#f7f2ea] transition-all cursor-pointer border-none rounded-lg shadow-sm text-center flex items-center justify-center gap-2"
                 >
-                  Request {selectedPort.city} Port Booking →
+                  <span>Request CIF/FOB Rate to {selectedPort.name.split(" ")[0]}</span>
+                  <ArrowRight className="w-4 h-4 text-[#d8c3a5]" />
                 </button>
+
               </div>
 
             </div>
 
           </div>
+
         </div>
 
         {/* ══════════════════════════════════════════════════════════════
-            PHASE 3: REDESIGNED LUXURY LANDED COST BREAKDOWN & LIVE STUDIO
+            WORLD-CLASS "FACTORY TO BUYER'S SITE" LOGISTICS PIPELINE
         ══════════════════════════════════════════════════════════════ */}
-        <div className="space-y-6">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-4 border-b border-[#140d0a]/10">
-            <div>
-              <div className="inline-flex items-center gap-2 px-2.5 py-0.5 bg-white border border-[#140d0a]/10 shadow-sm mb-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#ff443a]" />
-                <span className="text-[9px] font-mono uppercase tracking-[0.2em] font-bold text-[#ff443a]">
-                  INTERACTIVE CAPITAL ESTIMATOR STUDIO
-                </span>
-              </div>
-              <h3 className="font-display text-2xl sm:text-3xl text-[#140d0a] font-light">
-                3. Full Landed Cost Breakdown — What the Australian Buyer Actually Pays
-              </h3>
-            </div>
-
-            {/* Stage Filter Buttons */}
-            <div className="flex items-center gap-1 p-1 bg-white border border-[#140d0a]/10 shadow-sm flex-wrap">
-              <button
-                onClick={() => setCostStageFilter("all")}
-                className={`px-3 py-1.5 text-xs font-mono uppercase tracking-wider cursor-pointer border-none transition-all ${
-                  costStageFilter === "all" ? "bg-[#ff443a] text-white font-bold shadow-sm" : "bg-transparent text-[#140d0a]/60 hover:text-[#140d0a]"
-                }`}
-              >
-                All 9 Pillars
-              </button>
-              <button
-                onClick={() => setCostStageFilter("india")}
-                className={`px-3 py-1.5 text-xs font-mono uppercase tracking-wider cursor-pointer border-none transition-all ${
-                  costStageFilter === "india" ? "bg-[#ff443a] text-white font-bold shadow-sm" : "bg-transparent text-[#140d0a]/60 hover:text-[#140d0a]"
-                }`}
-              >
-                🇮🇳 Origin (1-2)
-              </button>
-              <button
-                onClick={() => setCostStageFilter("ocean")}
-                className={`px-3 py-1.5 text-xs font-mono uppercase tracking-wider cursor-pointer border-none transition-all ${
-                  costStageFilter === "ocean" ? "bg-[#ff443a] text-white font-bold shadow-sm" : "bg-transparent text-[#140d0a]/60 hover:text-[#140d0a]"
-                }`}
-              >
-                🚢 Ocean (3-4)
-              </button>
-              <button
-                onClick={() => setCostStageFilter("aus")}
-                className={`px-3 py-1.5 text-xs font-mono uppercase tracking-wider cursor-pointer border-none transition-all ${
-                  costStageFilter === "aus" ? "bg-[#ff443a] text-white font-bold shadow-sm" : "bg-transparent text-[#140d0a]/60 hover:text-[#140d0a]"
-                }`}
-              >
-                🇦🇺 Aus Border (5-9)
-              </button>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div className="space-y-10 pt-10 border-t border-[#747474]/15">
+          
+          {/* Header Bar with Total Lead-Time & Mode Switcher */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-[#747474]/15">
             
-            {/* Left: Enhanced 9-Pillar Schedule Cards (7 Cols) */}
-            <div className="lg:col-span-7 space-y-3">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {filteredCostItems.map((item) => (
-                  <div
-                    key={item.id}
-                    className="p-4 bg-white border border-[#140d0a]/10 hover:border-[#ff443a]/50 hover:shadow-md transition-all duration-300 flex flex-col justify-between group"
-                  >
-                    <div>
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="px-2 py-0.5 bg-[#faf6ef] border border-[#140d0a]/10 text-[9px] font-mono font-bold text-[#140d0a]">
-                          Pillar 0{item.id} · {item.stageLabel}
-                        </span>
-                        <span className="text-base">{item.icon}</span>
-                      </div>
-
-                      <h4 className="font-display text-base text-[#140d0a] font-medium group-hover:text-[#ff443a] transition-colors mb-1">
-                        {item.item}
-                      </h4>
-
-                      <p className="text-xs text-[#140d0a]/70 font-light leading-relaxed">
-                        {item.paidByNotes}
-                      </p>
-                    </div>
-
-                    <div className="mt-3 pt-2.5 border-t border-[#140d0a]/10 flex items-center justify-between">
-                      <span className="text-[9px] font-mono uppercase text-[#140d0a]/40">
-                        ESTIMATED RANGE
-                      </span>
-                      <span className="font-mono text-xs font-bold text-[#ff443a]">
-                        {item.costRange}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Duty & Tax Summary Alert */}
-              <div className="p-4 bg-[#faf6ef] border-l-3 border-[#ff443a] text-xs text-[#140d0a]/80 space-y-1">
-                <div className="flex items-center gap-2">
-                  <span className="font-mono font-bold text-[#140d0a] uppercase text-[9.5px]">
-                    🏛️ Australian Free-Trade &amp; Duty Exemption Note
-                  </span>
-                </div>
-                <p className="text-[11.5px] leading-relaxed">
-                  Under the Australia-India Comprehensive Economic Cooperation Agreement (ECTA), <strong>most natural slate, granite, and limestone imports enjoy 0% Customs Duty</strong>. Standard 10% GST is fully claimable by ABN-registered builders and businesses.
-                </p>
-              </div>
-            </div>
-
-            {/* Right: Live Interactive Landed Cost Calculator Studio (5 Cols) */}
-            <div className="lg:col-span-5 p-6 bg-white border border-[#140d0a]/10 shadow-md space-y-5 sticky top-24">
-              
-              {/* Studio Header */}
-              <div className="flex items-center justify-between pb-3 border-b border-[#140d0a]/10">
-                <div>
-                  <span className="text-[9px] font-mono uppercase tracking-wider text-[#ff443a] font-bold block mb-0.5">
-                    LIVE CLIENT CALCULATOR
-                  </span>
-                  <h4 className="font-display text-xl text-[#140d0a] font-medium">
-                    Landed Project Cost Studio
-                  </h4>
-                </div>
-                <span className="px-2 py-1 bg-[#140d0a] text-white text-[9px] font-mono font-bold">
-                  AUD Direct
+            <div className="space-y-2">
+              <div className="flex items-center gap-2.5">
+                <span className="w-3.5 h-3.5 rounded-sm bg-[#8b4513]" />
+                <span className="text-[10px] font-mono uppercase tracking-[0.24em] text-[#8b4513] font-bold">
+                  8-STAGE SUPPLY CHAIN PROTOCOL
                 </span>
               </div>
 
-              {/* 1. Stone Material Choice */}
-              <div>
-                <span className="text-[9.5px] font-mono uppercase text-[#140d0a]/60 block font-bold mb-1.5">
-                  1. Select Stone Material Specimen:
-                </span>
-                <div className="grid grid-cols-3 gap-1.5">
-                  {ESTIMATOR_STONE_OPTIONS.map((st) => {
-                    const isSelected = selectedStoneSpec === st.id;
-                    return (
-                      <button
-                        key={st.id}
-                        onClick={() => setSelectedStoneSpec(st.id)}
-                        className={`p-2 text-left border transition-all cursor-pointer ${
-                          isSelected
-                            ? "bg-[#140d0a] text-white border-[#140d0a] shadow-sm"
-                            : "bg-[#faf6ef] text-[#140d0a]/80 border-[#140d0a]/10 hover:border-[#140d0a]/30"
-                        }`}
-                      >
-                        <span className="text-[10px] font-display font-medium block truncate leading-tight">
-                          {st.name}
-                        </span>
-                        <span className={`text-[8.5px] font-mono block mt-0.5 ${isSelected ? "text-[#ff443a]" : "text-[#140d0a]/50"}`}>
-                          ~${st.avgRateUsd}/sqm
-                        </span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* 2. Destination Port Selector */}
-              <div>
-                <span className="text-[9.5px] font-mono uppercase text-[#140d0a]/60 block font-bold mb-1.5">
-                  2. Destination Australian Port:
-                </span>
-                <div className="grid grid-cols-4 gap-1.5">
-                  {AUSTRALIAN_PORTS.map((pt) => {
-                    const isSelected = selectedPortId === pt.id;
-                    return (
-                      <button
-                        key={pt.id}
-                        onClick={() => setSelectedPortId(pt.id)}
-                        className={`py-1.5 px-1 text-center text-xs font-mono font-bold border transition-all cursor-pointer ${
-                          isSelected
-                            ? "bg-[#ff443a] text-white border-[#ff443a] shadow-sm"
-                            : "bg-[#faf6ef] text-[#140d0a]/75 border-[#140d0a]/10 hover:border-[#140d0a]/30"
-                        }`}
-                      >
-                        {pt.city}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* 3. Interactive Volume Slider */}
-              <div>
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-[9.5px] font-mono uppercase text-[#140d0a]/60 font-bold">
-                    3. Project Area:
-                  </span>
-                  <span className="font-mono font-bold text-sm text-[#ff443a]">
-                    {orderSqmInput} SQM
-                  </span>
-                </div>
-
-                <input
-                  type="range"
-                  min="50"
-                  max="2000"
-                  step="25"
-                  value={orderSqmInput}
-                  onChange={(e) => setOrderSqmInput(parseInt(e.target.value))}
-                  className="w-full h-1.5 bg-[#140d0a]/10 rounded-lg appearance-none cursor-pointer accent-[#ff443a]"
-                />
-
-                {/* Quick Presets */}
-                <div className="flex items-center justify-between gap-1 mt-2">
-                  {[150, 300, 600, 1000].map((preset) => (
-                    <button
-                      key={preset}
-                      onClick={() => setOrderSqmInput(preset)}
-                      className={`px-2 py-0.5 text-[9px] font-mono border cursor-pointer transition-all ${
-                        orderSqmInput === preset
-                          ? "bg-[#140d0a] text-white border-[#140d0a]"
-                          : "bg-[#faf6ef] text-[#140d0a]/70 border-[#140d0a]/10 hover:border-[#140d0a]/30"
-                      }`}
-                    >
-                      {preset}m²
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Calculated Investment Card */}
-              <div className="p-4 bg-[#faf6ef] border border-[#140d0a]/10 space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-[9px] font-mono uppercase text-[#140d0a]/50 font-bold">
-                    ESTIMATED TOTAL LANDED INVESTMENT:
-                  </span>
-                  <span className="px-1.5 py-0.5 bg-white border border-[#140d0a]/10 text-[8.5px] font-mono font-bold text-[#ff443a]">
-                    ~{estimatedContainers20ft} × 20ft FCL
-                  </span>
-                </div>
-
-                <div>
-                  <span className="font-mono text-3xl font-bold text-[#140d0a] tracking-tight block">
-                    AUD ${totalLandedAud.toLocaleString()}
-                  </span>
-                  <span className="text-xs font-mono text-[#ff443a] font-semibold mt-0.5 block">
-                    ≈ AUD ${landedRatePerSqmAud} / m² all-inclusive landed in {selectedPort.city}
-                  </span>
-                </div>
-
-                {/* Cost Breakdown Progress Bar */}
-                <div className="space-y-1.5 pt-2 border-t border-[#140d0a]/10">
-                  <div className="h-2 w-full flex overflow-hidden rounded-xs bg-[#140d0a]/10">
-                    <div style={{ width: `${(materialCostAud / totalLandedAud) * 100}%` }} className="bg-[#140d0a]" title="Stone Material" />
-                    <div style={{ width: `${(freightCostAud / totalLandedAud) * 100}%` }} className="bg-[#ff443a]" title="Sea Freight" />
-                    <div style={{ width: `${(portHandlingAud / totalLandedAud) * 100}%` }} className="bg-[#ff6e8f]" title="Port THC & DAFF" />
-                    <div style={{ width: `${(gstAud / totalLandedAud) * 100}%` }} className="bg-[#d97706]" title="GST (10%)" />
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-1 text-[9.5px] font-mono text-[#140d0a]/70">
-                    <div>▪ Material: ${materialCostAud.toLocaleString()}</div>
-                    <div>▪ Sea Freight: ${freightCostAud.toLocaleString()}</div>
-                    <div>▪ Port Handling: ${portHandlingAud.toLocaleString()}</div>
-                    <div>▪ GST (10%): ${gstAud.toLocaleString()}</div>
-                  </div>
-                </div>
-              </div>
-
-              <button
-                onClick={handleContactScroll}
-                className="w-full py-3 text-[9.5px] uppercase tracking-[0.2em] font-semibold bg-[#ff443a] text-white hover:bg-[#e6352b] transition-all cursor-pointer border-none shadow-sm text-center block"
+              <h3
+                className="font-display font-light text-[#241919] leading-tight"
+                style={{ fontSize: "clamp(30px, 3.8vw, 48px)" }}
               >
-                Get Formal Proforma Invoice for {orderSqmInput}m² →
-              </button>
-
-            </div>
-
-          </div>
-        </div>
-
-        {/* ══════════════════════════════════════════════════════════════
-            PHASE 4: TRADE TERMS EXPLAINED (FOB vs CIF vs DDP)
-        ══════════════════════════════════════════════════════════════ */}
-        <div className="space-y-6">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-4 border-b border-[#140d0a]/10">
-            <div>
-              <span className="text-[9.5px] font-mono uppercase tracking-[0.24em] text-[#ff443a] font-bold block mb-1">
-                INTERNATIONAL INCOTERMS COMPARISON
-              </span>
-              <h3 className="font-display text-2xl sm:text-3xl text-[#140d0a] font-light">
-                4. Trade Terms Explained (FOB, CIF, DDP)
+                The Journey: <span className="text-[#8b4513] italic font-normal">Factory to Buyer&apos;s Site</span>
               </h3>
             </div>
 
-            {/* Incoterm Switcher Pills */}
-            <div className="flex items-center gap-1.5 p-1 bg-white border border-[#140d0a]/10 shadow-sm">
-              {TRADE_TERMS.map((term) => (
+            {/* Total Duration Banner & Desktop View Mode Toggle */}
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+              <div className="flex items-center gap-2 px-4 py-2.5 bg-[#f7f2ea] border border-[#747474]/20 rounded-lg text-xs font-mono shadow-2xs">
+                <Clock className="w-4 h-4 text-[#8b4513]" />
+                <span className="text-[#8b4513] font-bold">TOTAL TIME:</span>
+                <span className="font-bold text-[#241919]">30–45 Days Typical</span>
+              </div>
+
+              {/* Desktop-only view switcher */}
+              <div className="hidden lg:flex items-center gap-1 bg-[#f7f2ea] p-1 rounded-lg border border-[#747474]/20">
                 <button
-                  key={term.code}
-                  onClick={() => setActiveIncoterm(term.code)}
-                  className={`px-3.5 py-1.5 text-xs font-mono font-bold cursor-pointer border-none transition-all ${
-                    activeIncoterm === term.code
-                      ? "bg-[#ff443a] text-white shadow-sm"
-                      : "bg-transparent text-[#140d0a]/70 hover:text-[#140d0a]"
+                  type="button"
+                  onClick={() => setJourneyViewMode("visual")}
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono font-bold rounded-md transition-all cursor-pointer ${
+                    journeyViewMode === "visual"
+                      ? "bg-[#241919] text-[#f7f2ea] shadow-xs"
+                      : "text-[#454545] hover:text-[#241919]"
                   }`}
                 >
-                  {term.code} ({term.title})
+                  <Route className="w-3.5 h-3.5 text-[#d8c3a5]" />
+                  <span>Interactive Flow</span>
                 </button>
-              ))}
-            </div>
-          </div>
 
-          {/* 3 Interactive Incoterm Comparison Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {TRADE_TERMS.map((term) => {
-              const isSelected = activeIncoterm === term.code;
-
-              return (
-                <div
-                  key={term.code}
-                  onClick={() => setActiveIncoterm(term.code)}
-                  className={`p-6 transition-all duration-300 border flex flex-col justify-between cursor-pointer ${
-                    isSelected
-                      ? "bg-white border-[#ff443a] shadow-md ring-1 ring-[#ff443a]"
-                      : "bg-[#faf6ef] border-[#140d0a]/10 hover:border-[#140d0a]/30 hover:bg-white"
+                <button
+                  type="button"
+                  onClick={() => setJourneyViewMode("grid")}
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono font-bold rounded-md transition-all cursor-pointer ${
+                    journeyViewMode === "grid"
+                      ? "bg-[#241919] text-[#f7f2ea] shadow-xs"
+                      : "text-[#454545] hover:text-[#241919]"
                   }`}
                 >
-                  <div>
-                    <div className="flex items-center justify-between mb-2.5">
-                      <span className="px-2 py-0.5 bg-[#140d0a] text-white font-mono font-bold text-xs uppercase">
-                        {term.code}
-                      </span>
-                      <span className="text-[10px] font-mono text-[#ff443a] font-bold">
-                        {isSelected ? "● ACTIVE SELECTION" : "CLICK TO CHOOSE"}
-                      </span>
-                    </div>
-
-                    <h4 className="font-display text-xl text-[#140d0a] font-medium mb-1">
-                      {term.title}
-                    </h4>
-
-                    <p className="text-xs leading-relaxed text-[#140d0a]/75 font-light mb-4">
-                      {term.summary}
-                    </p>
-
-                    <div className="space-y-2 border-t border-[#140d0a]/10 pt-3 text-xs">
-                      <div>
-                        <span className="text-[9px] font-mono uppercase text-[#ff443a] font-bold block mb-1">
-                          ✔ WHAT PAVAN STONES HANDLES:
-                        </span>
-                        <ul className="space-y-1 text-[#140d0a]/80">
-                          {term.pavanHandles.map((h, i) => (
-                            <li key={i} className="flex items-start gap-1.5 text-[11.5px]">
-                              <span className="text-[#ff443a] text-xs">✔</span>
-                              <span>{h}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      <div className="pt-2">
-                        <span className="text-[9px] font-mono uppercase text-[#140d0a]/50 font-bold block mb-1">
-                          👤 BUYER RESPONSIBILITY:
-                        </span>
-                        <ul className="space-y-1 text-[#140d0a]/70">
-                          {term.buyerHandles.map((b, i) => (
-                            <li key={i} className="flex items-start gap-1.5 text-[11.5px]">
-                              <span>•</span>
-                              <span>{b}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="mt-5 pt-3 border-t border-[#140d0a]/10">
-                    <span className="text-[9px] font-mono uppercase text-[#140d0a]/50 block">
-                      BEST SUITED FOR:
-                    </span>
-                    <span className="text-[11.5px] text-[#140d0a] font-medium">
-                      {term.idealFor}
-                    </span>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Selected Incoterm Final Guidance */}
-          <div className="p-6 bg-white border border-[#140d0a]/10 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
-            <div>
-              <span className="text-[9.5px] font-mono uppercase tracking-wider text-[#ff443a] font-bold block mb-0.5">
-                RECOMMENDED TRADE CONTRACT: {currentIncoterm.code} ({currentIncoterm.title})
-              </span>
-              <p className="text-xs text-[#140d0a]/80 font-light max-w-2xl leading-relaxed">
-                {currentIncoterm.summary} We quote all shipments in AUD or USD with guaranteed packing integrity and full export compliance.
-              </p>
+                  <TableIcon className="w-3.5 h-3.5 text-[#d8c3a5]" />
+                  <span>Schedule Matrix</span>
+                </button>
+              </div>
             </div>
 
-            <button
-              onClick={handleContactScroll}
-              className="px-6 py-2.5 text-[9.5px] uppercase tracking-[0.2em] font-semibold bg-[#ff443a] text-white hover:bg-[#e6352b] transition-all cursor-pointer border-none shadow-sm flex-none"
-            >
-              Order under {currentIncoterm.code} Terms →
-            </button>
+          </div>
+
+          {/* ── 1. MOBILE/TABLET VIEW: CONTINUOUS VERTICAL ARCHITECTURAL TIMELINE STORYLINE ── */}
+          <div className="block lg:hidden space-y-6">
+            <div className="relative pl-12 sm:pl-14 space-y-8">
+              
+              {/* Continuous Golden Trackway Line */}
+              <div className="absolute left-4 sm:left-5 top-4 bottom-4 w-[2px] bg-[#d8c3a5] -translate-x-1/2 pointer-events-none" />
+
+              {JOURNEY_STEPS_RICH.map((step) => {
+                const Icon = step.icon;
+
+                return (
+                  <div key={step.num} className="relative group">
+                    
+                    {/* Centered Milestone Pin on the Vertical Track */}
+                    <div className="absolute left-[-32px] sm:left-[-36px] top-2 w-8 h-8 rounded-full bg-[#241919] border-2 border-[#d8c3a5] flex items-center justify-center text-[#f7f2ea] text-xs font-mono font-bold shadow-md z-10 -translate-x-1/2">
+                      {step.num}
+                    </div>
+
+                    {/* Step Card */}
+                    <div className="bg-[#fcfaf7] border border-[#747474]/20 p-5 rounded-xl shadow-xs space-y-3">
+                      
+                      {/* Top Bar: Icon + Stage Title + Duration */}
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="flex items-center gap-2.5">
+                          <div className="w-8 h-8 rounded-lg bg-[#241919] text-[#d8c3a5] flex items-center justify-center flex-none">
+                            <Icon className="w-4 h-4" />
+                          </div>
+                          <div>
+                            <span className="text-[9.5px] font-mono uppercase tracking-wider text-[#8b4513] font-bold block">
+                              STAGE {step.num} · {step.phaseGroup}
+                            </span>
+                            <h4 className="font-sans font-bold text-sm sm:text-base text-[#241919] leading-tight">
+                              {step.title}
+                            </h4>
+                          </div>
+                        </div>
+
+                        <span className="px-2.5 py-1 bg-white border border-[#747474]/20 rounded-md text-[10px] font-mono font-bold text-[#8b4513] whitespace-nowrap shadow-2xs">
+                          ⏱ {step.timeframe}
+                        </span>
+                      </div>
+
+                      {/* Description */}
+                      <p className="text-[13px] leading-relaxed text-[#454545] font-light">
+                        {step.description}
+                      </p>
+
+                      {/* Location & Deliverables Badges */}
+                      <div className="pt-2 border-t border-[#747474]/15 space-y-2">
+                        <div className="text-[11px] font-mono text-[#514a38] flex items-center gap-1.5">
+                          <MapPin className="w-3.5 h-3.5 text-[#8b4513] flex-none" />
+                          <span>{step.location}</span>
+                        </div>
+
+                        <div className="flex flex-wrap gap-1.5">
+                          {step.deliverables.map((deliv) => (
+                            <span
+                              key={deliv}
+                              className="inline-flex items-center gap-1 px-2 py-0.5 bg-white border border-[#747474]/15 rounded text-[10.5px] font-sans text-[#241919]"
+                            >
+                              <CheckCircle2 className="w-3 h-3 text-[#8b4513]" />
+                              <span>{deliv}</span>
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                    </div>
+
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Mobile Bottom Total Lead-Time Summary Banner */}
+            <div className="p-5 bg-[#241919] text-[#f7f2ea] rounded-xl shadow-md space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-mono uppercase tracking-wider text-[#d8c3a5] font-bold">
+                  TOTAL SUPPLY CHAIN LEAD-TIME
+                </span>
+                <span className="font-mono text-xs font-bold text-[#d8c3a5]">
+                  30–45 Days
+                </span>
+              </div>
+
+              <p className="text-xs text-white/80 leading-relaxed font-light">
+                From specification lock to final ground-level offloading at your jobsite with full FOB/CIF documentation.
+              </p>
+
+              <button
+                type="button"
+                onClick={handleContactScroll}
+                className="w-full py-3 text-xs font-mono uppercase tracking-wider font-bold bg-[#d8c3a5] text-[#1e1614] rounded-lg shadow-sm text-center block"
+              >
+                Request Custom Timeline &amp; Quote →
+              </button>
+            </div>
+
+          </div>
+
+          {/* ── 2. DESKTOP VIEW: INTERACTIVE FLOW vs SCHEDULE MATRIX ── */}
+          <div className="hidden lg:block">
+            <AnimatePresence mode="wait">
+              {journeyViewMode === "visual" ? (
+                /* ── VIEW 1: INTERACTIVE ARCHITECTURAL PIPELINE TRACKWAY ── */
+                <motion.div
+                  key="visual-pipeline"
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -12 }}
+                  transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                  className="space-y-8"
+                >
+                  {/* 8-Step Interactive Milestone Strip */}
+                  <div className="grid grid-cols-8 gap-3 relative">
+                    {JOURNEY_STEPS_RICH.map((step, idx) => {
+                      const isSelected = activeStepIndex === idx;
+                      const isPast = activeStepIndex > idx;
+                      const Icon = step.icon;
+
+                      return (
+                        <button
+                          key={step.num}
+                          type="button"
+                          onClick={() => setActiveStepIndex(idx)}
+                          className={`p-3.5 rounded-xl border text-left transition-all duration-300 cursor-pointer flex flex-col justify-between group relative ${
+                            isSelected
+                              ? "bg-[#241919] text-white border-[#241919] shadow-lg ring-2 ring-[#8b4513]"
+                              : isPast
+                              ? "bg-[#fcf8f1] border-[#8b4513]/30 text-[#241919] hover:bg-white"
+                              : "bg-white border-[#747474]/20 text-[#241919] hover:border-[#8b4513]/40"
+                          }`}
+                        >
+                          {/* Top Step Icon & Step Number */}
+                          <div className="flex items-center justify-between mb-2">
+                            <div
+                              className={`w-7 h-7 rounded-lg flex items-center justify-center transition-colors ${
+                                isSelected
+                                  ? "bg-[#8b4513] text-white"
+                                  : "bg-[#f7f2ea] text-[#8b4513] border border-[#747474]/15"
+                              }`}
+                            >
+                              <Icon className="w-3.5 h-3.5" />
+                            </div>
+
+                            <span
+                              className={`text-[10px] font-mono font-bold px-1.5 py-0.5 rounded ${
+                                isSelected
+                                  ? "bg-[#d8c3a5] text-[#241919]"
+                                  : "bg-[#241919]/5 text-[#747474]"
+                              }`}
+                            >
+                              {step.num}
+                            </span>
+                          </div>
+
+                          {/* Title & Timeframe */}
+                          <div>
+                            <h4
+                              className={`font-sans font-bold text-xs leading-tight mb-1 truncate ${
+                                isSelected ? "text-white" : "text-[#241919]"
+                              }`}
+                            >
+                              {step.title}
+                            </h4>
+
+                            <span
+                              className={`text-[10px] font-mono block font-medium ${
+                                isSelected ? "text-[#d8c3a5]" : "text-[#8b4513]"
+                              }`}
+                            >
+                              {step.timeframe}
+                            </span>
+                          </div>
+
+                          {/* Active Arrow Indicator */}
+                          {isSelected && (
+                            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-3.5 h-3.5 bg-[#241919] rotate-45 border-r border-b border-[#8b4513]" />
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Active Step Master Dossier Card */}
+                  <motion.div
+                    key={activeStep.num}
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="p-8 sm:p-10 bg-[#faf6ef] border border-[#747474]/20 rounded-2xl shadow-sm relative overflow-hidden"
+                  >
+                    <div className="grid grid-cols-12 gap-8 items-center">
+                      
+                      {/* Left: Milestone Narrative & Deliverables (8 cols) */}
+                      <div className="col-span-8 space-y-4">
+                        
+                        <div className="flex items-center gap-2.5 flex-wrap">
+                          <span className="px-3 py-1 text-[10px] font-mono font-bold bg-[#8b4513] text-white uppercase rounded-md shadow-2xs">
+                            STAGE {activeStep.num} OF 08 · {activeStep.phaseGroup}
+                          </span>
+
+                          <span className="px-3 py-1 bg-white border border-[#747474]/20 text-[10.5px] font-mono font-bold text-[#241919] rounded-md">
+                            ⏱ Duration: {activeStep.timeframe}
+                          </span>
+
+                          <span className="text-xs font-mono text-[#747474]">
+                            Facility: <strong>{activeStep.location}</strong>
+                          </span>
+                        </div>
+
+                        <h4 className="font-display text-2xl sm:text-3xl text-[#241919] font-medium leading-tight">
+                          {activeStep.title} —{" "}
+                          <span className="text-[#8b4513] italic font-normal">{activeStep.subtitle}</span>
+                        </h4>
+
+                        <p className="text-[14px] sm:text-[15px] text-[#454545] leading-relaxed font-light">
+                          {activeStep.description}
+                        </p>
+
+                        {/* Verified Deliverables Badges */}
+                        <div className="pt-2">
+                          <span className="text-[10px] font-mono uppercase tracking-wider text-[#747474] font-bold block mb-2">
+                            VERIFIED QA OUTPUTS:
+                          </span>
+                          <div className="flex flex-wrap gap-2">
+                            {activeStep.deliverables.map((item) => (
+                              <span
+                                key={item}
+                                className="inline-flex items-center gap-1.5 px-3 py-1 bg-white border border-[#747474]/20 rounded-md text-xs font-sans font-medium text-[#241919]"
+                              >
+                                <CheckCircle2 className="w-3.5 h-3.5 text-[#8b4513]" />
+                                <span>{item}</span>
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+
+                      </div>
+
+                      {/* Right: Stage Control Panel & Quick Next (4 cols) */}
+                      <div className="col-span-4 p-6 bg-white border border-[#747474]/20 rounded-xl flex flex-col justify-between gap-5 shadow-xs">
+                        
+                        <div>
+                          <span className="text-[9.5px] font-mono uppercase tracking-wider text-[#747474] block font-bold mb-1">
+                            PIPELINE CONTROLS
+                          </span>
+                          <span className="text-xs text-[#241919] font-medium block">
+                            Standard Operating Procedure:
+                          </span>
+                          <span className="text-xs font-mono text-[#8b4513] font-bold block mt-0.5">
+                            {activeStep.sopStandard}
+                          </span>
+                        </div>
+
+                        {/* Step Controls */}
+                        <div className="flex items-center gap-2 pt-2 border-t border-[#747474]/15">
+                          <button
+                            type="button"
+                            onClick={() => setActiveStepIndex(Math.max(0, activeStepIndex - 1))}
+                            disabled={activeStepIndex === 0}
+                            className="px-4 py-2.5 text-xs font-mono border border-[#747474]/20 bg-[#faf6ef] rounded-lg disabled:opacity-30 cursor-pointer disabled:cursor-not-allowed text-[#241919] font-bold transition-colors hover:bg-white"
+                          >
+                            ← Prev
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setActiveStepIndex(
+                                Math.min(JOURNEY_STEPS_RICH.length - 1, activeStepIndex + 1)
+                              )
+                            }
+                            disabled={activeStepIndex === JOURNEY_STEPS_RICH.length - 1}
+                            className="px-5 py-2.5 text-xs font-mono bg-[#241919] hover:bg-[#3e352a] text-white rounded-lg disabled:opacity-30 cursor-pointer disabled:cursor-not-allowed flex-1 font-bold text-center transition-colors"
+                          >
+                            Next Stage →
+                          </button>
+                        </div>
+
+                      </div>
+
+                    </div>
+                  </motion.div>
+                </motion.div>
+              ) : (
+                /* ── VIEW 2: EXECUTIVE ARCHITECTURAL SCHEDULE MATRIX ── */
+                <motion.div
+                  key="grid-schedule"
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -12 }}
+                  transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                  className="grid grid-cols-4 gap-4"
+                >
+                  {JOURNEY_STEPS_RICH.map((step) => {
+                    const Icon = step.icon;
+
+                    return (
+                      <div
+                        key={step.num}
+                        className="p-6 bg-white border border-[#747474]/20 hover:border-[#8b4513]/50 rounded-xl shadow-2xs hover:shadow-md transition-all duration-300 flex flex-col justify-between group"
+                      >
+                        <div className="space-y-3">
+                          <div className="flex items-center justify-between">
+                            <div className="w-8 h-8 rounded-lg bg-[#f7f2ea] text-[#8b4513] flex items-center justify-center group-hover:bg-[#241919] group-hover:text-[#f7f2ea] transition-colors">
+                              <Icon className="w-4 h-4" />
+                            </div>
+
+                            <span className="px-2.5 py-1 bg-[#f7f2ea] border border-[#747474]/15 rounded text-[10px] font-mono font-bold text-[#8b4513]">
+                              {step.timeframe}
+                            </span>
+                          </div>
+
+                          <div>
+                            <span className="text-[10px] font-mono uppercase tracking-wider text-[#747474] font-bold block">
+                              STEP {step.num}
+                            </span>
+                            <h4 className="font-sans font-bold text-[15px] text-[#241919] leading-snug group-hover:text-[#8b4513] transition-colors">
+                              {step.title}
+                            </h4>
+                          </div>
+
+                          <p className="text-xs text-[#454545] leading-relaxed font-light">
+                            {step.description}
+                          </p>
+                        </div>
+
+                        <div className="pt-3 mt-3 border-t border-[#747474]/15 text-[11px] font-mono text-[#514a38]">
+                          📍 {step.location}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
         </div>
