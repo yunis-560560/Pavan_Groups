@@ -5,15 +5,19 @@ import { usePathname, useRouter } from "next/navigation";
 import { gsap } from "gsap";
 import { scrollToHash } from "@/components/SmoothScroll";
 
-const links = [
+interface NavLink {
+  label: string;
+  href: string;
+  isContact?: boolean;
+}
+
+const links: NavLink[] = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
   { label: "Products", href: "/products" },
   { label: "Request Sample", href: "/request-sample" },
-  { label: "Projects", href: "/projects" },
   { label: "Gallery", href: "/gallery" },
-  { label: "Blog", href: "/blog" },
-  { label: "Contact", href: "/#contact", isContact: true },
+  { label: "Contact", href: "/contact", isContact: false },
 ];
 
 export default function Navigation() {
@@ -115,6 +119,7 @@ export default function Navigation() {
     }
   };
 
+
   return (
     <>
       <nav
@@ -127,8 +132,8 @@ export default function Navigation() {
           className="absolute inset-0 transition-all duration-400 pointer-events-none"
           style={{
             background: stuck
-              ? "rgba(252, 248, 241, 0.94)"
-              : "rgba(252, 248, 241, 0.75)",
+              ? "rgba(255, 255, 255, 0.96)"
+              : "rgba(255, 255, 255, 0.8)",
             borderBottom: stuck
               ? "1px solid rgba(20, 13, 10, 0.08)"
               : "1px solid rgba(20, 13, 10, 0.04)",
@@ -139,7 +144,7 @@ export default function Navigation() {
 
         {/* Brand */}
         <Link href="/" className="flex flex-col gap-[2px] flex-none relative z-10 group">
-          <span className="font-display font-medium text-[15px] tracking-[0.28em] uppercase text-[#140d0a] transition-colors duration-300 group-hover:text-[#ff443a]">
+          <span className="font-display font-medium text-[15px] tracking-[0.28em] uppercase text-[#140d0a] transition-colors duration-300 group-hover:text-[#c85a32]">
             Pavan Groups
           </span>
           <span className="text-[7.5px] tracking-[0.42em] uppercase text-[#140d0a]/60 transition-colors duration-300">
@@ -151,33 +156,38 @@ export default function Navigation() {
         <ul className="hidden lg:flex items-center gap-8 ml-auto list-none p-0 m-0 relative z-10">
           {links.map((l) => {
             const active = isActive(l.href);
-            const linkColor = active ? "#ff443a" : "rgba(20, 13, 10, 0.75)";
+            const linkColor = active ? "#c85a32" : "rgba(20, 13, 10, 0.75)";
 
-            return (
-              <li key={l.label}>
-                {l.isContact ? (
+            if (l.isContact) {
+              return (
+                <li key={l.label}>
                   <button
                     onClick={handleContactClick}
-                    className="relative text-[10px] font-medium tracking-[0.24em] uppercase transition-colors duration-300 py-2 cursor-pointer bg-transparent border-none p-0 text-[#140d0a]/75 hover:text-[#ff443a]"
+                    className="relative text-[10px] font-bold tracking-[0.24em] uppercase transition-colors duration-300 py-2 cursor-pointer bg-transparent border-none p-0 text-[#140d0a]/75 hover:text-[#c85a32] focus:outline-none"
                   >
                     <span>{l.label}</span>
                   </button>
-                ) : (
-                  <Link
-                    href={l.href}
-                    className="relative text-[10px] font-medium tracking-[0.24em] uppercase transition-colors duration-300 py-2 inline-block hover:text-[#ff443a]"
-                    style={{ color: linkColor }}
-                  >
-                    {l.label}
-                    <span
-                      className="absolute -bottom-0.5 left-0 h-px transition-all duration-400"
-                      style={{
-                        width: active ? "100%" : "0%",
-                        background: "#ff443a",
-                      }}
-                    />
-                  </Link>
-                )}
+                </li>
+              );
+            }
+
+
+            return (
+              <li key={l.label}>
+                <Link
+                  href={l.href}
+                  className="relative text-[10px] font-bold tracking-[0.24em] uppercase transition-colors duration-300 py-2 inline-block hover:text-[#c85a32] focus:outline-none"
+                  style={{ color: linkColor }}
+                >
+                  {l.label}
+                  <span
+                    className="absolute -bottom-0.5 left-0 h-px transition-all duration-400"
+                    style={{
+                      width: active ? "100%" : "0%",
+                      background: "#c85a32",
+                    }}
+                  />
+                </Link>
               </li>
             );
           })}
@@ -186,7 +196,7 @@ export default function Navigation() {
         {/* CTA (Get Quote) */}
         <button
           onClick={handleContactClick}
-          className="hidden md:inline-flex items-center gap-2.5 relative z-10 px-5 py-2.5 text-[10px] font-medium tracking-[0.22em] uppercase transition-all duration-300 cursor-pointer bg-transparent border border-[#ff443a] text-[#ff443a] hover:bg-[#ff443a] hover:text-white shadow-sm"
+          className="hidden md:inline-flex items-center gap-2.5 relative z-10 px-5 py-2.5 text-[10px] font-medium tracking-[0.22em] uppercase transition-all duration-300 cursor-pointer bg-transparent border border-[#c85a32] text-[#c85a32] hover:bg-[#c85a32] hover:text-white shadow-sm focus:outline-none"
         >
           <span>Get Quote</span>
           <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
@@ -230,7 +240,7 @@ export default function Navigation() {
         ref={mobileSheetRef}
         className="fixed inset-0 top-[72px] z-[75] flex flex-col items-center justify-center gap-6 lg:hidden opacity-0 pointer-events-auto"
         style={{
-          background: "linear-gradient(180deg, rgba(252, 248, 241, 0.98) 0%, rgba(242, 236, 226, 0.99) 100%)",
+          background: "rgba(255, 255, 255, 0.98)",
           backdropFilter: "blur(24px)",
           WebkitBackdropFilter: "blur(24px)",
           visibility: "hidden",
@@ -238,11 +248,11 @@ export default function Navigation() {
       >
         <div ref={mobileLinksRef} className="flex flex-col items-center gap-5">
           {links.map((l) => (
-            <div key={l.label}>
+            <div key={l.label} className="text-center">
               {l.isContact ? (
                 <button
                   onClick={handleContactClick}
-                  className="font-display text-3xl md:text-4xl font-light transition-colors duration-300 bg-transparent border-none cursor-pointer text-[#140d0a] hover:text-[#ff443a]"
+                  className="font-display text-3xl md:text-4xl font-light transition-colors duration-300 bg-transparent border-none cursor-pointer text-[#140d0a] hover:text-[#c85a32]"
                 >
                   {l.label}
                 </button>
@@ -252,7 +262,7 @@ export default function Navigation() {
                   onClick={() => setOpen(false)}
                   className="font-display text-3xl md:text-4xl font-light transition-colors duration-300 block"
                   style={{
-                    color: isActive(l.href) ? "#ff443a" : "#140d0a",
+                    color: isActive(l.href) ? "#c85a32" : "#140d0a",
                   }}
                 >
                   {l.label}
@@ -263,7 +273,7 @@ export default function Navigation() {
 
           <button
             onClick={handleContactClick}
-            className="mt-6 px-10 py-3.5 bg-[#ff443a] text-white text-[10px] tracking-[0.24em] uppercase font-medium border-none cursor-pointer hover:bg-[#e83530] transition-colors"
+            className="mt-6 px-10 py-3.5 bg-[#c85a32] text-white text-[10px] tracking-[0.24em] uppercase font-medium border-none cursor-pointer hover:bg-[#a84a27] transition-colors"
           >
             Request Quotation
           </button>

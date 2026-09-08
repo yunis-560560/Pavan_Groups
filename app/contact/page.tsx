@@ -1,321 +1,248 @@
 "use client";
-import { useState } from "react";
-import Link from "next/link";
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { Mail, Phone, MapPin, CheckCircle2 } from "lucide-react";
+import Navigation from "@/components/Navigation";
+import Footer from "@/components/Footer";
 
 export default function ContactPage() {
-  const [formSubmitted, setFormSubmitted] = useState(false);
-  const [activeFaq, setActiveFaq] = useState<number | null>(0);
-  const [selectedStone, setSelectedStone] = useState("Absolute Black Granite");
-  const [selectedFinish, setSelectedFinish] = useState("Polished Mirror");
+  const [formState, setFormState] = useState({
+    name: "",
+    email: "",
+    company: "",
+    phone: "",
+    interest: "Natural Slate",
+    message: "",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const faqs = [
-    {
-      q: "What is your Minimum Order Quantity (MOQ) for international container shipments?",
-      a: "Our standard minimum export volume is one 20ft container (approx. 350–450 m² of 20mm calibrated slabs or 27 metric tonnes of raw/cut stone). For specialized bespoke projects, we support mixed-material consolidated containers with custom crating.",
-    },
-    {
-      q: "Which international maritime ports do you operate from?",
-      a: "North Indian sandstone and limestone dispatches through Mundra Port (Gujarat) and JNPT / Nhava Sheva (Mumbai). South Indian granites ship via Chennai Port and Krishnapatnam. All crates are ISPM-15 fumigated with reinforced sea-worthy steel strapping.",
-    },
-    {
-      q: "Can architectural teams and clients inspect the quarries and processing yard in person?",
-      a: "Absolutely. We host international architectural specifiers, developers, and project managers at our Rajasthan and Karnataka quarry sites. We provide local transit, guided quarry face visits, and slab dry-lay inspections.",
-    },
-    {
-      q: "What is the standard production timeline for cut-to-size architectural orders?",
-      a: "Standard gang saw slab containers dispatch in 2–3 weeks from order confirmation. Complex 5-axis CNC water-jet work, carved cornices, or curved facade panels require 3–5 weeks depending on drawing approval.",
-    },
-  ];
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    // Simulate network request
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setIsSubmitted(true);
+    }, 1200);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setFormState({
+      ...formState,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   return (
-    <div className="bg-[#fcf8f1] text-[#140d0a] overflow-hidden min-h-screen">
-      {/* ── Page Header ── */}
-      <section className="pt-36 pb-20 md:pb-24 px-6 md:px-14 lg:px-20 border-b border-[#140d0a]/10 bg-gradient-to-b from-[#faf5ec] to-[#fcf8f1]">
-        <div className="max-w-5xl">
-          <div className="flex items-center gap-3 mb-6 text-[10px] tracking-[0.28em] uppercase text-[#140d0a]/50">
-            <Link href="/" className="hover:text-[#ff443a] transition-colors">
-              Home
-            </Link>
-            <span>/</span>
-            <span className="text-[#ff443a] font-medium">Contact & Studio Hub</span>
+    <div className="bg-white min-h-screen text-[#3A5B5E] font-sans selection:bg-[#DDBA9B]/30 flex flex-col">
+      <Navigation />
+
+      <main className="flex-grow pt-24 lg:pt-32 pb-0 flex flex-col justify-between w-full relative">
+        
+
+
+        <div className="px-6 md:px-14 lg:px-20 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start flex-grow">
+          
+          {/* Left Side: Abstract Image Block */}
+          <div className="relative w-full h-[500px] lg:h-[700px] flex justify-center items-center lg:items-start lg:justify-start">
+             {/* Wide Background Image */}
+             <motion.div 
+               initial={{ opacity: 0, x: -20 }}
+               animate={{ opacity: 1, x: 0 }}
+               transition={{ duration: 0.8, delay: 0.2 }}
+               className="absolute top-10 left-0 lg:left-10 w-[70%] lg:w-[350px] h-[80%] lg:h-[500px] overflow-hidden shadow-xl"
+             >
+                <img 
+                  src="https://images.unsplash.com/photo-1578683010236-d716f9a3f461?auto=format&fit=crop&w=800&q=80"
+                  alt="Marble Texture Background"
+                  className="w-full h-full object-cover"
+                />
+                {/* Subtle dark tint to make it sit back visually */}
+                <div className="absolute inset-0 bg-black/10" />
+             </motion.div>
+             
+             {/* Main Image */}
+             <motion.img 
+               initial={{ opacity: 0, x: 20 }}
+               animate={{ opacity: 1, x: 0 }}
+               transition={{ duration: 0.8 }}
+               src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=800&q=80" 
+               alt="Pavan Groups Stone" 
+               className="relative z-10 top-0 lg:top-20 right-0 lg:-right-20 w-[75%] lg:w-[400px] h-[85%] lg:h-[550px] object-cover shadow-xl grayscale-[20%]"
+             />
           </div>
 
-          <div className="inline-flex items-center gap-3 px-3.5 py-1.5 bg-[#ff443a]/10 border border-[#ff443a]/25 text-[#ff443a] text-[10px] tracking-[0.24em] uppercase font-medium mb-6">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#ff443a] animate-pulse" />
-            <span>Direct Access to Export Desk</span>
-          </div>
+          {/* Right Side: Form */}
+          <div className="w-full max-w-xl mx-auto lg:mx-0 pt-10">
+             <motion.div
+               initial={{ opacity: 0, y: 20 }}
+               animate={{ opacity: 1, y: 0 }}
+               transition={{ duration: 0.6 }}
+             >
+               <div className="flex items-center gap-4 mb-6">
+                 <span className="text-sm font-medium text-[#859698]">Any question ? Just write us a message!</span>
+                 <div className="h-[2px] w-12 bg-[#3A5B5E]"></div>
+               </div>
 
-          <h1
-            className="font-display font-light leading-[1.05] tracking-[-0.015em] mb-6 text-[#140d0a]"
-            style={{ fontSize: "clamp(40px, 6vw, 84px)" }}
-          >
-            Start Your Architectural
-            <br />
-            <span className="font-display italic text-[#ff443a]">
-              Stone Consultation
-            </span>
-          </h1>
+               <h1 className="text-4xl sm:text-5xl lg:text-[3.5rem] font-serif font-semibold leading-tight mb-4 text-[#3A5B5E]">
+                 We'd love to hear <br /> from you
+               </h1>
+               
+               <p className="text-[#859698] text-sm mb-12">
+                 Fill up the form and we will get back to you within 24 hours.
+               </p>
 
-          <p className="text-[16px] md:text-[18px] leading-[1.8] text-[#140d0a]/75 max-w-3xl">
-            Whether you are an architect preparing material submittals, a developer sourcing at container scale, or an interior designer seeking custom calibrated marble.
-          </p>
-        </div>
-      </section>
+               {!isSubmitted ? (
+                 <form onSubmit={handleSubmit} className="space-y-8">
+                   
+                   <div className="space-y-8">
+                     <input 
+                       type="text" 
+                       name="name"
+                       required
+                       value={formState.name}
+                       onChange={handleInputChange}
+                       className="w-full bg-transparent border-b border-[#859698]/30 pb-2 text-[#3A5B5E] focus:outline-none focus:border-[#3A5B5E] placeholder:text-[#859698] text-sm transition-colors"
+                       placeholder="Name:"
+                     />
+                     
+                     <input 
+                       type="email" 
+                       name="email"
+                       required
+                       value={formState.email}
+                       onChange={handleInputChange}
+                       className="w-full bg-transparent border-b border-[#859698]/30 pb-2 text-[#3A5B5E] focus:outline-none focus:border-[#3A5B5E] placeholder:text-[#859698] text-sm transition-colors"
+                       placeholder="Email:"
+                     />
 
-      {/* ── Main Studio Inquiries & Configurator Grid ── */}
-      <section className="py-20 md:py-28 px-6 md:px-14 lg:px-20 bg-white border-b border-[#140d0a]/10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
-          {/* Left Form (7 cols) */}
-          <div className="lg:col-span-7 p-8 md:p-12 bg-[#faf5ec] border border-[#140d0a]/10 shadow-sm">
-            <span className="text-[9px] tracking-[0.32em] uppercase text-[#ff443a] font-medium mb-2 block">
-              Architectural Quotation Request
-            </span>
-            <h2 className="font-display text-3xl md:text-4xl font-light text-[#140d0a] mb-6">
-              Project Specification Form
-            </h2>
+                     <input 
+                       type="text" 
+                       name="company"
+                       value={formState.company}
+                       onChange={handleInputChange}
+                       className="w-full bg-transparent border-b border-[#859698]/30 pb-2 text-[#3A5B5E] focus:outline-none focus:border-[#3A5B5E] placeholder:text-[#859698] text-sm transition-colors"
+                       placeholder="Company:"
+                     />
 
-            {!formSubmitted ? (
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  setFormSubmitted(true);
-                }}
-                className="space-y-6"
-              >
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-[10px] uppercase tracking-[0.2em] text-[#140d0a]/60 mb-2 font-medium">
-                      Full Name *
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="e.g. Elena Vasquez"
-                      className="w-full px-4 py-3.5 bg-white border border-[#140d0a]/15 text-[#140d0a] text-[13px] focus:outline-none focus:border-[#ff443a]"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[10px] uppercase tracking-[0.2em] text-[#140d0a]/60 mb-2 font-medium">
-                      Organization / Architectural Studio
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Studio / Developer Name"
-                      className="w-full px-4 py-3.5 bg-white border border-[#140d0a]/15 text-[#140d0a] text-[13px] focus:outline-none focus:border-[#ff443a]"
-                    />
-                  </div>
-                </div>
+                     <input 
+                       type="tel" 
+                       name="phone"
+                       value={formState.phone}
+                       onChange={handleInputChange}
+                       className="w-full bg-transparent border-b border-[#859698]/30 pb-2 text-[#3A5B5E] focus:outline-none focus:border-[#3A5B5E] placeholder:text-[#859698] text-sm transition-colors"
+                       placeholder="Phone:"
+                     />
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-[10px] uppercase tracking-[0.2em] text-[#140d0a]/60 mb-2 font-medium">
-                      Work Email *
-                    </label>
-                    <input
-                      type="email"
-                      required
-                      placeholder="name@architecture.com"
-                      className="w-full px-4 py-3.5 bg-white border border-[#140d0a]/15 text-[#140d0a] text-[13px] focus:outline-none focus:border-[#ff443a]"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[10px] uppercase tracking-[0.2em] text-[#140d0a]/60 mb-2 font-medium">
-                      Phone Number *
-                    </label>
-                    <input
-                      type="tel"
-                      required
-                      placeholder="+1 (555) 000-0000"
-                      className="w-full px-4 py-3.5 bg-white border border-[#140d0a]/15 text-[#140d0a] text-[13px] focus:outline-none focus:border-[#ff443a]"
-                    />
-                  </div>
-                </div>
+                     <div className="relative">
+                       <select 
+                         name="interest"
+                         value={formState.interest}
+                         onChange={handleInputChange}
+                         className="w-full bg-transparent border-b border-[#859698]/30 pb-2 text-[#3A5B5E] focus:outline-none focus:border-[#3A5B5E] text-sm appearance-none cursor-pointer transition-colors"
+                       >
+                         <option value="Natural Slate">Natural Slate Collection</option>
+                         <option value="Premium Granite">Premium Granite Slabs</option>
+                         <option value="Limestone">Architectural Limestone</option>
+                         <option value="Custom Project">Custom Architectural Project</option>
+                         <option value="Distributorship">Distributorship Inquiry</option>
+                       </select>
+                       <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pb-2 text-[#859698]">
+                         <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                       </div>
+                     </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-[10px] uppercase tracking-[0.2em] text-[#140d0a]/60 mb-2 font-medium">
-                      Primary Stone Interest
-                    </label>
-                    <select
-                      value={selectedStone}
-                      onChange={(e) => setSelectedStone(e.target.value)}
-                      className="w-full px-4 py-3.5 bg-white border border-[#140d0a]/15 text-[#140d0a] text-[13px] focus:outline-none focus:border-[#ff443a]"
-                    >
-                      <option value="Absolute Black Granite">Absolute Black Granite</option>
-                      <option value="Black Galaxy Granite">Black Galaxy Granite</option>
-                      <option value="Kota Blue Limestone">Kota Blue Limestone</option>
-                      <option value="Jaisalmer Yellow Stone">Jaisalmer Yellow Stone</option>
-                      <option value="Autumn Rustic Slate">Autumn Rustic Slate</option>
-                      <option value="Makrana Pure White Marble">Makrana Pure White Marble</option>
-                      <option value="Dholpur Sandstone">Dholpur Beige Sandstone</option>
-                      <option value="Cobbles & Pavers">Basalt & Granite Cobbles</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-[10px] uppercase tracking-[0.2em] text-[#140d0a]/60 mb-2 font-medium">
-                      Destination Port / City
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="e.g. Hamburg / Singapore / Sydney"
-                      className="w-full px-4 py-3.5 bg-white border border-[#140d0a]/15 text-[#140d0a] text-[13px] focus:outline-none focus:border-[#ff443a]"
-                    />
-                  </div>
-                </div>
+                     <textarea 
+                       name="message"
+                       required
+                       rows={1}
+                       value={formState.message}
+                       onChange={handleInputChange}
+                       className="w-full bg-transparent border-b border-[#859698]/30 pb-2 text-[#3A5B5E] focus:outline-none focus:border-[#3A5B5E] placeholder:text-[#859698] text-sm resize-none transition-colors overflow-hidden h-8"
+                       placeholder="Message:"
+                     />
+                   </div>
 
-                <div>
-                  <label className="block text-[10px] uppercase tracking-[0.2em] text-[#140d0a]/60 mb-2 font-medium">
-                    Estimated Dimensions & Volume
-                  </label>
-                  <textarea
-                    rows={4}
-                    placeholder="Provide estimated square footage, required slab thickness (20mm/30mm), preferred surface finish, or project delivery schedule..."
-                    className="w-full px-4 py-3.5 bg-white border border-[#140d0a]/15 text-[#140d0a] text-[13px] focus:outline-none focus:border-[#ff443a]"
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="w-full py-4 bg-[#ff443a] text-white text-[10px] tracking-[0.26em] uppercase font-medium hover:bg-[#e6352b] transition-colors border-none cursor-pointer shadow-md"
-                >
-                  Submit Inquiry to Export Desk
-                </button>
-              </form>
-            ) : (
-              <div className="text-center py-16 bg-white border border-[#ff443a]/40 p-8 shadow-sm">
-                <span className="text-5xl text-[#ff443a] block mb-4">✓</span>
-                <h3 className="font-display text-3xl font-light text-[#140d0a] mb-3">
-                  Inquiry Received
-                </h3>
-                <p className="text-[14px] text-[#140d0a]/70 max-w-md mx-auto mb-8 leading-relaxed">
-                  Our export desk is analyzing your specifications for {selectedStone}. We will provide full FOB/CIF pricing within 6 business hours.
-                </p>
-                <button
-                  onClick={() => setFormSubmitted(false)}
-                  className="px-6 py-2.5 bg-[#140d0a] text-white text-[10px] tracking-[0.2em] uppercase font-medium cursor-pointer border-none"
-                >
-                  Send Another Inquiry
-                </button>
-              </div>
-            )}
-          </div>
-
-          {/* Right Direct Contacts (5 cols) */}
-          <div className="lg:col-span-5 space-y-8 flex flex-col justify-between">
-            <div className="p-8 bg-[#faf5ec] border border-[#140d0a]/10 shadow-sm space-y-6">
-              <span className="text-[9px] tracking-[0.32em] uppercase text-[#ff443a] font-medium block">
-                Direct Channels
-              </span>
-
-              <div>
-                <span className="text-[10px] uppercase tracking-[0.2em] text-[#140d0a]/50 block mb-1">
-                  Export Desk Hotline
-                </span>
-                <a
-                  href="tel:+919876543210"
-                  className="font-display text-2xl md:text-3xl text-[#140d0a] hover:text-[#ff443a] transition-colors block font-light"
-                >
-                  +91 98765 43210
-                </a>
-              </div>
-
-              <div>
-                <span className="text-[10px] uppercase tracking-[0.2em] text-[#140d0a]/50 block mb-1">
-                  Official Email Address
-                </span>
-                <a
-                  href="mailto:export@pavangroups.com"
-                  className="text-[15px] text-[#140d0a] hover:text-[#ff443a] transition-colors block font-medium"
-                >
-                  export@pavangroups.com
-                </a>
-                <span className="text-[11px] text-[#140d0a]/50">info@pavangroups.com</span>
-              </div>
-
-              <div>
-                <span className="text-[10px] uppercase tracking-[0.2em] text-[#140d0a]/50 block mb-2">
-                  Instant Messaging
-                </span>
-                <a
-                  href="https://wa.me/919876543210"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2.5 px-4 py-2.5 bg-[#25D366]/10 border border-[#25D366]/30 text-[#128C7E] text-[11px] tracking-[0.16em] uppercase font-medium hover:bg-[#25D366]/20 transition-colors"
-                >
-                  <span>Chat on WhatsApp</span>
-                  <span>→</span>
-                </a>
-              </div>
-            </div>
-
-            {/* Operating Facilities */}
-            <div className="p-8 bg-[#faf5ec] border border-[#140d0a]/10 shadow-sm space-y-4">
-              <span className="text-[9px] tracking-[0.32em] uppercase text-[#ff443a] font-medium block">
-                Operating Facilities
-              </span>
-
-              <div>
-                <h4 className="font-display text-lg font-medium text-[#140d0a]">
-                  Corporate Head Office
-                </h4>
-                <p className="text-[12px] text-[#140d0a]/70 leading-relaxed">
-                  Pavan Stones Group Complex, Industrial Stone Zone, Markapur, Andhra Pradesh 523316, India
-                </p>
-              </div>
-
-              <div className="pt-2 border-t border-[#140d0a]/10">
-                <h4 className="font-display text-lg font-medium text-[#140d0a]">
-                  Processing Yard & Export Center
-                </h4>
-                <p className="text-[12px] text-[#140d0a]/70 leading-relaxed">
-                  Export Stone Hub, Markapur Industrial Corridor, Andhra Pradesh, India
-                </p>
-              </div>
-            </div>
+                   <div className="pt-4">
+                     <button 
+                       type="submit"
+                       disabled={isSubmitting}
+                       className="bg-[#F47140] hover:bg-[#d65f32] text-white px-10 py-3 text-sm font-medium transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
+                     >
+                       {isSubmitting ? "Sending..." : "Send message"}
+                     </button>
+                   </div>
+                 </form>
+               ) : (
+                 <motion.div 
+                   initial={{ opacity: 0, scale: 0.95 }}
+                   animate={{ opacity: 1, scale: 1 }}
+                   className="py-16 text-center space-y-6 bg-white shadow-sm p-10"
+                 >
+                   <div className="w-16 h-16 bg-[#F47140]/20 rounded-full flex items-center justify-center mx-auto text-[#F47140]">
+                     <CheckCircle2 className="w-8 h-8" />
+                   </div>
+                   <div className="space-y-2">
+                     <h3 className="text-2xl font-serif text-[#3A5B5E]">Inquiry Received!</h3>
+                     <p className="max-w-sm mx-auto text-[#859698] text-sm leading-relaxed">
+                       Thank you, {formState.name}. We have received your message and will get back to you shortly.
+                     </p>
+                   </div>
+                   <button 
+                     onClick={() => setIsSubmitted(false)}
+                     className="text-[#F47140] text-sm font-medium hover:underline"
+                   >
+                     Send another message
+                   </button>
+                 </motion.div>
+               )}
+             </motion.div>
           </div>
         </div>
-      </section>
 
-      {/* ── Logistics FAQ Accordion ── */}
-      <section className="py-20 md:py-28 px-6 md:px-14 lg:px-20 bg-[#f2ece2] border-t border-[#140d0a]/10">
-        <div className="max-w-3xl mb-14">
-          <span className="text-[9px] tracking-[0.32em] uppercase text-[#ff443a] font-medium mb-3 block">
-            Common Logistics Questions
-          </span>
-          <h2
-            className="font-display font-light text-[#140d0a] leading-[1.1]"
-            style={{ fontSize: "clamp(28px, 3.5vw, 50px)" }}
-          >
-            Everything you need to know about
-            <br />
-            <em className="not-italic text-[#ff443a]">quarry supply & global shipping</em>
-          </h2>
-        </div>
-
-        <div className="space-y-4 max-w-4xl">
-          {faqs.map((faq, i) => (
-            <div
-              key={faq.q}
-              className="border border-[#140d0a]/10 bg-white p-6 cursor-pointer shadow-sm transition-all"
-              onClick={() => setActiveFaq(activeFaq === i ? null : i)}
-            >
-              <div className="flex justify-between items-center">
-                <h4 className="font-display text-xl font-light text-[#140d0a]">
-                  {faq.q}
-                </h4>
-                <span className="text-xl text-[#ff443a] flex-none ml-4 font-light">
-                  {activeFaq === i ? "−" : "+"}
-                </span>
+        {/* Footer info block */}
+        <div className="w-full mt-24">
+           {/* Follow Us */}
+           <div className="px-6 md:px-14 lg:px-20 max-w-7xl mx-auto flex items-center gap-6 mb-8">
+              <div className="h-[1px] w-12 sm:w-24 bg-[#F47140]"></div>
+              <span className="text-[#F47140] text-sm font-medium whitespace-nowrap">follow us</span>
+              <div className="flex gap-4 text-[#F47140]">
+                {/* Facebook */}
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="cursor-pointer hover:text-[#3A5B5E] transition-colors"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                {/* Instagram */}
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="cursor-pointer hover:text-[#3A5B5E] transition-colors"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                {/* Twitter */}
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="cursor-pointer hover:text-[#3A5B5E] transition-colors"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path></svg>
               </div>
-              {activeFaq === i && (
-                <p className="text-[14px] text-[#140d0a]/70 leading-relaxed mt-4 pt-4 border-t border-[#140d0a]/5">
-                  {faq.a}
-                </p>
-              )}
-            </div>
-          ))}
+              <div className="h-[1px] flex-grow bg-[#F47140]"></div>
+           </div>
+
+           {/* Contact Info Bar */}
+           <div className="w-full bg-white py-16 border-t border-gray-100">
+              <div className="px-6 md:px-14 lg:px-20 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-0">
+                 
+                 <div className="flex flex-col gap-2">
+                   <p className="text-sm font-medium text-[#3A5B5E]">Email</p>
+                   <p className="text-sm text-[#859698]">export@pavangroups.com</p>
+                 </div>
+                 
+                 <div className="flex flex-col gap-2 md:border-l md:border-[#3A5B5E]/20 md:pl-10">
+                   <p className="text-sm font-medium text-[#3A5B5E]">Phone</p>
+                   <p className="text-sm text-[#859698]">+91 98765 43210</p>
+                 </div>
+
+                 <div className="flex flex-col gap-2 md:border-l md:border-[#3A5B5E]/20 md:pl-10">
+                   <p className="text-sm font-medium text-[#3A5B5E]">Location</p>
+                   <p className="text-sm text-[#859698]">Markapur, AP, India</p>
+                 </div>
+
+              </div>
+           </div>
         </div>
-      </section>
+      </main>
+
+      <Footer />
     </div>
   );
 }

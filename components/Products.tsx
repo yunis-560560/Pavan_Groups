@@ -28,16 +28,16 @@ const COLLECTIONS: CompanyCollection[] = [
     name: "Pavan Impex",
     slug: "pavan-impex",
     tag: "NATURAL SLATE & 3D CLADDING",
-    tagColor: "#8b4513",
+    tagColor: "#0f172a",
     tagBg: "rgba(139, 69, 19, 0.08)",
-    accentLine: "linear-gradient(90deg, #8b4513 0%, #c86432 60%, transparent 100%)",
+    accentLine: "linear-gradient(90deg, #0f172a 0%, #c86432 60%, transparent 100%)",
     titleColor: "#1e1614",
     cardBg: "#f6eee3",
     description:
       "Bring natural sophistication indoors and outdoors with Pavan Impex, our natural slate stone extracted directly from Markapur reserves. Ideal for timeless elevations, feature walls, and bespoke architectural detailing.",
     buttonBg: "#1e1614",
     buttonTextColor: "#ffffff",
-    buttonBorderColor: "#8b4513",
+    buttonBorderColor: "#0f172a",
     buttonShadow: "rgba(139, 69, 19, 0.25)",
     bgGradient: "linear-gradient(135deg, #1c1f24 0%, #2e343d 50%, #15171a 100%)",
   },
@@ -135,129 +135,105 @@ export default function Products() {
   return (
     <section
       id="products"
-      className="py-16 md:py-24 px-4 sm:px-6 md:px-12 lg:px-16 bg-[#ffffff] text-[#241919] relative overflow-hidden"
+      className="relative z-10 py-16 md:py-24 px-4 sm:px-6 md:px-12 lg:px-16 bg-[#ffffff] text-[#241919] shadow-[0_-25px_50px_-12px_rgba(0,0,0,0.25)] transition-shadow duration-300"
     >
       <div className="max-w-7xl mx-auto space-y-12 md:space-y-16">
         
-        {/* ── UNIFIED PAVAN GROUPS ECOSYSTEM & CAPACITY CARD ── */}
+        {/* ── ABOUT PAVAN GROUPS SPLIT HERO SECTION (IMAGE 1 LAYOUT) ── */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
-          className="bg-white border border-[#747474]/20 p-8 sm:p-12 lg:p-14 shadow-xs space-y-10 will-change-transform"
+          className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center bg-white p-6 sm:p-10 lg:p-12 border border-[#747474]/15 shadow-sm relative overflow-hidden"
         >
-          {/* Top Row: Grand Title & Narrative */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-end pb-8 border-b border-[#747474]/15">
-            <div className="lg:col-span-7 space-y-3">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#514a38] text-white shadow-xs">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#d8c3a5] animate-pulse" />
-                <span className="text-[9.5px] font-mono tracking-[0.24em] uppercase font-bold">
-                  EST. 1994 · THREE OPERATING ENTITIES
-                </span>
-              </div>
+          {/* ── LEFT COLUMN: ARCHITECTURAL FACILITY IMAGE + OVERLAPPING CIRCULAR BADGE ── */}
+          <div className="lg:col-span-6 relative pr-0 sm:pr-8 md:pr-12">
+            {/* Main Architectural Image Container */}
+            <div className="relative aspect-[16/10] sm:aspect-[4/3] w-full overflow-hidden rounded-lg shadow-md border border-[#747474]/15">
+              <img
+                src="/about-hero.jpg"
+                alt="Pavan Groups Natural Stone Processing & Quarry Facility"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+            </div>
 
-              <h2
-                className="font-display font-light leading-[0.96] tracking-[-0.02em]"
-                style={{ fontSize: "clamp(48px, 6.5vw, 92px)" }}
+            {/* Overlapping Rotating Circular Badge (Animated UI/UX Curved Text & Dashed Rings) */}
+            <div className="absolute top-1/2 right-0 sm:-right-4 md:-right-6 -translate-y-1/2 z-20 w-36 h-36 sm:w-44 sm:h-44 md:w-48 md:h-48 flex items-center justify-center pointer-events-none">
+              
+              {/* Outer 360° Rotating Curved Text SVG Ring */}
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
+                className="absolute inset-0 w-full h-full"
               >
-                <span className="text-[#241919]">Pavan</span>{" "}
-                <span className="text-[#8b4513] italic font-normal">Groups</span>
-              </h2>
-            </div>
+                <svg viewBox="0 0 200 200" className="w-full h-full">
+                  <defs>
+                    <path
+                      id="badgeCirclePath"
+                      d="M 100, 100 m -74, 0 a 74,74 0 1,1 148,0 a 74,74 0 1,1 -148,0"
+                    />
+                  </defs>
+                  <text fill="#0f172a" fontSize="7.8" fontWeight="bold" letterSpacing="0.14em">
+                    <textPath href="#badgeCirclePath" startOffset="0%">
+                      • PAVAN GROUPS • STONE EXCELLENCE • EST. 2000 • PAVAN GROUPS • STONE EXCELLENCE • EST. 2000
+                    </textPath>
+                  </text>
+                </svg>
+              </motion.div>
 
-            <div className="lg:col-span-5 flex flex-col justify-end space-y-2.5 pb-1">
-              <p className="text-[14px] sm:text-[14.5px] text-[#454545] font-light leading-relaxed">
-                South India&apos;s premier natural stone conglomerate, extracting and processing finest Slate, Limestone, and Granite from Markapur, Cuddapah, and Chimakurthy reserves for landmark projects worldwide.
-              </p>
-              <div className="flex items-center gap-4 text-[10px] font-mono text-[#514a38] font-semibold uppercase tracking-wider">
-                <span>● 30+ Years Extraction</span>
-                <span>● 40+ Destination Ports</span>
+              {/* Counter-Rotating Dashed Accent Ring */}
+              <motion.div
+                animate={{ rotate: -360 }}
+                transition={{ repeat: Infinity, duration: 28, ease: "linear" }}
+                className="absolute inset-3 sm:inset-3.5 rounded-full border-2 border-dashed border-[#0f172a]/35 pointer-events-none"
+              />
+
+              {/* Inner Core White Glassmorphism Badge */}
+              <div className="relative w-24 h-24 sm:w-30 sm:h-30 md:w-32 md:h-32 bg-white/95 backdrop-blur-md rounded-full shadow-2xl border border-[#0f172a]/25 flex flex-col items-center justify-center text-center p-2 z-10 pointer-events-auto">
+                <span className="font-sans font-extrabold text-2xl sm:text-3xl md:text-4xl text-[#241919] leading-none tracking-tight">
+                  26+
+                </span>
+                <span className="font-mono font-bold text-[9px] sm:text-[10px] text-[#0f172a] tracking-widest uppercase mt-0.5 mb-0.5">
+                  YEARS
+                </span>
+                <span className="text-[7.5px] sm:text-[8.5px] font-sans text-[#747474] font-medium leading-tight max-w-[85px]">
+                  Quarrying &amp; Processing
+                </span>
               </div>
+
             </div>
           </div>
 
-          {/* Bottom Integrated 3-Stat Animated Metric Row */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-2">
-            
-            {/* Stat 1: Annual Production Capacity */}
-            <div className="flex items-start gap-4">
-              <div className="w-13 h-13 rounded-full border border-[#8b6508]/30 flex items-center justify-center flex-none bg-[#fcf8f1] text-[#8b6508] p-2.5 shadow-2xs">
-                <Factory className="w-5 h-5" />
-              </div>
+          {/* ── RIGHT COLUMN: EDITORIAL NARRATIVE + KNOW MORE BUTTON ── */}
+          <div className="lg:col-span-6 space-y-5 sm:space-y-6 pt-4 lg:pt-0">
 
-              <div>
-                <div className="flex items-baseline gap-1.5">
-                  <span className="font-sans font-bold tracking-tight text-3xl sm:text-[38px] text-[#241919] leading-none">
-                    <AnimatedCounter target={150} suffix="k+" />
-                  </span>
-                  <span className="text-[10px] font-mono font-bold text-[#747474] uppercase tracking-wider">
-                    SQM / YR
-                  </span>
-                </div>
-                <span className="text-[10.5px] font-mono tracking-[0.16em] uppercase font-bold text-[#241919] block mt-1.5 mb-1">
-                  ANNUAL CAPACITY
-                </span>
-                <p className="text-[12.5px] text-[#747474] font-light leading-relaxed">
-                  Annual stone extraction &amp; calibration capacity across gangsaw &amp; tile facilities.
-                </p>
-              </div>
-            </div>
+            <h2 className="font-display text-5xl md:text-7xl font-medium leading-none tracking-tight">
+              <span className="text-[#241919]">Pavan</span>{" "}
+              <span className="text-[#747474]">Groups</span>
+            </h2>
 
-            {/* Stat 2: Natural Stone Varieties */}
-            <div className="flex items-start gap-4">
-              <div className="w-13 h-13 rounded-full border border-[#8b6508]/30 flex items-center justify-center flex-none bg-[#fcf8f1] text-[#8b6508] p-2.5 shadow-2xs">
-                <Layers className="w-5 h-5" />
-              </div>
+            <p className="text-[13px] sm:text-[13.5px] leading-[1.65] text-[#555555] font-light">
+              South India&apos;s premier natural stone conglomerate, extracting and processing finest Slate, Limestone, and Granite from Markapur, Cuddapah, and Chimakurthy reserves for landmark projects worldwide. Operating 9 state-of-the-art manufacturing facilities delivering over 150,000 SQM in annual production capacity.
+            </p>
 
-              <div>
-                <div className="flex items-baseline gap-1.5">
-                  <span className="font-sans font-bold tracking-tight text-3xl sm:text-[38px] text-[#241919] leading-none">
-                    <AnimatedCounter target={120} suffix="+" />
-                  </span>
-                  <span className="text-[10px] font-mono font-bold text-[#747474] uppercase tracking-wider">
-                    VARIETIES
-                  </span>
-                </div>
-                <span className="text-[10.5px] font-mono tracking-[0.16em] uppercase font-bold text-[#241919] block mt-1.5 mb-1">
-                  STONE VARIETIES &amp; FINISHES
-                </span>
-                <p className="text-[12.5px] text-[#747474] font-light leading-relaxed">
-                  Authentic Slates, Calcrete Limestones, and Black Galaxy Granites.
-                </p>
-              </div>
-            </div>
-
-            {/* Stat 3: Operating Divisions */}
-            <div className="flex items-start gap-4">
-              <div className="w-13 h-13 rounded-full border border-[#8b6508]/30 flex items-center justify-center flex-none bg-[#fcf8f1] text-[#8b6508] p-2.5 shadow-2xs">
-                <Building2 className="w-5 h-5" />
-              </div>
-
-              <div>
-                <div className="flex items-baseline gap-1.5">
-                  <span className="font-sans font-bold tracking-tight text-3xl sm:text-[38px] text-[#241919] leading-none">
-                    <AnimatedCounter target={3} />
-                  </span>
-                  <span className="text-[10px] font-mono font-bold text-[#747474] uppercase tracking-wider">
-                    DIVISIONS
-                  </span>
-                </div>
-                <span className="text-[10.5px] font-mono tracking-[0.16em] uppercase font-bold text-[#241919] block mt-1.5 mb-1">
-                  OPERATING ENTITIES
-                </span>
-                <p className="text-[12.5px] text-[#747474] font-light leading-relaxed">
-                  Pavan Impex, Sai Balaji Impex, and Pavan Granite managing direct quarries.
-                </p>
-              </div>
+            {/* High Impact Button (Exact Image 1 "KNOW MORE" Style!) */}
+            <div className="pt-2">
+              <Link
+                href="/about"
+                className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-[#241919] hover:bg-[#c85a32] text-white text-xs font-mono uppercase tracking-[0.2em] font-bold transition-all duration-300 shadow-md hover:scale-[1.02] cursor-pointer"
+              >
+                <span>Know More</span>
+                <ArrowRight className="w-4 h-4 text-[#94a3b8]" />
+              </Link>
             </div>
 
           </div>
-
         </motion.div>
 
-        {/* ── 3 COMPANY SHOWCASES ── */}
-        <div className="space-y-8 md:space-y-10">
+        {/* ── 3 COMPANY SHOWCASES (STACKING CARDS SCROLL EFFECT) ── */}
+        <div className="relative space-y-8 md:space-y-12 pb-8">
           {COLLECTIONS.map((col, idx) => {
             const isReversed = idx === 1; // Alternating layout for Sai Balaji Impex
 
@@ -268,8 +244,12 @@ export default function Products() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.12 }}
                 transition={{ delay: idx * 0.12, duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
-                style={{ backgroundColor: col.cardBg }}
-                className="border border-[#747474]/15 shadow-sm overflow-hidden will-change-transform relative"
+                style={{
+                  backgroundColor: col.cardBg,
+                  top: `${84 + idx * 18}px`,
+                  zIndex: (idx + 1) * 10,
+                }}
+                className="sticky border border-[#747474]/20 shadow-xl md:shadow-2xl overflow-hidden will-change-transform relative"
               >
                 <div className="grid grid-cols-1 md:grid-cols-12 items-stretch min-h-[380px] lg:min-h-[440px] relative z-10">
                   
@@ -331,7 +311,7 @@ export default function Products() {
                         className="inline-flex items-center gap-2.5 px-7 py-3.5 text-xs font-mono uppercase tracking-wider font-bold transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] border"
                       >
                         <span>Explore {col.name} Catalog</span>
-                        <ArrowRight className="w-4 h-4 text-[#d8c3a5]" />
+                        <ArrowRight className="w-4 h-4 text-[#94a3b8]" />
                       </Link>
                     </div>
 
@@ -352,10 +332,10 @@ export default function Products() {
                       <span className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white/80 font-mono text-sm font-bold bg-black/20 backdrop-blur-xs">
                         {col.num}
                       </span>
-                      <span className="font-display text-3xl sm:text-4xl lg:text-5xl text-[#f7f2ea] tracking-[0.15em] uppercase font-light drop-shadow-md">
+                      <span className="font-display text-3xl sm:text-4xl lg:text-5xl text-[#f1f5f9] tracking-[0.15em] uppercase font-light drop-shadow-md">
                         {col.name}
                       </span>
-                      <span className="text-[10px] sm:text-[11px] font-mono tracking-[0.3em] uppercase text-[#d8c3a5] font-semibold">
+                      <span className="text-[10px] sm:text-[11px] font-mono tracking-[0.3em] uppercase text-[#94a3b8] font-semibold">
                         DIRECT MINING RESERVE · MARKAPUR, AP
                       </span>
                     </div>

@@ -53,7 +53,7 @@ export default function Projects() {
       {/* Header */}
       <div className="flex items-end justify-between mb-16 flex-wrap gap-6">
         <div>
-          <span className="text-[9px] tracking-[0.32em] uppercase text-[#ff443a] font-medium mb-4 block">
+          <span className="text-[9px] tracking-[0.32em] uppercase text-[#c85a32] font-medium mb-4 block">
             Landmark Projects
           </span>
           <h2
@@ -62,12 +62,12 @@ export default function Projects() {
           >
             Stone that
             <br />
-            <em className="not-italic text-[#ff443a]">defines places</em>
+            <em className="not-italic text-[#c85a32]">defines places</em>
           </h2>
         </div>
         <Link
           href="/projects"
-          className="inline-flex items-center gap-2.5 text-[10px] tracking-[0.22em] uppercase text-[#ff443a] font-medium border-b pb-1 hover:gap-5 transition-all duration-300"
+          className="inline-flex items-center gap-2.5 text-[10px] tracking-[0.22em] uppercase text-[#c85a32] font-medium border-b pb-1 hover:gap-5 transition-all duration-300"
           style={{ borderColor: "rgba(255,68,58,0.3)" }}
         >
           All Projects Archive
@@ -92,7 +92,7 @@ export default function Projects() {
                 {String(i + 1).padStart(2, "0")}
               </span>
               <div className="min-w-0">
-                <h4 className="font-display font-light text-lg md:text-xl text-ink group-hover:text-[#ff443a] transition-colors duration-300 truncate">
+                <h4 className="font-display font-light text-lg md:text-xl text-ink group-hover:text-[#c85a32] transition-colors duration-300 truncate">
                   {p.title}
                 </h4>
                 <p className="text-[11px] text-ink/40 mt-0.5 hidden md:block">{p.material}</p>
@@ -113,7 +113,7 @@ export default function Projects() {
 
             {/* Arrow */}
             <div
-              className="w-8 h-8 flex-none flex items-center justify-center border rounded-full text-ink/20 group-hover:border-[#ff443a] group-hover:text-[#ff443a] transition-all duration-300"
+              className="w-8 h-8 flex-none flex items-center justify-center border rounded-full text-ink/20 group-hover:border-[#c85a32] group-hover:text-[#c85a32] transition-all duration-300"
               style={{ borderColor: "rgba(0,0,0,0.12)" }}
             >
               <svg width="10" height="10" viewBox="0 0 10 10" fill="none">

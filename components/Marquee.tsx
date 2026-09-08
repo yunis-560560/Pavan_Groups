@@ -14,7 +14,7 @@ export default function Marquee() {
         {items.map((item, i) => (
           <span
             key={i}
-            className={`text-[10px] tracking-[0.3em] uppercase flex-none font-medium ${item === "·" ? "text-[#ff443a]/60" : "text-ink/40"}`}
+            className={`text-[10px] tracking-[0.3em] uppercase flex-none font-medium ${item === "·" ? "text-[#c85a32]/60" : "text-ink/40"}`}
           >
             {item}
           </span>

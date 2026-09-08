@@ -53,7 +53,7 @@ const STONE_TYPES: StoneComparisonItem[] = [
     ],
     keyAdvantage: "Unique 3D cleft texture — no two pieces are identical. 100% weatherproof.",
     maintenance: "Very low. Hose down with water or wipe with a damp cloth.",
-    accentColor: "#ff443a",
+    accentColor: "#c85a32",
     badgeBg: "rgba(255, 68, 58, 0.08)",
     gradient: "linear-gradient(135deg, #1f2328 0%, #2e333b 50%, #15171a 100%)",
     imageAlt: "Markapur Natural Slate Texture & Wall Cladding",
@@ -322,7 +322,7 @@ function AdvantageIcon({ id }: { id: string }) {
   switch (id) {
     case "unique":
       return (
-        <svg className="w-5 h-5 text-[#ff443a]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+        <svg className="w-5 h-5 text-[#c85a32]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
           <polygon points="12 2 2 8.5 12 15 22 8.5 12 2" />
           <polyline points="2 15.5 12 22 22 15.5" />
           <polyline points="2 8.5 12 15 22 8.5" />
@@ -330,7 +330,7 @@ function AdvantageIcon({ id }: { id: string }) {
       );
     case "ancient":
       return (
-        <svg className="w-5 h-5 text-[#ff443a]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+        <svg className="w-5 h-5 text-[#c85a32]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
           <circle cx="12" cy="12" r="10" />
           <polyline points="12 6 12 12 16 14" />
           <path d="M12 2v2M12 20v2M20 12h2M2 12h2" />
@@ -338,40 +338,40 @@ function AdvantageIcon({ id }: { id: string }) {
       );
     case "weather":
       return (
-        <svg className="w-5 h-5 text-[#ff443a]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+        <svg className="w-5 h-5 text-[#c85a32]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
           <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
           <circle cx="12" cy="10" r="3" />
         </svg>
       );
     case "value":
       return (
-        <svg className="w-5 h-5 text-[#ff443a]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+        <svg className="w-5 h-5 text-[#c85a32]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
           <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
           <polyline points="16 7 22 7 22 13" />
         </svg>
       );
     case "maintenance":
       return (
-        <svg className="w-5 h-5 text-[#ff443a]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+        <svg className="w-5 h-5 text-[#c85a32]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
           <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
         </svg>
       );
     case "eco":
       return (
-        <svg className="w-5 h-5 text-[#ff443a]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+        <svg className="w-5 h-5 text-[#c85a32]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
           <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" />
           <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
         </svg>
       );
     case "thermal":
       return (
-        <svg className="w-5 h-5 text-[#ff443a]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+        <svg className="w-5 h-5 text-[#c85a32]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
           <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z" />
         </svg>
       );
     default:
       return (
-        <svg className="w-5 h-5 text-[#ff443a]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+        <svg className="w-5 h-5 text-[#c85a32]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
           <circle cx="12" cy="12" r="10" />
         </svg>
       );
@@ -411,19 +411,9 @@ export default function BeginnersGuide() {
   return (
     <section
       id="guide"
-      className="relative py-12 md:py-20 px-4 sm:px-6 md:px-12 lg:px-16 bg-[#fcf8f1] text-[#140d0a] border-t border-[#140d0a]/10 overflow-hidden"
+      className="relative py-12 md:py-20 px-4 sm:px-6 md:px-12 lg:px-16 bg-[#f8fafc] text-[#140d0a] border-t border-[#140d0a]/10 overflow-hidden"
     >
-      {/* Ambient architectural grid */}
-      <div className="absolute inset-0 pointer-events-none opacity-[0.035]">
-        <div
-          className="w-full h-full"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(20,13,10,1) 1px, transparent 1px), linear-gradient(90deg, rgba(20,13,10,1) 1px, transparent 1px)",
-            backgroundSize: "48px 48px",
-          }}
-        />
-      </div>
+      {/* Ambient architectural grid removed as per user request */}
 
       <div className="max-w-7xl mx-auto relative z-10">
         
@@ -431,7 +421,7 @@ export default function BeginnersGuide() {
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-14 gap-6 pb-6 border-b border-[#140d0a]/10">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-white border border-[#140d0a]/10 shadow-sm mb-3">
-              <span className="w-2 h-2 rounded-full bg-[#ff443a] animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-[#c85a32] animate-pulse" />
               <span className="text-[9.5px] font-mono uppercase tracking-[0.24em] font-semibold text-[#140d0a]">
                 SECTION 3 — BEGINNER&apos;S GUIDE TO NATURAL STONE
               </span>
@@ -442,7 +432,7 @@ export default function BeginnersGuide() {
               style={{ fontSize: "clamp(30px, 3.8vw, 52px)" }}
             >
               Beginner&apos;s Guide to{" "}
-              <span className="italic font-normal text-[#ff443a]">Natural Stone.</span>
+              <span className="italic font-normal text-[#c85a32]">Natural Stone.</span>
             </h2>
 
             <p className="text-[13.5px] sm:text-[14.5px] text-[#140d0a]/75 font-light mt-2 max-w-2xl leading-relaxed">
@@ -456,7 +446,7 @@ export default function BeginnersGuide() {
               onClick={() => setActiveTab("compare")}
               className={`px-4 py-2 text-xs font-mono tracking-wider uppercase transition-all cursor-pointer border-none ${
                 activeTab === "compare"
-                  ? "bg-[#ff443a] text-white font-semibold shadow-sm"
+                  ? "bg-[#c85a32] text-white font-semibold shadow-sm"
                   : "bg-transparent text-[#140d0a]/60 hover:text-[#140d0a]"
               }`}
             >
@@ -467,7 +457,7 @@ export default function BeginnersGuide() {
               onClick={() => setActiveTab("standards")}
               className={`px-4 py-2 text-xs font-mono tracking-wider uppercase transition-all cursor-pointer border-none ${
                 activeTab === "standards"
-                  ? "bg-[#ff443a] text-white font-semibold shadow-sm"
+                  ? "bg-[#c85a32] text-white font-semibold shadow-sm"
                   : "bg-transparent text-[#140d0a]/60 hover:text-[#140d0a]"
               }`}
             >
@@ -478,7 +468,7 @@ export default function BeginnersGuide() {
               onClick={() => setActiveTab("why-stone")}
               className={`px-4 py-2 text-xs font-mono tracking-wider uppercase transition-all cursor-pointer border-none ${
                 activeTab === "why-stone"
-                  ? "bg-[#ff443a] text-white font-semibold shadow-sm"
+                  ? "bg-[#c85a32] text-white font-semibold shadow-sm"
                   : "bg-transparent text-[#140d0a]/60 hover:text-[#140d0a]"
               }`}
             >
@@ -516,7 +506,7 @@ export default function BeginnersGuide() {
                         className={`px-2.5 py-1 text-xs transition-all cursor-pointer border ${
                           isMatched
                             ? "bg-[#140d0a] text-white border-[#140d0a] font-medium shadow-sm"
-                            : "bg-[#faf6ef] text-[#140d0a]/75 border-[#140d0a]/10 hover:border-[#140d0a]/30"
+                            : "bg-[#ffffff] text-[#140d0a]/75 border-[#140d0a]/10 hover:border-[#140d0a]/30"
                         }`}
                       >
                         {filter.label}
@@ -540,12 +530,12 @@ export default function BeginnersGuide() {
                       }}
                       className={`text-left transition-all duration-300 relative border cursor-pointer overflow-hidden flex flex-col justify-between group ${
                         isSelected
-                          ? "bg-white border-[#ff443a] shadow-md translate-y-[-2px] ring-1 ring-[#ff443a]"
+                          ? "bg-white border-[#c85a32] shadow-md translate-y-[-2px] ring-1 ring-[#c85a32]"
                           : "bg-white/70 border-[#140d0a]/10 hover:border-[#140d0a]/25 hover:bg-white"
                       }`}
                     >
                       {/* Visual Texture Image Container */}
-                      <div className="h-40 w-full relative overflow-hidden bg-[#faf6ef] border-b border-[#140d0a]/10 flex items-center justify-center">
+                      <div className="h-40 w-full relative overflow-hidden bg-[#ffffff] border-b border-[#140d0a]/10 flex items-center justify-center">
                         <div
                           className="absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-105"
                           style={{ background: stone.gradient }}
@@ -578,7 +568,7 @@ export default function BeginnersGuide() {
                           <h3 className="font-display text-2xl text-[#140d0a] font-medium">
                             {stone.name}
                           </h3>
-                          <span className="text-[10px] text-[#ff443a] font-mono uppercase tracking-wider font-bold">
+                          <span className="text-[10px] text-[#c85a32] font-mono uppercase tracking-wider font-bold">
                             {isSelected ? "● ACTIVE" : "INSPECT"}
                           </span>
                         </div>
@@ -595,7 +585,7 @@ export default function BeginnersGuide() {
 
                         <div className="flex items-center justify-between text-[9.5px] font-mono text-[#140d0a]/50">
                           <span>Lifespan: 50+ Yrs</span>
-                          <span className="text-[#ff443a] font-semibold">Tap to view specs →</span>
+                          <span className="text-[#c85a32] font-semibold">Tap to view specs →</span>
                         </div>
                       </div>
                     </button>
@@ -632,7 +622,7 @@ export default function BeginnersGuide() {
                     </div>
 
                     {/* Featured Stone Visual Texture Banner Frame */}
-                    <div className="w-full h-36 relative overflow-hidden bg-[#faf6ef] border border-[#140d0a]/10 flex items-end p-4">
+                    <div className="w-full h-36 relative overflow-hidden bg-[#ffffff] border border-[#140d0a]/10 flex items-end p-4">
                       <div className="absolute inset-0" style={{ background: selectedStone.gradient }} />
                       <div className="absolute inset-0 opacity-25 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:12px_12px]" />
                       <div className="relative z-10 flex items-center justify-between w-full">
@@ -645,7 +635,7 @@ export default function BeginnersGuide() {
                       </div>
                     </div>
 
-                    <div className="p-4 bg-[#faf6ef] border-l-2 border-[#140d0a]/20">
+                    <div className="p-4 bg-[#ffffff] border-l-2 border-[#140d0a]/20">
                       <span className="text-[9.5px] font-mono uppercase tracking-wider text-[#140d0a]/50 block mb-1 font-semibold">
                         WHAT IT IS:
                       </span>
@@ -671,7 +661,7 @@ export default function BeginnersGuide() {
                     </div>
 
                     {/* Interactive Engineering Benchmarks */}
-                    <div className="p-4 bg-[#faf6ef] border border-[#140d0a]/10 space-y-3">
+                    <div className="p-4 bg-[#ffffff] border border-[#140d0a]/10 space-y-3">
                       <span className="text-[9px] font-mono uppercase tracking-wider text-[#140d0a]/60 font-bold block">
                         ARCHITECTURAL BENCHMARKS:
                       </span>
@@ -729,14 +719,14 @@ export default function BeginnersGuide() {
                   <div className="lg:col-span-7 space-y-5">
                     
                     {/* Best Uses List */}
-                    <div className="p-5 bg-[#faf6ef] border border-[#140d0a]/10">
-                      <span className="text-[10px] font-mono uppercase tracking-wider text-[#ff443a] block mb-3 font-bold">
+                    <div className="p-5 bg-[#ffffff] border border-[#140d0a]/10">
+                      <span className="text-[10px] font-mono uppercase tracking-wider text-[#c85a32] block mb-3 font-bold">
                         RECOMMENDED BEST USES:
                       </span>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         {selectedStone.bestUses.map((use, idx) => (
                           <div key={idx} className="flex items-start gap-2 text-xs text-[#140d0a]/85">
-                            <span className="text-[#ff443a] text-sm leading-none mt-0.5">✔</span>
+                            <span className="text-[#c85a32] text-sm leading-none mt-0.5">✔</span>
                             <span>{use}</span>
                           </div>
                         ))}
@@ -744,7 +734,7 @@ export default function BeginnersGuide() {
                     </div>
 
                     {/* Maintenance Protocol */}
-                    <div className="p-5 bg-[#faf6ef] border border-[#140d0a]/10">
+                    <div className="p-5 bg-[#ffffff] border border-[#140d0a]/10">
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-[10px] font-mono uppercase tracking-wider text-[#140d0a]/60 font-semibold">
                           MAINTENANCE:
@@ -759,18 +749,18 @@ export default function BeginnersGuide() {
                     </div>
 
                     {/* Interactive "Click to Know More" Geological Dossier Card */}
-                    <div className="p-5 bg-white border border-[#ff443a]/40 shadow-sm relative overflow-hidden">
+                    <div className="p-5 bg-white border border-[#c85a32]/40 shadow-sm relative overflow-hidden">
                       <div className="flex items-center justify-between mb-2 flex-wrap gap-2">
                         <div className="flex items-center gap-2">
-                          <span className="w-2 h-2 rounded-full bg-[#ff443a] animate-ping" />
-                          <span className="text-[10px] font-mono uppercase tracking-wider text-[#ff443a] font-bold">
+                          <span className="w-2 h-2 rounded-full bg-[#c85a32] animate-ping" />
+                          <span className="text-[10px] font-mono uppercase tracking-wider text-[#c85a32] font-bold">
                             GEOLOGICAL DEEP-DIVE & CLIMATE REPORT
                           </span>
                         </div>
 
                         <button
                           onClick={() => setShowFullDossierModal(!showFullDossierModal)}
-                          className="text-xs text-[#ff443a] font-bold hover:underline cursor-pointer border-none bg-transparent"
+                          className="text-xs text-[#c85a32] font-bold hover:underline cursor-pointer border-none bg-transparent"
                         >
                           {showFullDossierModal ? "▲ Collapse Report" : "▼ Click to Know More"}
                         </button>
@@ -791,7 +781,7 @@ export default function BeginnersGuide() {
                             className="space-y-3 pt-3 border-t border-[#140d0a]/10"
                           >
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                              <div className="p-3 bg-[#faf6ef] border border-[#140d0a]/10">
+                              <div className="p-3 bg-[#ffffff] border border-[#140d0a]/10">
                                 <span className="text-[9px] font-mono uppercase text-[#140d0a]/50 block font-bold mb-0.5">
                                   AUSTRALIAN CLIMATE REPORT:
                                 </span>
@@ -800,7 +790,7 @@ export default function BeginnersGuide() {
                                 </p>
                               </div>
 
-                              <div className="p-3 bg-[#faf6ef] border border-[#140d0a]/10">
+                              <div className="p-3 bg-[#ffffff] border border-[#140d0a]/10">
                                 <span className="text-[9px] font-mono uppercase text-[#140d0a]/50 block font-bold mb-0.5">
                                   PRO INSTALLATION TIP:
                                 </span>
@@ -810,11 +800,11 @@ export default function BeginnersGuide() {
                               </div>
                             </div>
 
-                            <div className="p-3 bg-[#faf6ef] border border-[#140d0a]/10 flex items-center justify-between flex-wrap gap-2 text-xs">
+                            <div className="p-3 bg-[#ffffff] border border-[#140d0a]/10 flex items-center justify-between flex-wrap gap-2 text-xs">
                               <span className="text-[#140d0a]/70">
                                 <strong>Geological Age: </strong> {selectedStone.dossier.geologicalAge}
                               </span>
-                              <span className="px-2 py-0.5 bg-white border border-[#140d0a]/10 text-[#ff443a] font-mono font-bold">
+                              <span className="px-2 py-0.5 bg-white border border-[#140d0a]/10 text-[#c85a32] font-mono font-bold">
                                 {selectedStone.dossier.durabilityRating}
                               </span>
                             </div>
@@ -833,12 +823,12 @@ export default function BeginnersGuide() {
                           transition={{ duration: 0.35, ease: "easeInOut" }}
                           className="overflow-hidden"
                         >
-                          <div className="p-4 bg-[#faf6ef] border border-[#140d0a]/10 relative group">
+                          <div className="p-4 bg-[#ffffff] border border-[#140d0a]/10 relative group">
                             <div className="flex items-center justify-between mb-2">
                               <span className="text-[9px] font-mono uppercase tracking-wider text-[#140d0a]/60 font-bold">
                                 REAL-WORLD ARCHITECTURAL INSTALLATION:
                               </span>
-                              <span className="text-[9px] font-mono text-[#ff443a] font-semibold">
+                              <span className="text-[9px] font-mono text-[#c85a32] font-semibold">
                                 {selectedStone.name} Specimen View
                               </span>
                             </div>
@@ -877,7 +867,7 @@ export default function BeginnersGuide() {
 
                       <button
                         onClick={handleContactScroll}
-                        className="px-4 py-2 text-[9px] uppercase tracking-[0.2em] font-semibold bg-[#ff443a] text-white hover:bg-[#e6352b] transition-all cursor-pointer border-none shadow-sm"
+                        className="px-4 py-2 text-[9px] uppercase tracking-[0.2em] font-semibold bg-[#c85a32] text-white hover:bg-[#a84a27] transition-all cursor-pointer border-none shadow-sm"
                       >
                         Request Sample Kit →
                       </button>
@@ -906,7 +896,7 @@ export default function BeginnersGuide() {
                 <div className="mb-8 pb-6 border-b border-[#140d0a]/10">
                   <div className="flex items-center justify-between flex-wrap gap-3 mb-4">
                     <div>
-                      <span className="text-[9.5px] font-mono uppercase tracking-[0.24em] text-[#ff443a] font-bold block mb-1">
+                      <span className="text-[9.5px] font-mono uppercase tracking-[0.24em] text-[#c85a32] font-bold block mb-1">
                         INTERACTIVE CALIPER STUDIO (CLICK A GAUGE)
                       </span>
                       <h3 className="font-display text-2xl sm:text-3xl text-[#140d0a] font-light">
@@ -915,14 +905,14 @@ export default function BeginnersGuide() {
                     </div>
 
                     {/* Thickness Selector Pills */}
-                    <div className="flex items-center gap-1.5 p-1 bg-[#faf6ef] border border-[#140d0a]/10">
+                    <div className="flex items-center gap-1.5 p-1 bg-[#ffffff] border border-[#140d0a]/10">
                       {THICKNESS_OPTIONS.map((opt) => (
                         <button
                           key={opt.mm}
                           onClick={() => setSelectedThicknessMm(opt.mm)}
                           className={`px-3.5 py-2 text-xs font-mono font-bold transition-all cursor-pointer border-none ${
                             selectedThicknessMm === opt.mm
-                              ? "bg-[#ff443a] text-white shadow-sm ring-2 ring-[#ff443a]/30"
+                              ? "bg-[#c85a32] text-white shadow-sm ring-2 ring-[#c85a32]/30"
                               : "bg-transparent text-[#140d0a]/70 hover:text-[#140d0a]"
                           }`}
                         >
@@ -933,7 +923,7 @@ export default function BeginnersGuide() {
                   </div>
 
                   {/* Live Interactive Thickness Profile Display */}
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center p-6 bg-[#faf6ef] border border-[#140d0a]/10">
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center p-6 bg-[#ffffff] border border-[#140d0a]/10">
                     
                     {/* Visual Caliper Cross-Section (4 Cols) */}
                     <div className="lg:col-span-4 flex flex-col items-center justify-center p-6 bg-white border border-[#140d0a]/10 shadow-sm">
@@ -946,7 +936,7 @@ export default function BeginnersGuide() {
                         <motion.div
                           animate={{ height: activeThickness.heightPx }}
                           transition={{ duration: 0.35, type: "spring", stiffness: 220, damping: 22 }}
-                          className="w-full bg-gradient-to-r from-[#140d0a] via-[#3a2720] to-[#140d0a] border border-[#ff443a] shadow-inner relative flex items-center justify-center"
+                          className="w-full bg-gradient-to-r from-[#140d0a] via-[#3a2720] to-[#140d0a] border border-[#c85a32] shadow-inner relative flex items-center justify-center"
                         >
                           <span className="text-[10.5px] font-mono font-bold text-white tracking-widest uppercase">
                             {activeThickness.mm}mm Solid Stone Bed
@@ -954,7 +944,7 @@ export default function BeginnersGuide() {
                         </motion.div>
                       </div>
 
-                      <span className="text-xs font-mono text-[#ff443a] font-bold mt-2">
+                      <span className="text-xs font-mono text-[#c85a32] font-bold mt-2">
                         {activeThickness.label}
                       </span>
                     </div>
@@ -973,8 +963,8 @@ export default function BeginnersGuide() {
                         {activeThickness.structuralNote}
                       </p>
 
-                      <div className="p-3 bg-white border-l-3 border-[#ff443a] text-xs">
-                        <span className="text-[9px] font-mono uppercase text-[#ff443a] font-bold block mb-0.5">
+                      <div className="p-3 bg-white border-l-3 border-[#c85a32] text-xs">
+                        <span className="text-[9px] font-mono uppercase text-[#c85a32] font-bold block mb-0.5">
                           REAL-WORLD PRACTICAL ANALOGY:
                         </span>
                         <p className="text-[#140d0a]/85 font-normal">
@@ -990,7 +980,7 @@ export default function BeginnersGuide() {
                 <div>
                   <div className="flex items-center justify-between mb-4">
                     <div>
-                      <span className="text-[9.5px] font-mono uppercase tracking-[0.24em] text-[#ff443a] font-bold block mb-1">
+                      <span className="text-[9.5px] font-mono uppercase tracking-[0.24em] text-[#c85a32] font-bold block mb-1">
                         INTERACTIVE SIZE FORMAT SELECTOR
                       </span>
                       <h3 className="font-display text-xl sm:text-2xl text-[#140d0a] font-light">
@@ -1008,17 +998,16 @@ export default function BeginnersGuide() {
                           onClick={() => setSelectedSizeId(sz.id)}
                           className={`text-left transition-all border cursor-pointer overflow-hidden flex flex-col justify-between group ${
                             isSelected
-                              ? "bg-white border-[#ff443a] shadow-md ring-1 ring-[#ff443a]"
-                              : "bg-[#faf6ef] border-[#140d0a]/10 hover:border-[#140d0a]/30 hover:bg-white"
+                              ? "bg-white border-[#c85a32] shadow-md ring-1 ring-[#c85a32]"
+                              : "bg-[#ffffff] border-[#140d0a]/10 hover:border-[#140d0a]/30 hover:bg-white"
                           }`}
                         >
                           {/* Visual Format Ratio Container */}
                           <div className="h-28 w-full bg-[#f2ece2] border-b border-[#140d0a]/10 flex items-center justify-center p-3 relative overflow-hidden">
-                            <div className="absolute inset-0 opacity-30 bg-[linear-gradient(rgba(20,13,10,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(20,13,10,0.1)_1px,transparent_1px)] [background-size:16px_16px]" />
 
                             <div
                               className={`border-2 ${
-                                isSelected ? "border-[#ff443a] bg-[#ff443a]/10" : "border-[#140d0a]/40 bg-white/60"
+                                isSelected ? "border-[#c85a32] bg-[#c85a32]/10" : "border-[#140d0a]/40 bg-white/60"
                               } transition-all duration-300 flex items-center justify-center p-2 text-center max-w-[85%] max-h-[85%] ${
                                 sz.aspectClass
                               }`}
@@ -1047,7 +1036,7 @@ export default function BeginnersGuide() {
                               {sz.use}
                             </p>
 
-                            <div className="pt-2 border-t border-[#140d0a]/10 text-[10.5px] text-[#ff443a] font-medium">
+                            <div className="pt-2 border-t border-[#140d0a]/10 text-[10.5px] text-[#c85a32] font-medium">
                               ★ {sz.pros}
                             </div>
                           </div>
@@ -1074,14 +1063,14 @@ export default function BeginnersGuide() {
               <div className="bg-white border border-[#140d0a]/10 p-6 sm:p-8 shadow-sm">
                 <div className="mb-6 pb-4 border-b border-[#140d0a]/10 flex items-center justify-between flex-wrap gap-3">
                   <div>
-                    <span className="text-[9.5px] font-mono uppercase tracking-[0.24em] text-[#ff443a] font-bold block mb-1">
+                    <span className="text-[9.5px] font-mono uppercase tracking-[0.24em] text-[#c85a32] font-bold block mb-1">
                       MATERIAL COMPARISON BENCHMARK
                     </span>
                     <h3 className="font-display text-2xl sm:text-3xl text-[#140d0a] font-light">
                       Why Natural Stone — Not Ceramic Tiles?
                     </h3>
                   </div>
-                  <span className="text-xs font-mono text-[#ff443a] uppercase font-bold">
+                  <span className="text-xs font-mono text-[#c85a32] uppercase font-bold">
                     Click Any Card to Know More Details
                   </span>
                 </div>
@@ -1096,13 +1085,13 @@ export default function BeginnersGuide() {
                         onClick={() => setExpandedAdvantageId(isExpanded ? null : item.id)}
                         className={`transition-all duration-300 group flex flex-col justify-between cursor-pointer border overflow-hidden ${
                           isExpanded
-                            ? "bg-white border-[#ff443a] shadow-md ring-1 ring-[#ff443a]"
-                            : "bg-[#faf6ef] border-[#140d0a]/10 hover:border-[#ff443a]/50 hover:bg-white"
+                            ? "bg-white border-[#c85a32] shadow-md ring-1 ring-[#c85a32]"
+                            : "bg-[#ffffff] border-[#140d0a]/10 hover:border-[#c85a32]/50 hover:bg-white"
                         }`}
                       >
                         {/* Visual Image Header Container */}
                         <div className="h-28 w-full bg-[#f2ece2] relative overflow-hidden border-b border-[#140d0a]/10 flex items-center justify-center">
-                          <div className="absolute inset-0 bg-gradient-to-tr from-[#140d0a]/15 via-transparent to-[#ff443a]/10" />
+                          <div className="absolute inset-0 bg-gradient-to-tr from-[#140d0a]/15 via-transparent to-[#c85a32]/10" />
                           <div className="absolute inset-0 opacity-20 bg-[radial-gradient(#140d0a_1px,transparent_1px)] [background-size:10px_10px]" />
                           
                           <div className="relative z-10 flex flex-col items-center gap-1">
@@ -1117,11 +1106,11 @@ export default function BeginnersGuide() {
 
                         <div className="p-5">
                           <div className="flex items-center justify-between gap-3 mb-2.5">
-                            <h4 className="font-display text-base sm:text-lg text-[#140d0a] font-medium group-hover:text-[#ff443a] transition-colors">
+                            <h4 className="font-display text-base sm:text-lg text-[#140d0a] font-medium group-hover:text-[#c85a32] transition-colors">
                               {item.advantage}
                             </h4>
 
-                            <span className="text-xs font-mono font-bold text-[#ff443a]">
+                            <span className="text-xs font-mono font-bold text-[#c85a32]">
                               {isExpanded ? "−" : "+"}
                             </span>
                           </div>
@@ -1135,7 +1124,7 @@ export default function BeginnersGuide() {
 
                           {/* Synthetic Ceramic Comparison Callout */}
                           <div className="p-2.5 bg-white border border-[#140d0a]/10 text-xs mb-3">
-                            <span className="text-[9px] font-mono uppercase text-[#ff443a] font-bold block mb-0.5">
+                            <span className="text-[9px] font-mono uppercase text-[#c85a32] font-bold block mb-0.5">
                               VS. CERAMIC TILES:
                             </span>
                             <span className="text-[#140d0a]/70 text-[11.5px]">
@@ -1151,7 +1140,7 @@ export default function BeginnersGuide() {
                                 animate={{ opacity: 1, height: "auto" }}
                                 exit={{ opacity: 0, height: 0 }}
                                 transition={{ duration: 0.25 }}
-                                className="p-3 bg-[#faf6ef] border-l-2 border-[#ff443a] text-xs text-[#140d0a]/85 leading-relaxed"
+                                className="p-3 bg-[#ffffff] border-l-2 border-[#c85a32] text-xs text-[#140d0a]/85 leading-relaxed"
                               >
                                 <span className="text-[9px] font-mono uppercase text-[#140d0a]/60 block font-bold mb-1">
                                   ARCHITECTURAL INSIGHT:
@@ -1164,7 +1153,7 @@ export default function BeginnersGuide() {
 
                         <div className="px-5 pb-4 pt-2 border-t border-[#140d0a]/10 flex items-center justify-between text-[9px] font-mono text-[#140d0a]/45">
                           <span>PILLAR 0{idx + 1}</span>
-                          <span className="text-[#ff443a] font-semibold">
+                          <span className="text-[#c85a32] font-semibold">
                             {isExpanded ? "Click to collapse" : "Click to know more"}
                           </span>
                         </div>
@@ -1174,9 +1163,9 @@ export default function BeginnersGuide() {
                 </div>
 
                 {/* Lifetime Value ROI Summary Banner */}
-                <div className="mt-8 p-6 bg-[#faf6ef] border-l-4 border-[#ff443a] flex flex-col md:flex-row items-center justify-between gap-4">
+                <div className="mt-8 p-6 bg-[#ffffff] border-l-4 border-[#c85a32] flex flex-col md:flex-row items-center justify-between gap-4">
                   <div>
-                    <span className="text-[9.5px] font-mono uppercase tracking-wider text-[#ff443a] font-bold block mb-0.5">
+                    <span className="text-[9.5px] font-mono uppercase tracking-wider text-[#c85a32] font-bold block mb-0.5">
                       30-YEAR ARCHITECTURAL APPRAISAL
                     </span>
                     <h4 className="font-display text-lg text-[#140d0a] font-medium">
@@ -1189,7 +1178,7 @@ export default function BeginnersGuide() {
 
                   <button
                     onClick={handleContactScroll}
-                    className="px-5 py-2.5 text-[9.5px] uppercase tracking-[0.2em] font-semibold bg-[#140d0a] text-white hover:bg-[#ff443a] transition-all cursor-pointer border-none shadow-sm flex-none"
+                    className="px-5 py-2.5 text-[9.5px] uppercase tracking-[0.2em] font-semibold bg-[#140d0a] text-white hover:bg-[#c85a32] transition-all cursor-pointer border-none shadow-sm flex-none"
                   >
                     Consult Stone Specialist →
                   </button>

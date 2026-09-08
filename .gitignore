@@ -36,3 +36,12 @@ next-env.d.ts
 
 # Mac OS X hidden files
 ._*
+.DS_Store
+**/.DS_Store
+
+# scratch scripts
+check_divs.js
+refactor_pages.py
+rewrite_matrix.py
+test_images.js
+old_preloader.txt

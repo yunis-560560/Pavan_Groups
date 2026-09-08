@@ -64,10 +64,10 @@ const FAQS_DATA: FAQItem[] = [
     topic: "Worldwide Export Support",
     question: "Which international markets and sea ports do you export to?",
     answer:
-      "Over the past 30+ years, Pavan Groups has dispatched containerized shipments to 40+ major destination sea ports across the United States, United Kingdom, Europe, Australia, New Zealand, and the Middle East. Our dedicated logistics desk manages vessel bookings, bonded storage, and container stuffing.",
+      "Over the past 26+ years, Pavan Groups has dispatched containerized shipments to 40+ major destination sea ports across the United States, United Kingdom, Europe, Australia, New Zealand, and the Middle East. Our dedicated logistics desk manages vessel bookings, bonded storage, and container stuffing.",
     highlights: [
       "40+ Global Sea Ports",
-      "30+ Years Export Experience",
+      "26+ Years Export Experience",
       "Dedicated Container Logistics",
     ],
   },
@@ -156,18 +156,18 @@ export default function WhyChooseUs() {
   return (
     <section
       id="why-choose-us"
-      className="py-12 md:py-20 px-4 sm:px-6 md:px-12 lg:px-16 bg-[#f7f2ea] border-t border-[#747474]/15"
+      className="relative z-30 py-12 md:py-20 px-4 sm:px-6 md:px-12 lg:px-16 bg-white text-[#241919] border-t border-[#747474]/15 shadow-[0_30px_70px_-15px_rgba(0,0,0,0.18)]"
     >
       <div className="max-w-7xl mx-auto">
-        
+
         {/* ── SECTION HEADER & TWO-COLUMN ARCHITECTURE ── */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
-          
+
           {/* ── LEFT COLUMN: STICKY BRAND OVERVIEW & TRUST CARD ── */}
           <div className="lg:col-span-4 lg:sticky lg:top-28 space-y-6">
-            
+
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#514a38] text-white shadow-xs">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#d8c3a5] animate-pulse" />
+              <span className="w-1.5 h-1.5 rounded-full bg-[#94a3b8] animate-pulse" />
               <span className="text-[9.5px] font-mono tracking-[0.24em] uppercase font-bold">
                 FAQS & TRUST ASSURANCE
               </span>
@@ -178,7 +178,7 @@ export default function WhyChooseUs() {
               style={{ fontSize: "clamp(34px, 4.2vw, 54px)" }}
             >
               <span className="text-[#241919]">Why Buy From</span>{" "}
-              <span className="text-[#8b4513] italic font-normal">Pavan Groups?</span>
+              <span className="text-[#0f172a] italic font-normal">Pavan Groups?</span>
             </h2>
 
             <p className="text-[14px] sm:text-[15px] text-[#454545] font-light leading-relaxed">
@@ -186,37 +186,45 @@ export default function WhyChooseUs() {
             </p>
 
             {/* Trust Badges Card */}
-            <div className="bg-white border border-[#747474]/20 p-6 rounded-md shadow-xs space-y-3">
-              <span className="text-[10px] font-mono uppercase tracking-[0.18em] font-bold text-[#8b4513] block">
+            <div className="bg-white border border-[#747474]/15 p-6 rounded-xl shadow-[0_20px_50px_-12px_rgba(0,0,0,0.06)] space-y-3 group">
+              <span className="text-[10px] font-mono uppercase tracking-[0.18em] font-bold text-[#c85a32] block">
                 EXPORT COMMITMENTS
               </span>
-              
-              <div className="space-y-2.5 text-xs font-sans text-[#241919]">
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-[#8b4513] flex-none" />
+
+              <div className="space-y-3.5 text-[12.5px] font-sans text-[#555555]">
+                <div className="flex items-center gap-3">
+                  <div className="w-5 h-5 rounded-full bg-[#f8fafc] flex items-center justify-center flex-none border border-[#0f172a]/10">
+                    <CheckCircle2 className="w-3 h-3 text-[#c85a32]" />
+                  </div>
                   <span>Direct Quarry Extraction & Processing</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-[#8b4513] flex-none" />
+                <div className="flex items-center gap-3">
+                  <div className="w-5 h-5 rounded-full bg-[#f8fafc] flex items-center justify-center flex-none border border-[#0f172a]/10">
+                    <CheckCircle2 className="w-3 h-3 text-[#c85a32]" />
+                  </div>
                   <span>100% Pre-Shipment Dry-Lay Inspection</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-[#8b4513] flex-none" />
+                <div className="flex items-center gap-3">
+                  <div className="w-5 h-5 rounded-full bg-[#f8fafc] flex items-center justify-center flex-none border border-[#0f172a]/10">
+                    <CheckCircle2 className="w-3 h-3 text-[#c85a32]" />
+                  </div>
                   <span>4K Lot Photos & Container Sealing Proof</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-[#8b4513] flex-none" />
+                <div className="flex items-center gap-3">
+                  <div className="w-5 h-5 rounded-full bg-[#f8fafc] flex items-center justify-center flex-none border border-[#0f172a]/10">
+                    <CheckCircle2 className="w-3 h-3 text-[#c85a32]" />
+                  </div>
                   <span>Zero Transit Breakage Guarantee</span>
                 </div>
               </div>
 
               <div className="pt-4 mt-4 border-t border-[#747474]/15">
                 <Link
-                  href="/#contact"
-                  className="w-full inline-flex items-center justify-center gap-2 py-3 bg-[#241919] hover:bg-[#3e352a] text-[#f7f2ea] rounded text-xs font-mono uppercase tracking-wider font-bold transition-all shadow-sm cursor-pointer"
+                  href="/contact"
+                  className="w-full inline-flex items-center justify-center gap-2 py-3.5 bg-[#241919] hover:bg-[#c85a32] text-white rounded-lg text-xs font-mono uppercase tracking-[0.2em] font-bold transition-all duration-300 shadow-md hover:shadow-[#c85a32]/25 cursor-pointer"
                 >
                   <span>Contact Export Desk</span>
-                  <ArrowRight className="w-3.5 h-3.5 text-[#d8c3a5]" />
+                  <ArrowRight className="w-4 h-4 text-white group-hover:translate-x-1 transition-transform" />
                 </Link>
               </div>
             </div>
@@ -232,11 +240,10 @@ export default function WhyChooseUs() {
               return (
                 <div
                   key={faq.id}
-                  className={`border transition-all duration-300 rounded-md overflow-hidden bg-white ${
-                    isOpen
-                      ? "border-[#8b4513]/40 shadow-sm"
-                      : "border-[#747474]/20 hover:border-[#747474]/40"
-                  }`}
+                  className={`border transition-all duration-300 rounded-xl overflow-hidden bg-white ${isOpen
+                      ? "border-[#c85a32]/40 shadow-[0_8px_30px_-12px_rgba(255,68,58,0.15)]"
+                      : "border-[#747474]/15 hover:border-[#747474]/30 shadow-sm"
+                    }`}
                 >
                   {/* Accordion Trigger Button */}
                   <button
@@ -245,26 +252,24 @@ export default function WhyChooseUs() {
                     className="w-full p-5 sm:p-6 text-left flex items-center justify-between gap-4 cursor-pointer select-none transition-colors hover:bg-[#fcfaf7]"
                   >
                     <div className="flex items-center gap-3.5 sm:gap-4 flex-1">
-                      
+
                       {/* Number Tag */}
-                      <span className={`text-xs font-mono font-bold flex-none transition-colors ${
-                        isOpen ? "text-[#8b4513]" : "text-[#747474]/70"
-                      }`}>
+                      <span className={`text-[11px] font-mono font-bold flex-none transition-colors ${isOpen ? "text-[#c85a32]" : "text-[#747474]/50"
+                        }`}>
                         {faq.num}
                       </span>
 
                       {/* Icon Circle */}
-                      <div className={`w-9 h-9 rounded-full flex items-center justify-center flex-none transition-all duration-300 ${
-                        isOpen
-                          ? "bg-[#241919] text-[#f7f2ea]"
-                          : "bg-[#f7f2ea] text-[#8b4513] border border-[#747474]/20"
-                      }`}>
+                      <div className={`w-9 h-9 rounded-full flex items-center justify-center flex-none transition-all duration-300 ${isOpen
+                          ? "bg-[#c85a32] text-white shadow-md shadow-[#c85a32]/20"
+                          : "bg-[#f8fafc] text-[#747474] border border-[#0f172a]/10"
+                        }`}>
                         <Icon className="w-4 h-4" />
                       </div>
 
                       {/* Question Heading & Topic */}
                       <div>
-                        <span className="text-[10px] font-mono uppercase tracking-wider text-[#8b4513] font-semibold block mb-0.5">
+                        <span className={`text-[9.5px] font-mono uppercase tracking-[0.2em] font-bold block mb-1 transition-colors ${isOpen ? "text-[#c85a32]" : "text-[#747474]"}`}>
                           {faq.topic}
                         </span>
                         <h3 className="font-sans font-bold text-[14.5px] sm:text-[16px] text-[#241919] leading-snug">
@@ -275,9 +280,8 @@ export default function WhyChooseUs() {
                     </div>
 
                     {/* Expand/Collapse Chevron Indicator */}
-                    <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-none transition-transform duration-300 ${
-                      isOpen ? "bg-[#f7f2ea] text-[#8b4513] rotate-180" : "text-[#747474]"
-                    }`}>
+                    <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-none transition-transform duration-300 ${isOpen ? "bg-[#c85a32]/10 text-[#c85a32] rotate-180" : "text-[#747474]"
+                      }`}>
                       <ChevronDown className="w-4 h-4" />
                     </div>
                   </button>
@@ -291,10 +295,10 @@ export default function WhyChooseUs() {
                         animate={{ opacity: 1, height: "auto" }}
                         exit={{ opacity: 0, height: 0 }}
                         transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                        className="overflow-hidden border-t border-[#747474]/15 bg-[#fdfbf8]"
+                        className="overflow-hidden border-t border-[#747474]/10 bg-white"
                       >
                         <div className="p-5 sm:p-6 sm:pl-16 space-y-4">
-                          
+
                           {/* Answer Narrative */}
                           <p className="text-[13.5px] sm:text-[14.5px] leading-[1.7] text-[#454545] font-light">
                             {faq.answer}
@@ -307,7 +311,7 @@ export default function WhyChooseUs() {
                                 key={badge}
                                 className="inline-flex items-center gap-1.5 px-3 py-1 bg-white border border-[#747474]/20 rounded text-[11px] font-mono text-[#241919]"
                               >
-                                <span className="w-1 h-1 rounded-full bg-[#8b4513]" />
+                                <span className="w-1 h-1 rounded-full bg-[#0f172a]" />
                                 <span>{badge}</span>
                               </span>
                             ))}

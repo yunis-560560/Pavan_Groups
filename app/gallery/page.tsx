@@ -1,287 +1,403 @@
 "use client";
-import { useState, useMemo } from "react";
+
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
 
-type GalleryItem = {
-  id: string;
-  title: string;
-  category: "Facades" | "Flooring" | "Quarries" | "Custom" | "Landscape";
-  stoneType: string;
-  finish: string;
-  location: string;
-  colSpan: "col-span-1" | "col-span-1 md:col-span-2";
-  aspect: string;
-  swatchTone: string;
-  caption: string;
-  technicalNote: string;
-};
+const categories = ["Granite", "Marble", "Quartz", "Sandstone", "Limestone", "Onyx", "Travertine", "Slate", "Quartzite"];
 
-const galleryItems: GalleryItem[] = [
+const galleryItems = [
   {
-    id: "g1",
-    title: "Monolithic Dry-Hung Facade Slabs",
-    category: "Facades",
-    stoneType: "Absolute Black Granite",
-    finish: "Flamed & Brushed",
-    location: "Kuwait City Tower",
-    colSpan: "col-span-1 md:col-span-2",
-    aspect: "h-[420px]",
-    swatchTone: "#140d0a",
-    caption: "30mm calibrated granite panels engineered with undercut anchor pockets for seismic compliance.",
-    technicalNote: "Flexural Strength: 24.2 MPa · Tested to ASTM C880",
+    id: 1,
+    title: "Absolute Black Granite",
+    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80",
   },
   {
-    id: "g2",
-    title: "Continuous Bookmatched Royal Atrium",
-    category: "Flooring",
-    stoneType: "Makrana White Marble",
-    finish: "Diamond Gloss Polish",
-    location: "New Delhi Palace",
-    colSpan: "col-span-1",
-    aspect: "h-[420px]",
-    swatchTone: "#ede7de",
-    caption: "400 square meters of seamless mirrored crystalline calcite marble veining.",
-    technicalNote: "Calcitic Purity: 98.4% · Zero Iron Staining",
+    id: 2,
+    title: "Statuario Marble",
+    image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80",
   },
   {
-    id: "g3",
-    title: "Bench Extraction Face #3",
-    category: "Quarries",
-    stoneType: "Dholpur Beige Sandstone",
-    finish: "Raw Diamond-Wire Cut",
-    location: "Rajasthan Quarry Face",
-    colSpan: "col-span-1",
-    aspect: "h-[360px]",
-    swatchTone: "#e5d4be",
-    caption: "Slicing 28-tonne monolithic sandstone benches with continuous high-pressure water cooling.",
-    technicalNote: "Bench Tolerance: ±2mm across 12-meter face",
+    id: 3,
+    title: "Calacatta Gold",
+    image: "https://images.unsplash.com/photo-1542314831-c6a4d14effd5?auto=format&fit=crop&w=800&q=80",
   },
   {
-    id: "g4",
-    title: "Waterfront Radial Cobblestone Fan",
-    category: "Landscape",
-    stoneType: "Grey Kota Limestone & Basalt Cobbles",
-    finish: "Tumbled & Natural Cleft",
-    location: "Marina Bay Promenade",
-    colSpan: "col-span-1 md:col-span-2",
-    aspect: "h-[360px]",
-    swatchTone: "#d6cfc5",
-    caption: "Interlocking fan pavers designed for tropical stormwater run-off and intense pedestrian traffic.",
-    technicalNote: "Slip Resistance: PTV > 55 (Wet)",
+    id: 4,
+    title: "Emperador Dark",
+    image: "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=800&q=80",
   },
   {
-    id: "g5",
-    title: "5-Axis CNC Perforated Jali Screens",
-    category: "Custom",
-    stoneType: "Jaisalmer Yellow Marble",
-    finish: "Honed & Micro-Carved",
-    location: "Heritage Resort Jaipur",
-    colSpan: "col-span-1 md:col-span-2",
-    aspect: "h-[400px]",
-    swatchTone: "#e4b977",
-    caption: "Traditional Rajasthani geometric latticework moderating solar thermal gain and glare.",
-    technicalNote: "Carving Tolerance: ±0.5mm on 50mm slab",
+    id: 5,
+    title: "Blue Pearl Granite",
+    image: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=800&q=80",
   },
   {
-    id: "g6",
-    title: "Rustic Pool Decking & Bullnosed Coping",
-    category: "Landscape",
-    stoneType: "Autumn Rustic Slate",
-    finish: "Natural Split Cleft",
-    location: "Costa del Sol Villa",
-    colSpan: "col-span-1",
-    aspect: "h-[400px]",
-    swatchTone: "#ab6b51",
-    caption: "Naturally textured multi-hued slate slabs surrounding a saltwater infinity pool.",
-    technicalNote: "Water Absorption: 0.28% · Salt-Resistant",
+    id: 6,
+    title: "Desert Sandstone",
+    image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80",
   },
 ];
 
-const categories = ["All Gallery", "Facades", "Flooring", "Quarries", "Custom", "Landscape"];
-
 export default function GalleryPage() {
-  const [selectedCat, setSelectedCat] = useState("All Gallery");
-  const [activeLightbox, setActiveLightbox] = useState<GalleryItem | null>(null);
-  const router = useRouter();
 
-  const filteredItems = useMemo(() => {
-    if (selectedCat === "All Gallery") return galleryItems;
-    return galleryItems.filter((item) => item.category === selectedCat);
-  }, [selectedCat]);
+  const [angledImages, setAngledImages] = useState([
+    { id: 1, src: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80", type: "tall" },
+    { id: 2, src: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80", type: "wide" },
+    { id: 3, src: "https://images.unsplash.com/photo-1542314831-c6a4d14effd5?auto=format&fit=crop&q=80", type: "square" },
+    { id: 4, src: "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&q=80", type: "tall-border" },
+    { id: 5, src: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80", type: "medium" },
+    { id: 6, src: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80", type: "tall-red" },
+  ]);
 
-  const handleContactClick = () => {
-    router.push("/#contact");
+  const handleNext = () => {
+    setAngledImages((prev) => {
+      const newArr = [...prev];
+      const last = newArr.pop(); // Take from the end
+      if (last) newArr.unshift(last); // Put at the beginning
+      return newArr;
+    });
+  };
+
+  const handlePrev = () => {
+    setAngledImages((prev) => {
+      const newArr = [...prev];
+      const first = newArr.shift(); // Take from the beginning
+      if (first) newArr.push(first); // Put at the end
+      return newArr;
+    });
+  };
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      handleNext();
+    }, 3000); // 3 seconds per step
+    return () => clearInterval(timer);
+  }, [angledImages]);
+
+  const handleCardClick = (index: number) => {
+    if (index === 2) handleNext(); // Left card clicked
+    if (index === 4) handlePrev(); // Right card clicked
   };
 
   return (
-    <div className="bg-[#fcf8f1] text-[#140d0a] overflow-hidden min-h-screen">
-      {/* ── Page Header ── */}
-      <section className="pt-36 pb-20 md:pb-24 px-6 md:px-14 lg:px-20 border-b border-[#140d0a]/10 bg-gradient-to-b from-[#faf5ec] to-[#fcf8f1]">
-        <div className="max-w-5xl">
-          <div className="flex items-center gap-3 mb-6 text-[10px] tracking-[0.28em] uppercase text-[#140d0a]/50">
-            <Link href="/" className="hover:text-[#ff443a] transition-colors">
-              Home
-            </Link>
-            <span>/</span>
-            <span className="text-[#ff443a] font-medium">Visual Gallery</span>
-          </div>
-
-          <div className="inline-flex items-center gap-3 px-3.5 py-1.5 bg-[#ff443a]/10 border border-[#ff443a]/25 text-[#ff443a] text-[10px] tracking-[0.24em] uppercase font-medium mb-6">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#ff443a] animate-pulse" />
-            <span>Textures, Light & Craft</span>
-          </div>
-
-          <h1
-            className="font-display font-light leading-[1.05] tracking-[-0.015em] mb-6 text-[#140d0a]"
-            style={{ fontSize: "clamp(40px, 6vw, 84px)" }}
-          >
-            The Tactile Spectrum of
-            <br />
-            <span className="font-display italic text-[#ff443a]">
-              Natural Stone in Light & Architecture
-            </span>
+    <main className="min-h-screen relative flex flex-col font-sans bg-white">
+      
+      {/* Header */}
+      <div className="relative z-10 w-full p-6 flex justify-between items-center">
+        <Link href="/" className="text-[#241919] font-display text-xl uppercase tracking-[0.2em] font-bold">
+          Pavan Groups
+        </Link>
+      </div>
+      {/* Dynamic Gallery Section - Premium Stack */}
+      <section className="relative z-10 bg-white overflow-hidden pt-4 pb-12 md:pt-6 md:pb-16 flex flex-col items-center justify-center border-b border-[#747474]/15">
+        
+        {/* Gallery Heading */}
+        <div className="text-center mb-4 md:mb-6 px-6 z-20">
+          <h1 className="font-display text-5xl md:text-6xl text-[#241919] font-medium leading-none tracking-tight">
+            Gallery
           </h1>
-
-          <p className="text-[16px] md:text-[18px] leading-[1.8] text-[#140d0a]/75 max-w-3xl">
-            A photographic study of raw quarry strata, diamond-polished crystal planes, flamed anti-slip pavers, and CNC carved bespoke facades.
-          </p>
         </div>
-      </section>
 
-      {/* ── Category Filter Bar ── */}
-      <section className="py-12 px-6 md:px-14 lg:px-20 bg-white border-b border-[#140d0a]/10 sticky top-[72px] z-30 shadow-sm">
-        <div className="flex flex-wrap gap-2">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setSelectedCat(cat)}
-              className={`px-4 py-2 text-[10px] tracking-[0.2em] uppercase font-medium transition-all duration-200 border cursor-pointer ${
-                selectedCat === cat
-                  ? "bg-[#ff443a] text-white border-[#ff443a]"
-                  : "bg-[#fcf8f1] text-[#140d0a]/70 border-[#140d0a]/10 hover:border-[#ff443a]/40 hover:text-[#140d0a]"
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
-      </section>
+        {/* Container */}
+        <div className="relative w-full max-w-7xl mx-auto h-[600px] flex items-center justify-center">
+          
+          {/* Full-Width Immersive Carousel */}
+          {angledImages.map((img, index) => {
+            
+            // Define states for a symmetrical full-width layout with 6 items
+            let x = "0vw";
+            let scale = 1;
+            let opacity = 1;
+            let zIndex = 10;
+            let rotateY = 0;
 
-      {/* ── Staggered Masonry Mosaic ── */}
-      <section className="py-20 md:py-28 px-6 md:px-14 lg:px-20 bg-[#fcf8f1]">
-        <motion.div layout className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <AnimatePresence>
-            {filteredItems.map((item) => (
-              <motion.div
-                key={item.id}
-                layout
-                initial={{ opacity: 0, scale: 0.96 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.96 }}
-                transition={{ duration: 0.35 }}
-                onClick={() => setActiveLightbox(item)}
-                className={`${item.colSpan} bg-white border border-[#140d0a]/10 p-8 shadow-sm hover:border-[#ff443a]/50 hover:shadow-md transition-all duration-300 cursor-pointer flex flex-col justify-between group relative overflow-hidden`}
+            switch (index) {
+              case 0: // Hidden far left
+              case 1: 
+                x = "-50vw";
+                scale = 0.6;
+                opacity = 0;
+                zIndex = 0;
+                break;
+              case 2: // Visible left
+                x = "-30vw";
+                scale = 0.8;
+                opacity = 1;
+                zIndex = 10;
+                rotateY = 15; // Subtle 3D fold
+                break;
+              case 3: // CENTER HERO
+                x = "0vw";
+                scale = 1;
+                opacity = 1;
+                zIndex = 30;
+                rotateY = 0;
+                break;
+              case 4: // Visible right
+                x = "30vw";
+                scale = 0.8;
+                opacity = 1;
+                zIndex = 10;
+                rotateY = -15; // Subtle 3D fold
+                break;
+              case 5: // Hidden far right
+                x = "50vw";
+                scale = 0.6;
+                opacity = 0;
+                zIndex = 0;
+                break;
+              default:
+                break;
+            }
+
+            return (
+              <motion.div 
+                key={img.id}
+                onClick={() => handleCardClick(index)}
+                animate={{ 
+                  x,
+                  scale,
+                  opacity,
+                  rotateY,
+                  zIndex,
+                }}
+                transition={{ 
+                  type: "spring", 
+                  stiffness: 60, 
+                  damping: 15, 
+                  mass: 1 
+                }}
+                className="absolute w-[85vw] max-w-[900px] h-[50vh] md:h-[70vh] max-h-[800px] bg-gray-100 shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-black/5 rounded-xl overflow-hidden cursor-pointer"
+                style={{ perspective: 1000 }}
               >
-                {/* Top Swatch Tone Header */}
-                <div className="flex justify-between items-center mb-6">
-                  <div className="flex items-center gap-2.5">
-                    <span
-                      className="w-3.5 h-3.5 rounded-full border border-[#140d0a]/20 flex-none"
-                      style={{ background: item.swatchTone }}
-                    />
-                    <span className="text-[10px] tracking-[0.22em] uppercase text-[#ff443a] font-medium">
-                      {item.category}
-                    </span>
-                  </div>
-                  <span className="text-[11px] uppercase tracking-[0.14em] text-[#140d0a]/40">
-                    {item.location}
-                  </span>
-                </div>
-
-                {/* Central Focus */}
-                <div className="my-6">
-                  <span className="text-[11px] uppercase tracking-[0.18em] text-[#140d0a]/50 block mb-1">
-                    {item.stoneType} · {item.finish}
-                  </span>
-                  <h3 className="font-display text-2xl md:text-3xl font-light text-[#140d0a] group-hover:text-[#ff443a] transition-colors duration-300 mb-3">
-                    {item.title}
-                  </h3>
-                  <p className="text-[13px] leading-relaxed text-[#140d0a]/70">
-                    {item.caption}
-                  </p>
-                </div>
-
-                {/* Footer Technical Note */}
-                <div className="border-t border-[#140d0a]/10 pt-4 flex items-center justify-between">
-                  <span className="text-[11px] text-[#140d0a]/50 italic">
-                    {item.technicalNote}
-                  </span>
-                  <span className="text-[10px] tracking-[0.2em] uppercase text-[#ff443a] font-medium group-hover:translate-x-1 transition-transform">
-                    Inspect →
-                  </span>
+                <div className="w-full h-full relative group">
+                  <img 
+                    src={img.src} 
+                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" 
+                    alt="Gallery Stone" 
+                  />
+                  
+                  {/* Light overlay for side cards to make center pop slightly, instead of washed out blur */}
+                  <div 
+                    className="absolute inset-0 bg-black pointer-events-none transition-opacity duration-700" 
+                    style={{ opacity: index === 3 ? 0 : 0.15 }}
+                  />
+                  
+                  {/* Title / View Button on the Center Hero Card */}
+                  {index === 3 && (
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-8 md:p-12 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                      <h3 className="text-white font-display text-3xl md:text-5xl font-light tracking-wide mb-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                        Premium Selection
+                      </h3>
+                      <button className="self-start text-white text-xs tracking-[0.3em] uppercase font-bold border border-white/50 px-8 py-3 backdrop-blur-md hover:bg-white hover:text-black transition-all duration-300">
+                        View Details
+                      </button>
+                    </div>
+                  )}
                 </div>
               </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
+            );
+          })}
+          
+        </div>
       </section>
 
-      {/* ── Lightbox Preview Modal ── */}
-      {activeLightbox && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="bg-white border border-[#140d0a]/20 p-8 md:p-12 max-w-2xl w-full relative shadow-2xl">
-            <button
-              onClick={() => setActiveLightbox(null)}
-              className="absolute top-6 right-6 text-[#140d0a]/40 hover:text-[#140d0a] bg-transparent border-none text-2xl cursor-pointer"
-            >
-              ✕
-            </button>
-
-            <span className="text-[9px] tracking-[0.32em] uppercase text-[#ff443a] font-medium mb-2 block">
-              Texture & Application Inspection · {activeLightbox.category}
+      {/* Hero Masonry Layout */}
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 py-16 md:py-24">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+          
+          {/* Left Side: Text and Button */}
+          <div className="lg:col-span-5 flex flex-col items-start gap-4 pr-0 lg:pr-8">
+            <span className="text-[11px] font-mono uppercase tracking-[0.2em] font-bold text-[#241919]">
+              GALLERY
             </span>
-
-            <h2 className="font-display text-3xl font-light text-[#140d0a] mb-2">
-              {activeLightbox.title}
+            <h2 className="font-display text-4xl sm:text-5xl lg:text-[3.5rem] text-[#241919] font-medium leading-[1.1]">
+              Our Story in Pictures
             </h2>
-
-            <p className="text-[13px] text-[#ff443a] font-medium mb-6">
-              Stone: {activeLightbox.stoneType} · Finish: {activeLightbox.finish} · Location: {activeLightbox.location}
+            <p className="text-[#454545] text-lg sm:text-xl font-light mt-2 mb-4 leading-relaxed max-w-md">
+              Every image tells a story—explore our gallery to see our journey unfold
             </p>
+            <button className="bg-[#140d0a] text-white px-6 py-2.5 rounded-md flex items-center gap-2 hover:bg-black transition-colors text-sm font-medium tracking-wide mt-2 group">
+              See all <span className="text-lg leading-none transition-transform duration-300 group-hover:translate-x-1">&rarr;</span>
+            </button>
+          </div>
 
-            <div className="space-y-4 text-[14px] text-[#140d0a]/75 leading-relaxed mb-8">
-              <div className="p-4 bg-[#faf5ec] border border-[#140d0a]/10">
-                <strong className="text-[#140d0a] block mb-1">Architectural Scope:</strong>
-                {activeLightbox.caption}
+          {/* Right Side: Masonry Grid */}
+          <div className="lg:col-span-7 grid grid-cols-3 gap-3 md:gap-4 h-[400px] sm:h-[500px] md:h-[600px]">
+            
+            {/* Column 1 */}
+            <div className="flex flex-col gap-3 md:gap-4 h-full pt-12 pb-0">
+              <div className="flex-[0.45] rounded-xl overflow-hidden shadow-sm relative group cursor-pointer bg-gray-100">
+                <img src={galleryItems[0].image} alt="Gallery 1" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
               </div>
-              <div className="p-4 bg-[#faf5ec] border border-[#140d0a]/10">
-                <strong className="text-[#140d0a] block mb-1">Laboratory Metric:</strong>
-                {activeLightbox.technicalNote}
+              <div className="flex-[0.55] rounded-xl overflow-hidden shadow-sm relative group cursor-pointer bg-gray-100">
+                <img src={galleryItems[1].image} alt="Gallery 2" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4 border-t border-[#140d0a]/10 pt-6">
-              <button
-                onClick={() => {
-                  setActiveLightbox(null);
-                  handleContactClick();
-                }}
-                className="px-8 py-3.5 bg-[#ff443a] text-white text-[10px] tracking-[0.24em] uppercase font-medium hover:bg-[#e6352b] transition-colors border-none cursor-pointer shadow-md"
-              >
-                Inquire For This Stone & Finish
-              </button>
-              <button
-                onClick={() => setActiveLightbox(null)}
-                className="px-6 py-3.5 border border-[#140d0a]/20 text-[#140d0a]/70 text-[10px] tracking-[0.2em] uppercase font-medium bg-transparent hover:text-[#140d0a] cursor-pointer"
-              >
-                Close View
-              </button>
+            {/* Column 2 */}
+            <div className="flex flex-col gap-3 md:gap-4 h-full pt-0 pb-12">
+              <div className="flex-[0.6] rounded-xl overflow-hidden shadow-sm relative group cursor-pointer bg-gray-100">
+                <img src={galleryItems[2].image} alt="Gallery 3" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+              </div>
+              <div className="flex-[0.4] rounded-xl overflow-hidden shadow-sm relative group cursor-pointer bg-gray-100">
+                <img src={galleryItems[3].image} alt="Gallery 4" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+              </div>
+            </div>
+
+            {/* Column 3 */}
+            <div className="flex flex-col gap-3 md:gap-4 h-full pt-6 pb-6">
+              <div className="flex-[0.4] rounded-xl overflow-hidden shadow-sm relative group cursor-pointer bg-gray-100">
+                <img src={galleryItems[4].image} alt="Gallery 5" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+              </div>
+              <div className="flex-[0.6] rounded-xl overflow-hidden shadow-sm relative group cursor-pointer bg-gray-100">
+                <img src={galleryItems[5]?.image || galleryItems[0].image} alt="Gallery 6" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+      {/* Luxury Section from Mockup */}
+      <section className="relative z-10 bg-white/60 backdrop-blur-sm py-24 px-6 md:px-12 lg:px-20 w-full">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-16">
+          
+          {/* Left Column */}
+          <div className="md:col-span-7 flex flex-col gap-16">
+            {/* Header Text */}
+            <div className="max-w-xl">
+              <h2 className="font-display text-4xl md:text-5xl uppercase tracking-widest leading-tight mb-6 text-[#241919]">
+                DISCOVER PREMIUM <br/> STONE CRAFTSMANSHIP
+              </h2>
+              <p className="text-[#454545] text-sm leading-relaxed font-light">
+                Pavan Groups offers an exquisite collection of premium granite, marble, and natural stones, bringing timeless elegance and unmatched durability to your architectural and interior design projects.
+              </p>
+            </div>
+
+            {/* Two Side-by-Side Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+              {/* Card 1 */}
+              <div className="flex flex-col gap-5">
+                <div className="relative aspect-square overflow-hidden bg-black/5">
+                  <img src="https://images.unsplash.com/photo-1542314831-c6a4d14effd5?auto=format&fit=crop&q=80" alt="Royal Family Suite" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+                  <div className="absolute top-4 left-4 border border-white/40 bg-black/10 backdrop-blur-md text-white text-[9px] tracking-widest uppercase px-3 py-1 flex items-center gap-2">
+                    <span>★</span> NEW
+                  </div>
+                </div>
+                <div>
+                  <h3 className="font-display text-lg uppercase tracking-widest mb-3 flex items-center justify-between text-[#241919]">
+                    ABSOLUTE BLACK GRANITE <span className="text-xl font-light">↗</span>
+                  </h3>
+                  <p className="text-[9px] uppercase tracking-widest text-[#747474] leading-relaxed">
+                    DURABILITY & ELEGANCE ARE THE ESSENCE OF OUR PREMIUM STONE SELECTION.
+                  </p>
+                </div>
+              </div>
+
+              {/* Card 2 */}
+              <div className="flex flex-col gap-5">
+                <div className="relative aspect-square overflow-hidden bg-black/5">
+                  <img src="https://images.unsplash.com/photo-1578683010236-d716f9a3f461?auto=format&fit=crop&q=80" alt="Royal Family Suite" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+                  <div className="absolute top-4 left-4 border border-white/40 bg-black/10 backdrop-blur-md text-white text-[9px] tracking-widest uppercase px-3 py-1 flex items-center gap-2">
+                    <span>★</span> NEW
+                  </div>
+                </div>
+                <div>
+                  <h3 className="font-display text-lg uppercase tracking-widest mb-3 flex items-center justify-between text-[#241919]">
+                    STATUARIO MARBLE <span className="text-xl font-light">↗</span>
+                  </h3>
+                  <p className="text-[9px] uppercase tracking-widest text-[#747474] leading-relaxed">
+                    ELEVATE YOUR INTERIORS WITH OUR IMPORTED MARBLE COLLECTIONS.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom Offset Card */}
+            <div className="flex gap-8 mt-8">
+              <div className="w-[1px] bg-black/20 ml-6 hidden sm:block"></div>
+              <div className="flex-1 flex flex-col gap-5 pl-0 sm:pl-8 max-w-[85%]">
+                <div className="relative aspect-[4/5] overflow-hidden bg-black/5">
+                  <img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&q=80" alt="Premier Sea View" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+                </div>
+                <div>
+                  <h3 className="font-display text-lg uppercase tracking-widest mb-3 flex items-center justify-between text-[#241919]">
+                    CALACATTA GOLD <span className="text-xl font-light">↗</span>
+                  </h3>
+                  <p className="text-[9px] uppercase tracking-widest text-[#747474] leading-relaxed">
+                    PRECISION CUTTING & POLISHING FOR YOUR UNIQUE ARCHITECTURAL NEEDS.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
+
+          {/* Right Column */}
+          <div className="md:col-span-5 flex flex-col gap-16 md:pt-0 pt-16">
+            
+            {/* Top Card */}
+            <div className="flex flex-col gap-5">
+              <div className="relative aspect-[4/3] overflow-hidden bg-black/5">
+                <img src="https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&q=80" alt="Superior Garden View" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+              </div>
+              <div>
+                <h3 className="font-display text-lg uppercase tracking-widest mb-3 flex items-center justify-between text-[#241919]">
+                  EMPERADOR DARK <span className="text-xl font-light">↗</span>
+                </h3>
+                <p className="text-[9px] uppercase tracking-widest text-[#747474] leading-relaxed">
+                  BRING RUSTIC WARMTH AND CHARACTER TO YOUR EXTERIOR LANDSCAPING.
+                </p>
+              </div>
+            </div>
+
+            {/* Middle Card */}
+            <div className="flex flex-col gap-5">
+              <div className="relative aspect-square overflow-hidden bg-black/5">
+                <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&q=80" alt="Royal Family Suite" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+              </div>
+              <div>
+                <h3 className="font-display text-lg uppercase tracking-widest mb-3 flex items-center justify-between text-[#241919]">
+                  BLUE PEARL GRANITE <span className="text-xl font-light">↗</span>
+                </h3>
+                <p className="text-[9px] uppercase tracking-widest text-[#747474] leading-relaxed">
+                  ENGINEERED PERFECTION AND RESILIENCE FOR MODERN KITCHENS.
+                </p>
+              </div>
+            </div>
+
+            {/* Bottom Card (offset to the right) */}
+            <div className="flex flex-col gap-5 pl-0 md:pl-16">
+              <div className="relative aspect-[3/4] overflow-hidden bg-black/5">
+                <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&q=80" alt="Executive Suite Hill View" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+              </div>
+              <div>
+                <h3 className="font-display text-lg uppercase tracking-widest mb-3 flex items-center justify-between text-[#241919]">
+                  PREMIUM QUARTZITE <span className="text-xl font-light">↗</span>
+                </h3>
+                <p className="text-[9px] uppercase tracking-widest text-[#747474] leading-relaxed">
+                  THE ULTIMATE BLEND OF NATURAL BEAUTY AND INCREDIBLE STRENGTH.
+                </p>
+              </div>
+            </div>
+
+          </div>
         </div>
-      )}
-    </div>
+      </section>
+
+
+
+      <style dangerouslySetInnerHTML={{__html: `
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .hide-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}} />
+    </main>
   );
 }

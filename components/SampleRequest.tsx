@@ -163,134 +163,117 @@ export default function SampleRequest() {
       setReferenceNumber(generatedRef);
       setIsSubmitting(false);
       setIsSubmitted(true);
-    }, 900);
+    }, 1200);
   };
 
   return (
     <section
       id="request-sample"
-      className="relative py-24 md:py-36 px-4 sm:px-6 md:px-12 lg:px-16 bg-[#fcf8f1] border-t border-[#747474]/15 overflow-hidden"
+      className="relative pt-8 pb-16 md:pt-10 md:pb-24 px-4 sm:px-6 md:px-12 lg:px-16 bg-white overflow-hidden"
     >
-      {/* Subtle Architectural Grid Background */}
-      <div className="absolute inset-0 pointer-events-none opacity-[0.035]">
-        <div
-          className="w-full h-full"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(36,25,25,1) 1px, transparent 1px), linear-gradient(90deg, rgba(36,25,25,1) 1px, transparent 1px)",
-            backgroundSize: "48px 48px",
-          }}
-        />
-      </div>
 
       <div className="max-w-7xl mx-auto relative z-10">
         
         {/* ── SECTION HEADER ── */}
-        <div className="max-w-3xl mb-14 md:mb-18">
-          <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 bg-white border border-[#747474]/20 shadow-xs mb-4">
-            <span className="w-2 h-2 rounded-full bg-[#514a38] animate-pulse" />
-            <span className="text-[9.5px] font-mono uppercase tracking-[0.24em] font-bold text-[#3e352a]">
-              SECTION 03 · THE PAVAN STONES SAMPLE ATELIER
-            </span>
-          </div>
-
-          <h2
-            className="font-display font-light text-[#241919] leading-[1.04] tracking-[-0.015em] mb-4"
-            style={{ fontSize: "clamp(32px, 4.2vw, 58px)" }}
-          >
-            Bespoke Architectural Samples.
-            <br />
-            <span className="italic font-normal text-[#514a38]">
-              Delivered Direct to Your Design Studio Worldwide.
-            </span>
+        <div className="max-w-2xl mb-8 md:mb-12">
+          <h2 className="font-display font-light text-[#514a38] leading-[1.1] tracking-[-0.01em] text-4xl md:text-5xl">
+            Request a Sample
           </h2>
-
-          <p className="text-[14.5px] sm:text-[15.5px] leading-relaxed text-[#454545] font-light">
-            Evaluate authentic calibrated stone specimens in your local lighting conditions. Every curated sample box contains genuine quarry specimen tiles, finish strips, geological ASTM test certificates, and a customized FOB/CIF freight schedule.
-          </p>
         </div>
 
         {/* ── 2-COLUMN ATELIER LAYOUT ── */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
           
           {/* ── LEFT COLUMN: BESPOKE SAMPLE REQUEST CONCIERGE FORM (7 Cols) ── */}
-          <div className="lg:col-span-7 bg-white border border-[#747474]/20 p-6 sm:p-10 shadow-lg relative">
+          <div className="lg:col-span-7 bg-[#fcfcfc] border border-[#747474]/15 rounded-sm p-6 sm:p-10 shadow-sm relative overflow-hidden">
             
             {isSubmitted ? (
               <motion.div
                 initial={{ opacity: 0, scale: 0.96 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="py-10 text-center space-y-6"
+                className="py-10 text-center space-y-8"
               >
-                <div className="w-16 h-16 rounded-full bg-[#fcf8f1] border-2 border-[#514a38] flex items-center justify-center mx-auto text-2xl text-[#514a38]">
-                  ✔
-                </div>
+                <motion.div 
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: "spring", damping: 15 }}
+                  className="w-20 h-20 rounded-full bg-white border-2 border-[#514a38] flex items-center justify-center mx-auto shadow-sm text-3xl text-[#514a38]"
+                >
+                  <motion.div 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.3 }}
+                  >
+                    ✔
+                  </motion.div>
+                </motion.div>
 
                 <div>
-                  <span className="text-[10px] font-mono uppercase tracking-[0.24em] font-bold text-[#514a38] block mb-2">
+                  <span className="text-[10px] font-mono uppercase tracking-[0.24em] font-bold text-[#747474] block mb-3">
                     SAMPLE DISPATCH QUEUED SUCCESSFULLY
                   </span>
-                  <h3 className="font-display text-3xl font-light text-[#241919] mb-2">
+                  <h3 className="font-display text-4xl font-light text-[#241919] mb-3">
                     Thank You, {contactName || "Valued Client"}
                   </h3>
-                  <p className="text-xs font-mono text-[#3e352a] font-semibold mb-4">
-                    Sample Tracking ID: <span className="text-[#241919] bg-[#fcf8f1] px-3 py-1 border border-[#747474]/20">{referenceNumber}</span>
+                  <p className="text-xs font-mono text-[#454545] font-semibold mb-6 flex items-center justify-center gap-3">
+                    Sample Tracking ID: 
+                    <span className="text-[#241919] bg-white px-4 py-1.5 rounded border border-[#747474]/20 tracking-wider shadow-inner">{referenceNumber}</span>
                   </p>
-                  <p className="text-[14px] text-[#454545] font-light max-w-md mx-auto leading-relaxed">
-                    Our export logistics desk has queued your curated <strong className="text-[#241919]">{currentSpecimen.name}</strong> sample kit for express air courier dispatch to <strong className="text-[#241919]">{destinationPort}</strong>.
+                  <p className="text-[15px] text-[#454545] font-light max-w-md mx-auto leading-relaxed">
+                    Our export logistics desk has queued your curated <strong className="text-[#241919] font-medium">{currentSpecimen.name}</strong> sample kit for express air courier dispatch to <strong className="text-[#241919] font-medium">{destinationPort}</strong>.
                   </p>
                 </div>
 
-                <div className="p-4 bg-[#fcf8f1] border border-[#747474]/20 max-w-md mx-auto text-left space-y-2 text-xs font-mono text-[#454545]">
-                  <div className="flex justify-between">
-                    <span className="text-[#747474]">Stone Specimen:</span>
-                    <span className="font-bold text-[#241919]">{currentSpecimen.name}</span>
+                <div className="p-5 bg-white border border-[#747474]/15 rounded-sm max-w-md mx-auto text-left space-y-3 text-xs font-mono text-[#747474]">
+                  <div className="flex justify-between border-b border-[#747474]/10 pb-2">
+                    <span>Stone Specimen:</span>
+                    <span className="font-bold text-[#241919] text-right">{currentSpecimen.name}</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-[#747474]">Selected Finish:</span>
-                    <span className="font-bold text-[#241919]">{selectedFinish}</span>
+                  <div className="flex justify-between border-b border-[#747474]/10 pb-2">
+                    <span>Selected Finish:</span>
+                    <span className="font-bold text-[#241919] text-right">{selectedFinish}</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-[#747474]">Target Port:</span>
-                    <span className="font-bold text-[#241919]">{destinationPort}</span>
+                  <div className="flex justify-between border-b border-[#747474]/10 pb-2">
+                    <span>Target Port:</span>
+                    <span className="font-bold text-[#241919] text-right">{destinationPort}</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-[#747474]">Est. Dispatch:</span>
-                    <span className="font-bold text-[#514a38]">Within 48 Hours (DHL/FedEx Air)</span>
+                  <div className="flex justify-between pt-1">
+                    <span>Est. Dispatch:</span>
+                    <span className="font-bold text-[#514a38]">Within 48 Hours (Air)</span>
                   </div>
                 </div>
 
-                <div className="pt-4 flex justify-center gap-4">
+                <div className="pt-6 flex justify-center">
                   <button
                     type="button"
                     onClick={() => setIsSubmitted(false)}
-                    className="px-6 py-3 bg-[#241919] text-white hover:bg-[#3e352a] text-[10.5px] font-mono uppercase tracking-[0.18em] font-semibold transition-all cursor-pointer"
+                    className="px-8 py-4 bg-[#241919] text-white hover:bg-[#3e352a] rounded-sm text-[10.5px] font-mono uppercase tracking-[0.18em] font-bold transition-all cursor-pointer shadow-sm"
                   >
-                    Submit Another Specimen Request
+                    Submit Another Request
                   </button>
                 </div>
               </motion.div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-8">
+              <form onSubmit={handleSubmit} className="space-y-10">
                 
                 {/* ── STEP 1: STONE SPECIMEN SELECTION ── */}
-                <div className="space-y-4 pb-6 border-b border-[#747474]/15">
-                  <div className="flex items-center gap-2">
-                    <span className="w-5 h-5 rounded-full bg-[#241919] text-white font-mono text-xs flex items-center justify-center font-bold">
+                <div className="space-y-5 pb-8 border-b border-[#747474]/15">
+                  <div className="flex items-center gap-3">
+                    <span className="w-6 h-6 rounded-full bg-[#241919] text-white font-mono text-xs flex items-center justify-center font-bold">
                       1
                     </span>
-                    <h3 className="font-display text-xl font-medium text-[#241919]">
-                      Select Stone Variety & Surface Texture
+                    <h3 className="font-display text-2xl font-light text-[#241919] tracking-tight">
+                      Select Stone Variety & Texture
                     </h3>
                   </div>
 
                   {/* Visual Specimen Swatch Grid */}
                   <div>
-                    <label className="text-[10px] font-mono uppercase tracking-wider text-[#3e352a] font-bold block mb-2">
+                    <label className="text-[10px] font-mono uppercase tracking-wider text-[#747474] font-bold block mb-3 pl-9">
                       Click Stone Specimen: *
                     </label>
                     
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pl-9">
                       {SPECIMENS.map((spec) => {
                         const isSelected = selectedSpecimenId === spec.id;
                         return (
@@ -298,23 +281,23 @@ export default function SampleRequest() {
                             key={spec.id}
                             type="button"
                             onClick={() => handleSpecimenSelect(spec.id)}
-                            className={`p-2.5 border text-left transition-all duration-300 cursor-pointer flex items-center gap-2.5 ${
+                            className={`p-3 rounded-sm border text-left transition-all duration-300 cursor-pointer flex items-center gap-3 relative overflow-hidden ${
                               isSelected
-                                ? "bg-[#241919] text-white border-[#241919] shadow-md ring-1 ring-[#241919]"
-                                : "bg-[#fcf8f1] hover:bg-white border-[#747474]/20 text-[#241919]"
+                                ? "bg-white border-[#241919] shadow-[0_0_0_1px_#241919] text-[#241919]"
+                                : "bg-white hover:bg-[#f8fafc] border-[#747474]/20 text-[#241919]"
                             }`}
                           >
                             <div
-                              className="w-5 h-5 rounded-none border border-black/20 shadow-inner flex-none"
+                              className="w-6 h-6 rounded-none border border-[#747474]/30 shadow-sm flex-none relative z-10"
                               style={{ background: spec.gradient }}
                             />
-                            <div className="min-w-0">
-                              <span className="text-[11px] font-medium block leading-tight truncate">
+                            <div className="min-w-0 relative z-10">
+                              <span className={`text-[12px] font-medium block leading-tight truncate ${isSelected ? "text-[#241919] font-bold" : "text-[#241919]"}`}>
                                 {spec.name}
                               </span>
                               <span
-                                className={`text-[8.5px] font-mono block truncate ${
-                                  isSelected ? "text-[#d8c3a5]" : "text-[#747474]"
+                                className={`text-[9px] font-mono block truncate mt-0.5 ${
+                                  isSelected ? "text-[#514a38] font-semibold" : "text-[#747474]"
                                 }`}
                               >
                                 {spec.division.split(" ")[0]}
@@ -327,20 +310,20 @@ export default function SampleRequest() {
                   </div>
 
                   {/* Surface Finish Chips */}
-                  <div>
-                    <label className="text-[10px] font-mono uppercase tracking-wider text-[#3e352a] font-bold block mb-2">
+                  <div className="pl-9 mt-4">
+                    <label className="text-[10px] font-mono uppercase tracking-wider text-[#747474] font-bold block mb-3">
                       Surface Finish Profile: *
                     </label>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-2.5">
                       {currentSpecimen.defaultFinishes.map((fin) => (
                         <button
                           key={fin}
                           type="button"
                           onClick={() => setSelectedFinish(fin)}
-                          className={`px-3 py-1.5 text-xs font-mono transition-all cursor-pointer ${
+                          className={`px-4 py-2 text-xs font-mono rounded-sm transition-all cursor-pointer ${
                             selectedFinish === fin
-                              ? "bg-[#241919] text-white border border-[#241919] font-bold shadow-xs"
-                              : "bg-[#fcf8f1] border border-[#747474]/25 text-[#454545] hover:border-[#241919]"
+                              ? "bg-white border-[#241919] shadow-[0_0_0_1px_#241919] text-[#241919] font-bold"
+                              : "bg-white border border-[#747474]/20 text-[#454545] hover:border-[#241919] hover:text-[#241919]"
                           }`}
                         >
                           {fin}
@@ -351,25 +334,25 @@ export default function SampleRequest() {
                 </div>
 
                 {/* ── STEP 2: DIMENSIONS & VOLUME ESTIMATE ── */}
-                <div className="space-y-4 pb-6 border-b border-[#747474]/15">
-                  <div className="flex items-center gap-2">
-                    <span className="w-5 h-5 rounded-full bg-[#241919] text-white font-mono text-xs flex items-center justify-center font-bold">
+                <div className="space-y-5 pb-8 border-b border-[#747474]/15">
+                  <div className="flex items-center gap-3">
+                    <span className="w-6 h-6 rounded-full bg-[#241919] text-white font-mono text-xs flex items-center justify-center font-bold">
                       2
                     </span>
-                    <h3 className="font-display text-xl font-medium text-[#241919]">
-                      Target Sizing, Thickness & Project Scope
+                    <h3 className="font-display text-2xl font-light text-[#241919] tracking-tight">
+                      Target Sizing & Project Scope
                     </h3>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 pl-9">
                     <div>
-                      <label className="text-[10px] font-mono uppercase tracking-wider text-[#3e352a] font-bold block mb-1.5">
+                      <label className="text-[10px] font-mono uppercase tracking-wider text-[#747474] font-bold block mb-2">
                         Target Sizing / Form Factor:
                       </label>
                       <select
                         value={selectedSize}
                         onChange={(e) => setSelectedSize(e.target.value)}
-                        className="w-full bg-[#fcf8f1] border border-[#747474]/30 text-[#241919] p-3 text-sm focus:outline-none focus:border-[#241919]"
+                        className="w-full bg-white border border-[#747474]/30 rounded-sm text-[#241919] p-3.5 text-sm focus:outline-none focus:border-[#241919] transition-all cursor-pointer"
                       >
                         <option value="600 x 300 mm (2x1 ft)">600 x 300 mm (2x1 ft)</option>
                         <option value="600 x 600 mm (2x2 ft)">600 x 600 mm (2x2 ft)</option>
@@ -382,13 +365,13 @@ export default function SampleRequest() {
                     </div>
 
                     <div>
-                      <label className="text-[10px] font-mono uppercase tracking-wider text-[#3e352a] font-bold block mb-1.5">
+                      <label className="text-[10px] font-mono uppercase tracking-wider text-[#747474] font-bold block mb-2">
                         Target Thickness:
                       </label>
                       <select
                         value={selectedThickness}
                         onChange={(e) => setSelectedThickness(e.target.value)}
-                        className="w-full bg-[#fcf8f1] border border-[#747474]/30 text-[#241919] p-3 text-sm focus:outline-none focus:border-[#241919]"
+                        className="w-full bg-white border border-[#747474]/30 rounded-sm text-[#241919] p-3.5 text-sm focus:outline-none focus:border-[#241919] transition-all cursor-pointer"
                       >
                         <option value="12mm (1/2 in)">12mm (1/2 in)</option>
                         <option value="15mm (5/8 in)">15mm (5/8 in)</option>
@@ -401,14 +384,14 @@ export default function SampleRequest() {
                     </div>
                   </div>
 
-                  <div>
-                    <label className="text-[10px] font-mono uppercase tracking-wider text-[#3e352a] font-bold block mb-1.5">
+                  <div className="pl-9 mt-4">
+                    <label className="text-[10px] font-mono uppercase tracking-wider text-[#747474] font-bold block mb-2">
                       Estimated Project Requirement: *
                     </label>
                     <select
                       value={estimatedVolume}
                       onChange={(e) => setEstimatedVolume(e.target.value)}
-                      className="w-full bg-[#fcf8f1] border border-[#747474]/30 text-[#241919] p-3 text-sm focus:outline-none focus:border-[#241919]"
+                      className="w-full bg-white border border-[#747474]/30 rounded-sm text-[#241919] p-3.5 text-sm focus:outline-none focus:border-[#241919] transition-all cursor-pointer"
                       required
                     >
                       <option value="Trial Sample Evaluation (< 200 sqm)">Trial Sample Evaluation (&lt; 200 sqm)</option>
@@ -421,24 +404,24 @@ export default function SampleRequest() {
                 </div>
 
                 {/* ── STEP 3: DESTINATION SEA PORT ── */}
-                <div className="space-y-4 pb-6 border-b border-[#747474]/15">
-                  <div className="flex items-center gap-2">
-                    <span className="w-5 h-5 rounded-full bg-[#241919] text-white font-mono text-xs flex items-center justify-center font-bold">
+                <div className="space-y-5 pb-8 border-b border-[#747474]/15">
+                  <div className="flex items-center gap-3">
+                    <span className="w-6 h-6 rounded-full bg-[#241919] text-white font-mono text-xs flex items-center justify-center font-bold">
                       3
                     </span>
-                    <h3 className="font-display text-xl font-medium text-[#241919]">
-                      Destination Sea Port (For CIF Freight Quotation)
+                    <h3 className="font-display text-2xl font-light text-[#241919] tracking-tight">
+                      Destination Sea Port <span className="text-[#747474] text-lg hidden sm:inline">(For CIF Freight Quotation)</span>
                     </h3>
                   </div>
 
-                  <div>
-                    <label className="text-[10px] font-mono uppercase tracking-wider text-[#3e352a] font-bold block mb-1.5">
+                  <div className="pl-9">
+                    <label className="text-[10px] font-mono uppercase tracking-wider text-[#747474] font-bold block mb-2">
                       Nearest Port of Discharge: *
                     </label>
                     <select
                       value={destinationPort}
                       onChange={(e) => setDestinationPort(e.target.value)}
-                      className="w-full bg-[#fcf8f1] border border-[#747474]/30 text-[#241919] p-3 text-sm focus:outline-none focus:border-[#241919]"
+                      className="w-full bg-white border border-[#747474]/30 rounded-sm text-[#241919] p-3.5 text-sm focus:outline-none focus:border-[#241919] transition-all cursor-pointer"
                       required
                     >
                       {DESTINATION_PORTS.map((p) => (
@@ -450,8 +433,8 @@ export default function SampleRequest() {
                   </div>
 
                   {destinationPort.includes("Other") && (
-                    <div>
-                      <label className="text-[10px] font-mono uppercase tracking-wider text-[#3e352a] font-bold block mb-1.5">
+                    <div className="pl-9 mt-4">
+                      <label className="text-[10px] font-mono uppercase tracking-wider text-[#747474] font-bold block mb-2">
                         Specify Your Target Port / City:
                       </label>
                       <input
@@ -459,7 +442,7 @@ export default function SampleRequest() {
                         placeholder="e.g. Port of Rotterdam, Netherlands"
                         value={customPort}
                         onChange={(e) => setCustomPort(e.target.value)}
-                        className="w-full bg-[#fcf8f1] border border-[#747474]/30 text-[#241919] p-3 text-sm focus:outline-none focus:border-[#241919]"
+                        className="w-full bg-white border border-[#747474]/30 rounded-sm text-[#241919] p-3.5 text-sm focus:outline-none focus:border-[#241919] transition-all"
                         required
                       />
                     </div>
@@ -467,122 +450,125 @@ export default function SampleRequest() {
                 </div>
 
                 {/* ── STEP 4: COMPANY & COURIER DISPATCH DETAILS ── */}
-                <div className="space-y-4">
-                  <div className="flex items-center gap-2">
-                    <span className="w-5 h-5 rounded-full bg-[#241919] text-white font-mono text-xs flex items-center justify-center font-bold">
+                <div className="space-y-5">
+                  <div className="flex items-center gap-3">
+                    <span className="w-6 h-6 rounded-full bg-[#241919] text-white font-mono text-xs flex items-center justify-center font-bold">
                       4
                     </span>
-                    <h3 className="font-display text-xl font-medium text-[#241919]">
-                      Company & Courier Delivery Information
+                    <h3 className="font-display text-2xl font-light text-[#241919] tracking-tight">
+                      Company & Courier Delivery
                     </h3>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 pl-9">
                     <div>
-                      <label className="text-[10px] font-mono uppercase tracking-wider text-[#3e352a] font-bold block mb-1.5">
-                        Company / Architectural Practice: *
+                      <label className="text-[10px] font-mono uppercase tracking-wider text-[#747474] font-bold block mb-2">
+                        Company / Practice: *
                       </label>
                       <input
                         type="text"
-                        placeholder="e.g. Studio Arc Australia / Stone Direct Ltd"
+                        placeholder="e.g. Studio Arc / Stone Direct"
                         value={companyName}
                         onChange={(e) => setCompanyName(e.target.value)}
-                        className="w-full bg-[#fcf8f1] border border-[#747474]/30 text-[#241919] p-3 text-sm focus:outline-none focus:border-[#241919]"
+                        className="w-full bg-white border border-[#747474]/30 rounded-sm text-[#241919] p-3.5 text-sm focus:outline-none focus:border-[#241919] transition-all"
                         required
                       />
                     </div>
 
                     <div>
-                      <label className="text-[10px] font-mono uppercase tracking-wider text-[#3e352a] font-bold block mb-1.5">
-                        Contact Person Name: *
+                      <label className="text-[10px] font-mono uppercase tracking-wider text-[#747474] font-bold block mb-2">
+                        Contact Person: *
                       </label>
                       <input
                         type="text"
                         placeholder="e.g. David Henderson"
                         value={contactName}
                         onChange={(e) => setContactName(e.target.value)}
-                        className="w-full bg-[#fcf8f1] border border-[#747474]/30 text-[#241919] p-3 text-sm focus:outline-none focus:border-[#241919]"
+                        className="w-full bg-white border border-[#747474]/30 rounded-sm text-[#241919] p-3.5 text-sm focus:outline-none focus:border-[#241919] transition-all"
                         required
                       />
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 pl-9 mt-4">
                     <div>
-                      <label className="text-[10px] font-mono uppercase tracking-wider text-[#3e352a] font-bold block mb-1.5">
-                        Corporate Email Address: *
+                      <label className="text-[10px] font-mono uppercase tracking-wider text-[#747474] font-bold block mb-2">
+                        Corporate Email: *
                       </label>
                       <input
                         type="email"
-                        placeholder="e.g. procurement@studioarc.com"
+                        placeholder="e.g. hello@studioarc.com"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="w-full bg-[#fcf8f1] border border-[#747474]/30 text-[#241919] p-3 text-sm focus:outline-none focus:border-[#241919]"
+                        className="w-full bg-white border border-[#747474]/30 rounded-sm text-[#241919] p-3.5 text-sm focus:outline-none focus:border-[#241919] transition-all"
                         required
                       />
                     </div>
 
                     <div>
-                      <label className="text-[10px] font-mono uppercase tracking-wider text-[#3e352a] font-bold block mb-1.5">
-                        Phone / WhatsApp (with Country Code): *
+                      <label className="text-[10px] font-mono uppercase tracking-wider text-[#747474] font-bold block mb-2">
+                        Phone / WhatsApp: *
                       </label>
                       <input
                         type="tel"
                         placeholder="e.g. +61 412 345 678"
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
-                        className="w-full bg-[#fcf8f1] border border-[#747474]/30 text-[#241919] p-3 text-sm focus:outline-none focus:border-[#241919]"
+                        className="w-full bg-white border border-[#747474]/30 rounded-sm text-[#241919] p-3.5 text-sm focus:outline-none focus:border-[#241919] transition-all"
                         required
                       />
                     </div>
                   </div>
 
-                  <div>
-                    <label className="text-[10px] font-mono uppercase tracking-wider text-[#3e352a] font-bold block mb-1.5">
-                      Sample Delivery Street Address (For DHL / FedEx Express): *
+                  <div className="pl-9 mt-4">
+                    <label className="text-[10px] font-mono uppercase tracking-wider text-[#747474] font-bold block mb-2">
+                      Sample Delivery Street Address (For DHL / FedEx): *
                     </label>
                     <textarea
                       rows={2}
                       placeholder="Suite 402, Level 4, 120 Collins Street, Melbourne VIC 3000, Australia"
                       value={courierAddress}
                       onChange={(e) => setCourierAddress(e.target.value)}
-                      className="w-full bg-[#fcf8f1] border border-[#747474]/30 text-[#241919] p-3 text-sm focus:outline-none focus:border-[#241919]"
+                      className="w-full bg-white border border-[#747474]/30 rounded-sm text-[#241919] p-3.5 text-sm focus:outline-none focus:border-[#241919] transition-all resize-none"
                       required
                     />
                   </div>
 
-                  <div>
-                    <label className="text-[10px] font-mono uppercase tracking-wider text-[#3e352a] font-bold block mb-1.5">
-                      Specific Architectural Requirements / Edge Profiles (Optional):
+                  <div className="pl-9 mt-4">
+                    <label className="text-[10px] font-mono uppercase tracking-wider text-[#747474] font-bold block mb-2">
+                      Specific Architectural Requirements (Optional):
                     </label>
                     <textarea
                       rows={2}
-                      placeholder="e.g. Looking for pool coping pieces with bullnose edge profiles and matching outdoor pavers."
+                      placeholder="e.g. Looking for pool coping pieces with bullnose edge profiles."
                       value={projectNotes}
                       onChange={(e) => setProjectNotes(e.target.value)}
-                      className="w-full bg-[#fcf8f1] border border-[#747474]/30 text-[#241919] p-3 text-sm focus:outline-none focus:border-[#241919]"
+                      className="w-full bg-white border border-[#747474]/30 rounded-sm text-[#241919] p-3.5 text-sm focus:outline-none focus:border-[#241919] transition-all resize-none"
                     />
                   </div>
                 </div>
 
                 {/* ── SUBMIT BUTTON ── */}
-                <div className="pt-4">
+                <div className="pt-6 pl-9">
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full p-4 bg-[#241919] hover:bg-[#3e352a] text-white text-[11.5px] font-mono uppercase tracking-[0.22em] font-semibold transition-all shadow-md cursor-pointer flex items-center justify-center gap-3 disabled:opacity-50"
+                    className="w-full p-4 rounded-sm bg-[#241919] hover:bg-[#3e352a] text-white text-[11.5px] font-mono uppercase tracking-[0.22em] font-bold transition-all shadow-sm cursor-pointer flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isSubmitting ? (
-                      <span>Queuing Express Dispatch...</span>
+                      <span className="flex items-center gap-2">
+                        <span className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        Queuing Express Dispatch...
+                      </span>
                     ) : (
                       <>
                         <span>Submit Sample Kit Dispatch Request</span>
-                        <span className="text-base">→</span>
+                        <span className="text-base font-normal">→</span>
                       </>
                     )}
                   </button>
-                  <p className="text-[10px] font-mono text-[#747474] text-center mt-2.5">
-                    🔒 Compliant with ISO 9001:2015 standards. Dispatched directly from Markapur factory within 48-72 hours.
+                  <p className="text-[10px] font-mono text-[#747474] text-center mt-4 flex items-center justify-center gap-1.5">
+                    <span>🔒</span> Compliant with ISO 9001:2015 standards. Dispatched directly from our factory within 48-72 hours.
                   </p>
                 </div>
 
@@ -592,14 +578,14 @@ export default function SampleRequest() {
           </div>
 
           {/* ── RIGHT COLUMN: INTERACTIVE SAMPLE ATELIER BOX VISUALIZER (5 Cols) ── */}
-          <div className="lg:col-span-5 space-y-6">
+          <div className="lg:col-span-5 space-y-6 sticky top-24">
             
             {/* 3D-Feel Luxury Curated Sample Box Visualizer */}
-            <div className="bg-white border border-[#747474]/20 p-6 sm:p-8 shadow-sm">
-              <div className="flex items-center justify-between pb-3.5 mb-4 border-b border-[#747474]/15">
-                <span className="text-[9.5px] font-mono uppercase tracking-wider text-[#514a38] font-bold flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-[#514a38] animate-pulse" />
-                  LIVE ATELIER SPECIMEN
+            <div className="bg-white border border-[#747474]/15 rounded-sm p-6 sm:p-8 shadow-sm">
+              <div className="flex items-center justify-between pb-4 mb-5 border-b border-[#747474]/15">
+                <span className="text-[9.5px] font-mono uppercase tracking-wider text-[#514a38] font-bold flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#514a38]" />
+                  SELECTED SPECIMEN
                 </span>
                 <span className="text-[10px] font-mono text-[#747474]">
                   {currentSpecimen.origin}
@@ -608,39 +594,40 @@ export default function SampleRequest() {
 
               {/* Dynamic Live Specimen Tile (Changes in Real Time) */}
               <div
-                className="w-full h-44 mb-4 border border-black/20 shadow-inner flex flex-col justify-between p-4 relative overflow-hidden transition-all duration-500"
+                className="w-full h-48 mb-5 rounded-none border border-black/20 shadow-inner flex flex-col justify-between p-4 relative overflow-hidden transition-all duration-500"
                 style={{ background: currentSpecimen.gradient }}
               >
-                <div className="flex justify-between items-start">
-                  <span className="text-[9px] font-mono uppercase px-2 py-1 bg-black/70 text-white backdrop-blur-xs">
+                
+                <div className="flex justify-between items-start relative z-10">
+                  <span className="text-[9px] font-mono uppercase px-2.5 py-1 rounded-sm bg-black/70 text-white backdrop-blur-sm border border-white/10">
                     {selectedFinish}
                   </span>
-                  <span className="text-[9px] font-mono uppercase px-2 py-1 bg-[#d8c3a5] text-[#241919] font-bold">
+                  <span className="text-[9px] font-mono uppercase px-2.5 py-1 rounded-sm bg-white text-[#0a0a0a] font-bold shadow-md">
                     {selectedThickness.split(" ")[0]}
                   </span>
                 </div>
 
-                <div className="bg-black/75 backdrop-blur-xs p-3 text-white">
+                <div className="relative z-10 bg-black/75 backdrop-blur-sm p-3 inline-block self-start border border-white/10 text-white">
                   <span className="text-sm font-mono font-bold block leading-tight">
                     {currentSpecimen.name}
                   </span>
-                  <span className="text-[9.5px] font-mono text-[#d8c3a5] block mt-0.5">
-                    Quarry Division: {currentSpecimen.division}
+                  <span className="text-[10px] font-mono text-[#94a3b8] block mt-1 uppercase tracking-widest">
+                    {currentSpecimen.category} · {currentSpecimen.division}
                   </span>
                 </div>
               </div>
 
               {/* Live Specimen Summary Details */}
-              <div className="p-3.5 bg-[#fcf8f1] border border-[#747474]/15 text-xs font-mono space-y-1.5 text-[#454545]">
-                <div className="flex justify-between">
+              <div className="p-4 rounded-sm bg-[#f8fafc] border border-[#747474]/15 text-xs font-mono space-y-2.5 text-[#454545]">
+                <div className="flex justify-between items-center">
                   <span className="text-[#747474]">Target Port:</span>
-                  <span className="font-bold text-[#241919]">{destinationPort.split("(")[0]}</span>
+                  <span className="font-medium text-[#241919] max-w-[60%] text-right truncate">{destinationPort.split("(")[0]}</span>
                 </div>
-                <div className="flex justify-between">
+                <div className="flex justify-between items-center">
                   <span className="text-[#747474]">Project Scope:</span>
-                  <span className="font-bold text-[#241919]">{estimatedVolume.split("(")[0]}</span>
+                  <span className="font-medium text-[#241919] max-w-[60%] text-right truncate">{estimatedVolume.split("(")[0]}</span>
                 </div>
-                <div className="flex justify-between">
+                <div className="flex justify-between items-center pt-1 border-t border-[#747474]/15">
                   <span className="text-[#747474]">Air Courier:</span>
                   <span className="font-bold text-[#514a38]">DHL / FedEx Priority</span>
                 </div>
@@ -648,47 +635,67 @@ export default function SampleRequest() {
             </div>
 
             {/* What is Included Inside the Pavan Groups Sample Box */}
-            <div className="bg-[#241919] text-white p-6 sm:p-8 shadow-md">
-              <span className="text-[9.5px] font-mono uppercase tracking-[0.24em] text-[#d8c3a5] font-bold block mb-2">
-                EXPRESS SAMPLE KIT CONTENTS
-              </span>
-              <h4 className="font-display text-xl sm:text-2xl font-light text-white mb-4">
-                What's Inside Your Atelier Sample Box
-              </h4>
+            <div className="bg-[#f8fafc] border border-[#747474]/20 rounded-sm p-8 shadow-sm">
+              <div className="mb-6 border-b border-[#747474]/15 pb-6">
+                <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#747474] font-bold block mb-2">
+                  EXPRESS SAMPLE KIT CONTENTS
+                </span>
+                <h4 className="font-display text-3xl font-light text-[#241919]">
+                  What's Inside Your Box
+                </h4>
+              </div>
 
-              <ul className="space-y-3 text-xs text-white/85 font-light">
-                <li className="flex items-start gap-2.5">
-                  <span className="text-[#d8c3a5] font-bold mt-0.5">✔</span>
-                  <span><strong>3x Calibrated Stone Specimens</strong> (150x150mm genuine quarry cut samples).</span>
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <span className="text-[#d8c3a5] font-bold mt-0.5">✔</span>
-                  <span><strong>Multi-Finish Surface Swatch Deck</strong> (Cleft, Honed, Polished & Tumbled).</span>
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <span className="text-[#d8c3a5] font-bold mt-0.5">✔</span>
-                  <span><strong>Full ASTM & ISO Physical Test Reports</strong> (Density, Compressive Strength, Slip R-ratings).</span>
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <span className="text-[#d8c3a5] font-bold mt-0.5">✔</span>
-                  <span><strong>Customized FOB & CIF Pricing Schedule</strong> calculated for your discharge sea port.</span>
-                </li>
-              </ul>
+              <div className="space-y-6">
+                <div className="flex gap-4 items-start">
+                  <span className="text-[#514a38]/60 font-mono text-sm leading-none pt-0.5">01</span>
+                  <div>
+                    <strong className="block text-[12px] text-[#241919] uppercase tracking-wider font-bold mb-1">3x Calibrated Specimens</strong>
+                    <span className="text-[14px] text-[#747474] font-light leading-snug">150x150mm genuine quarry cut samples in your selected finish.</span>
+                  </div>
+                </div>
+                
+                <div className="flex gap-4 items-start">
+                  <span className="text-[#514a38]/60 font-mono text-sm leading-none pt-0.5">02</span>
+                  <div>
+                    <strong className="block text-[12px] text-[#241919] uppercase tracking-wider font-bold mb-1">Multi-Finish Swatch Deck</strong>
+                    <span className="text-[14px] text-[#747474] font-light leading-snug">Physical reference cards for Cleft, Honed, Polished & Tumbled finishes.</span>
+                  </div>
+                </div>
 
-              <div className="mt-6 pt-4 border-t border-white/15 flex items-center justify-between text-[10px] font-mono text-white/70">
-                <span>DHL Express Dispatch</span>
-                <span className="text-[#d8c3a5] font-bold">48-72 Hour Delivery</span>
+                <div className="flex gap-4 items-start">
+                  <span className="text-[#514a38]/60 font-mono text-sm leading-none pt-0.5">03</span>
+                  <div>
+                    <strong className="block text-[12px] text-[#241919] uppercase tracking-wider font-bold mb-1">ASTM Test Reports</strong>
+                    <span className="text-[14px] text-[#747474] font-light leading-snug">Certified documentation for Density, Compressive Strength & Slip Ratings.</span>
+                  </div>
+                </div>
+
+                <div className="flex gap-4 items-start">
+                  <span className="text-[#514a38]/60 font-mono text-sm leading-none pt-0.5">04</span>
+                  <div>
+                    <strong className="block text-[12px] text-[#241919] uppercase tracking-wider font-bold mb-1">FOB & CIF Pricing Schedule</strong>
+                    <span className="text-[14px] text-[#747474] font-light leading-snug">Calculated logistics data tailored to your specific discharge sea port.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-8 pt-5 border-t border-[#747474]/15 flex items-center justify-between text-[10px] font-mono text-[#747474]">
+                <span className="uppercase tracking-wider">DHL Priority Dispatch</span>
+                <span className="font-bold tracking-widest text-[#241919]">48-72 HOUR DELIVERY</span>
               </div>
             </div>
 
             {/* Direct Export WhatsApp Hotline */}
-            <div className="p-5 bg-white border border-[#747474]/20 flex items-center justify-between gap-4">
+            <div className="p-5 bg-white border border-[#747474]/20 rounded-sm shadow-sm flex items-center justify-between gap-4">
               <div>
-                <span className="text-[9px] font-mono uppercase tracking-wider text-[#747474] block font-bold">
-                  DIRECT EXPORT DESK HOTLINE:
+                <span className="text-[9px] font-mono uppercase tracking-widest text-[#747474] block font-bold mb-1">
+                  DIRECT EXPORT DESK:
                 </span>
-                <span className="text-xs font-mono font-bold text-[#241919]">
-                  +91 94402 71559 · export@pavangroups.com
+                <span className="text-xs font-mono font-bold text-[#241919] block">
+                  +91 94402 71559
+                </span>
+                <span className="text-[10px] font-mono text-[#747474]">
+                  export@pavangroups.com
                 </span>
               </div>
 
@@ -696,7 +703,7 @@ export default function SampleRequest() {
                 href="https://wa.me/919440271559?text=Hello%2C%20I%20would%20like%20to%20request%20natural%20stone%20samples%20from%20Pavan%20Groups."
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-3.5 py-2 bg-[#25D366] hover:bg-[#20ba59] text-white text-[9.5px] font-mono uppercase tracking-wider font-bold shadow-xs transition-all flex-none flex items-center gap-1.5"
+                className="px-4 py-2.5 rounded-sm bg-[#25D366] hover:bg-[#20ba59] text-white text-[10px] font-mono uppercase tracking-widest font-bold shadow-sm transition-all flex-none flex items-center gap-2"
               >
                 <span>WhatsApp</span>
                 <span>↗</span>

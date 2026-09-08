@@ -7,30 +7,30 @@
 
 /* ─── Design tokens (Luminous Stone Palette) ─────────────────────── */
 :root {
-  --white:        #fcf8f1;
-  --white-pure:   #ffffff;
-  --sand:         #f2ece2;
-  --sand-dark:    #e8dfd3;
-  --sand-light:   #faf5ec;
-  --wine:         #431616;
-  --wine-deep:    #190806;
-  --wine-mid:     #2d0e0e;
-  --ink:          #241919;
-  --ink-secondary:#454545;
-  --ink-muted:    #747474;
-  --stone-dark:   #241919;
-  --stone-earth:  #3e352a;
-  --stone-olive:  #514a38;
-  --stone-body:   #454545;
-  --stone-muted:  #747474;
-  --coral:        #ff443a;
-  --coral-hover:  #e6352b;
-  --coral-soft:   rgba(255, 68, 58, 0.08);
+  --white: #f8fafc;
+  --white-pure: #ffffff;
+  --sand: #f2ece2;
+  --sand-dark: #e8dfd3;
+  --sand-light: #faf5ec;
+  --wine: #431616;
+  --wine-deep: #190806;
+  --wine-mid: #2d0e0e;
+  --ink: #241919;
+  --ink-secondary: #454545;
+  --ink-muted: #747474;
+  --stone-dark: #241919;
+  --stone-earth: #3e352a;
+  --stone-olive: #514a38;
+  --stone-body: #454545;
+  --stone-muted: #747474;
+  --coral: #c85a32;
+  --coral-hover: #a84a27;
+  --coral-soft: rgba(255, 68, 58, 0.08);
   --coral-border: rgba(255, 68, 58, 0.25);
   --border-light: rgba(20, 13, 10, 0.08);
-  --border-mid:   rgba(20, 13, 10, 0.15);
-  --ease-out:     cubic-bezier(0.16, 1, 0.3, 1);
-  --ease:         cubic-bezier(0.22, 0.61, 0.36, 1);
+  --border-mid: rgba(20, 13, 10, 0.15);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 html {
@@ -54,22 +54,62 @@ body {
 }
 
 /* Lenis smooth scroll */
-html.lenis, html.lenis body { height: auto; }
-.lenis.lenis-smooth { scroll-behavior: auto !important; }
-.lenis.lenis-stopped { overflow: hidden; }
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
 
 /* ─── Grain ────────────────────────────────────────────────────── */
 @keyframes grain {
-  0%, 100% { transform: translate(0, 0); }
-  10%       { transform: translate(-2%, -2%); }
-  20%       { transform: translate(2%, 1%); }
-  30%       { transform: translate(-1%, 3%); }
-  40%       { transform: translate(3%, -1%); }
-  50%       { transform: translate(-2%, 2%); }
-  60%       { transform: translate(2%, -3%); }
-  70%       { transform: translate(-3%, 1%); }
-  80%       { transform: translate(1%, -2%); }
-  90%       { transform: translate(-1%, 3%); }
+
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+
+  10% {
+    transform: translate(-2%, -2%);
+  }
+
+  20% {
+    transform: translate(2%, 1%);
+  }
+
+  30% {
+    transform: translate(-1%, 3%);
+  }
+
+  40% {
+    transform: translate(3%, -1%);
+  }
+
+  50% {
+    transform: translate(-2%, 2%);
+  }
+
+  60% {
+    transform: translate(2%, -3%);
+  }
+
+  70% {
+    transform: translate(-3%, 1%);
+  }
+
+  80% {
+    transform: translate(1%, -2%);
+  }
+
+  90% {
+    transform: translate(-1%, 3%);
+  }
 }
 
 .grain {
@@ -87,21 +127,43 @@ html.lenis, html.lenis body { height: auto; }
 
 /* ─── Fast Snappy Hero animations (Immediately after preloader) ──────── */
 @keyframes fadeUpHero {
-  from { opacity: 0; transform: translateY(22px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.hero-anim-1 { animation: fadeUpHero 0.7s var(--ease-out) 0.1s both; }
-.hero-anim-2 { animation: fadeUpHero 0.8s var(--ease-out) 0.25s both; }
-.hero-anim-3 { animation: fadeUpHero 0.8s var(--ease-out) 0.4s both; }
-.hero-anim-4 { animation: fadeUpHero 0.7s var(--ease-out) 0.55s both; }
-.hero-anim-5 { animation: fadeUpHero 0.7s var(--ease-out) 0.7s both; }
+.hero-anim-1 {
+  animation: fadeUpHero 0.7s var(--ease-out) 0.1s both;
+}
+
+.hero-anim-2 {
+  animation: fadeUpHero 0.8s var(--ease-out) 0.25s both;
+}
+
+.hero-anim-3 {
+  animation: fadeUpHero 0.8s var(--ease-out) 0.4s both;
+}
+
+.hero-anim-4 {
+  animation: fadeUpHero 0.7s var(--ease-out) 0.55s both;
+}
+
+.hero-anim-5 {
+  animation: fadeUpHero 0.7s var(--ease-out) 0.7s both;
+}
 
 /* ─── Diamond Shining Effect ─────────────────────────────────────── */
 @keyframes diamondShine {
   0% {
     transform: translateX(-150%) rotate(25deg);
   }
+
   100% {
     transform: translateX(250%) rotate(25deg);
   }
@@ -112,8 +174,18 @@ html.lenis, html.lenis body { height: auto; }
 }
 
 @keyframes sparkleGlow {
-  0%, 100% { opacity: 0.3; transform: scale(0.8) rotate(0deg); }
-  50% { opacity: 1; transform: scale(1.2) rotate(45deg); filter: drop-shadow(0 0 8px rgba(255,255,255,0.9)); }
+
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(0.8) rotate(0deg);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.2) rotate(45deg);
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.9));
+  }
 }
 
 .sparkle-anim {
@@ -122,17 +194,34 @@ html.lenis, html.lenis body { height: auto; }
 
 /* ─── Marquee ──────────────────────────────────────────────────── */
 @keyframes marquee {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
 }
+
 .marquee-track {
   animation: marquee 28s linear infinite;
   will-change: transform;
 }
 
 /* ─── Scrollbar ────────────────────────────────────────────────── */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: var(--sand); }
-::-webkit-scrollbar-thumb { background: #8b4513; border-radius: 2px; }
+::-webkit-scrollbar {
+  width: 4px;
+}
 
-.num-counter { font-variant-numeric: tabular-nums; }
+::-webkit-scrollbar-track {
+  background: var(--sand);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #0f172a;
+  border-radius: 2px;
+}
+
+.num-counter {
+  font-variant-numeric: tabular-nums;
+}

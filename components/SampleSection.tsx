@@ -23,8 +23,8 @@ export default function SampleSection() {
         
         {/* Subtle Eyebrow */}
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white/10 border border-white/15 backdrop-blur-xs">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#d8c3a5] animate-pulse" />
-          <span className="text-[9.5px] font-mono tracking-[0.24em] uppercase font-bold text-[#d8c3a5]">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#94a3b8] animate-pulse" />
+          <span className="text-[9.5px] font-mono tracking-[0.24em] uppercase font-bold text-[#94a3b8]">
             DIRECT FACTORY SUPPLY & EXPORT
           </span>
         </div>
@@ -48,7 +48,7 @@ export default function SampleSection() {
           {/* Button 1: Request Sample (Links to /request-sample) */}
           <Link
             href="/request-sample"
-            className="inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-[#d8c3a5] hover:bg-[#c9b08f] text-[#1e1614] text-[11px] font-mono uppercase tracking-[0.22em] font-bold transition-all shadow-lg hover:translate-y-[-1px] cursor-pointer"
+            className="inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-[#94a3b8] hover:bg-[#c9b08f] text-[#1e1614] text-[11px] font-mono uppercase tracking-[0.22em] font-bold transition-all shadow-lg hover:translate-y-[-1px] cursor-pointer"
           >
             <span>REQUEST SAMPLE</span>
             <span className="text-sm">→</span>
@@ -56,7 +56,7 @@ export default function SampleSection() {
 
           {/* Button 2: Contact Us (Links to #contact) */}
           <Link
-            href="/#contact"
+            href="/contact"
             className="inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-transparent hover:bg-white/10 border border-white/30 text-white text-[11px] font-mono uppercase tracking-[0.22em] font-semibold transition-all hover:border-white cursor-pointer"
           >
             <span>CONTACT US</span>

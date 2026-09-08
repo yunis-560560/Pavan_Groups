@@ -14,200 +14,8 @@ import {
   ChevronDown,
   ChevronUp,
 } from "lucide-react";
+import { PRODUCTS_DATABASE, ProductStone } from "@/lib/productsData";
 
-interface ProductStone {
-  id: string;
-  name: string;
-  company: "Pavan Impex" | "Sai Balaji Impex" | "Pavan Granite";
-  companySlug: string;
-  category: "slate" | "limestone" | "granite" | "cladding" | "pavers";
-  area: ("elevation" | "flooring" | "pool" | "countertop" | "driveway")[];
-  finish: string;
-  color: string;
-  availableSizes: string[];
-  thickness: string;
-  availableFinishes: string[];
-  gradient: string;
-  description: string;
-  origin: string;
-  density: string;
-  compressive: string;
-  waterAbs: string;
-}
-
-const PRODUCTS_DATABASE: ProductStone[] = [
-  {
-    id: "markapur-black-slate",
-    name: "Markapur Midnight Black Slate",
-    company: "Pavan Impex",
-    companySlug: "pavan-impex",
-    category: "slate",
-    area: ["elevation", "flooring"],
-    finish: "Natural Cleft",
-    color: "Midnight Black",
-    availableSizes: ["600x300 mm", "600x600 mm", "300x300 mm", "1200x600 mm"],
-    thickness: "12 - 15 mm (±1mm)",
-    availableFinishes: ["Natural Cleft", "Honed Matte", "Brushed", "Tumbled"],
-    gradient: "linear-gradient(135deg, #1c1f24 0%, #2f343d 50%, #131518 100%)",
-    description: "Extracted directly from Markapur reserves with authentic hand-split clefted texture, ideal for luxury exterior rainscreen cladding and interior accents.",
-    origin: "Markapur, Andhra Pradesh",
-    density: "2,780 kg/m³",
-    compressive: "165 MPa",
-    waterAbs: "0.24%",
-  },
-  {
-    id: "black-galaxy-granite",
-    name: "Chimakurthy Black Galaxy Granite",
-    company: "Pavan Granite",
-    companySlug: "pavan-granite",
-    category: "granite",
-    area: ["countertop", "flooring", "elevation"],
-    finish: "95+ Mirror Polish",
-    color: "Gold Bronzite",
-    availableSizes: ["Jumbo Gangsaw Slabs", "1200x600 mm", "600x600 mm", "600x300 mm"],
-    thickness: "20 mm / 30 mm / 40 mm",
-    availableFinishes: ["95+ Mirror Polish", "Honed Matte", "Leathered Velvet", "Flamed"],
-    gradient: "linear-gradient(135deg, #090a0c 0%, #221f17 50%, #040506 100%)",
-    description: "World-famous star galaxy igneous granite containing golden-yellow bronzite crystals embedded in a mirror-polished pitch-black matrix.",
-    origin: "Chimakurthy, Andhra Pradesh",
-    density: "2,980 kg/m³",
-    compressive: "210 MPa",
-    waterAbs: "0.08%",
-  },
-  {
-    id: "cuddapah-black-limestone",
-    name: "Cuddapah Calcareous Limestone",
-    company: "Sai Balaji Impex",
-    companySlug: "sai-balaji-impex",
-    category: "limestone",
-    area: ["pool", "flooring", "driveway"],
-    finish: "Anti-Skid R11",
-    color: "Midnight Black",
-    availableSizes: ["600x600 mm", "600x300 mm", "200x100 mm Pavers", "300x300 mm"],
-    thickness: "20 mm / 25 mm / 30 mm",
-    availableFinishes: ["Anti-Skid R11", "Natural Cleft", "Honed", "Tumbled Antique"],
-    gradient: "linear-gradient(135deg, #2b2823 0%, #443c33 50%, #1c1915 100%)",
-    description: "Fine-grained, heavy-duty calcareous calcrete stone engineered for pool copings and outdoor terraces, remaining cool under intense sun.",
-    origin: "Cuddapah, Andhra Pradesh",
-    density: "2,620 kg/m³",
-    compressive: "148 MPa",
-    waterAbs: "0.38%",
-  },
-  {
-    id: "indian-autumn-slate",
-    name: "Indian Autumn Rustic Slate",
-    company: "Pavan Impex",
-    companySlug: "pavan-impex",
-    category: "slate",
-    area: ["elevation", "flooring"],
-    finish: "Natural Cleft",
-    color: "Autumn Copper",
-    availableSizes: ["600x300 mm", "300x300 mm", "600x600 mm"],
-    thickness: "12 - 15 mm (±1mm)",
-    availableFinishes: ["Natural Cleft", "Honed Matte", "Rustic Antique"],
-    gradient: "linear-gradient(135deg, #532f1f 0%, #7d4428 50%, #3a1f13 100%)",
-    description: "Rich copper, terracotta, and dark slate variegations delivering organic warmth to exterior feature walls and patio walk areas.",
-    origin: "Markapur Belt, Andhra Pradesh",
-    density: "2,740 kg/m³",
-    compressive: "158 MPa",
-    waterAbs: "0.32%",
-  },
-  {
-    id: "3d-stacked-ledger",
-    name: "3D Interlocking Slate Ledger",
-    company: "Pavan Impex",
-    companySlug: "pavan-impex",
-    category: "cladding",
-    area: ["elevation"],
-    finish: "3D Ledger Relief",
-    color: "Midnight Black",
-    availableSizes: ["600x150 mm", "600x300 mm", "Z-Shape Corner Sets"],
-    thickness: "15 - 25 mm Relief",
-    availableFinishes: ["3D Natural Split", "Layered Relief", "Interlocking"],
-    gradient: "linear-gradient(135deg, #151618 0%, #2b2c31 40%, #0e0f11 100%)",
-    description: "Precision Z-shape mesh-backed ledger panels assembled from stepped slate strips for seamless architectural column and facade cladding.",
-    origin: "Markapur, Andhra Pradesh",
-    density: "2,760 kg/m³",
-    compressive: "160 MPa",
-    waterAbs: "0.28%",
-  },
-  {
-    id: "tumbled-limestone-paver",
-    name: "Tumbled Calcareous Pavers",
-    company: "Sai Balaji Impex",
-    companySlug: "sai-balaji-impex",
-    category: "pavers",
-    area: ["driveway", "pool", "flooring"],
-    finish: "Tumbled Antique",
-    color: "Midnight Black",
-    availableSizes: ["200x100 mm Pavers", "300x300 mm", "140x140 mm Cobbles"],
-    thickness: "30 mm / 40 mm / 50 mm",
-    availableFinishes: ["Tumbled Antique", "Hand-Chiseled Edge", "Flamed Top"],
-    gradient: "linear-gradient(135deg, #383e46 0%, #4f5762 50%, #24282d 100%)",
-    description: "Aged tumbled edges with soft antique texture for vehicular driveways, courtyard plazas, and pool surrounds.",
-    origin: "Cuddapah, Andhra Pradesh",
-    density: "2,640 kg/m³",
-    compressive: "152 MPa",
-    waterAbs: "0.35%",
-  },
-  {
-    id: "california-gold-slate",
-    name: "California Gold Natural Slate",
-    company: "Pavan Impex",
-    companySlug: "pavan-impex",
-    category: "slate",
-    area: ["elevation", "flooring"],
-    finish: "Natural Cleft",
-    color: "California Gold",
-    availableSizes: ["600x300 mm", "600x600 mm", "300x300 mm"],
-    thickness: "12 - 15 mm (±1mm)",
-    availableFinishes: ["Natural Cleft", "Honed Matte", "Brushed Satin"],
-    gradient: "linear-gradient(135deg, #6c471c 0%, #96692f 50%, #442a0e 100%)",
-    description: "Golden bronze, ochre, and shimmering mica flecks running through deep slate stratum for luxury hotel lobbies and facade accents.",
-    origin: "Markapur, Andhra Pradesh",
-    density: "2,750 kg/m³",
-    compressive: "162 MPa",
-    waterAbs: "0.30%",
-  },
-  {
-    id: "steel-grey-granite",
-    name: "Steel Grey Architectural Granite",
-    company: "Pavan Granite",
-    companySlug: "pavan-granite",
-    category: "granite",
-    area: ["countertop", "flooring", "elevation"],
-    finish: "Leathered Velvet",
-    color: "Lime Blue",
-    availableSizes: ["Jumbo Gangsaw Slabs", "1200x600 mm", "600x600 mm"],
-    thickness: "20 mm / 30 mm",
-    availableFinishes: ["Leathered Velvet", "95+ Polish", "Honed", "Flamed"],
-    gradient: "linear-gradient(135deg, #2e3842 0%, #475564 50%, #1e242b 100%)",
-    description: "Consistent medium-grey crystalline granite available in leathered and flamed finishes for heavy commercial floor installations.",
-    origin: "Prakasam, Andhra Pradesh",
-    density: "2,940 kg/m³",
-    compressive: "200 MPa",
-    waterAbs: "0.10%",
-  },
-  {
-    id: "lime-yellow-stone",
-    name: "Lime Yellow Calcareous Stone",
-    company: "Sai Balaji Impex",
-    companySlug: "sai-balaji-impex",
-    category: "limestone",
-    area: ["pool", "flooring"],
-    finish: "Honed Matte",
-    color: "Lime Yellow",
-    availableSizes: ["600x600 mm", "600x300 mm", "300x300 mm"],
-    thickness: "20 mm / 25 mm",
-    availableFinishes: ["Honed Matte", "Natural Cleft", "Tumbled Antique", "Brushed"],
-    gradient: "linear-gradient(135deg, #7c6433 0%, #a48a4c 50%, #524220 100%)",
-    description: "Sunlit desert gold and warm butterscotch tone for Mediterranean and tropical resort courtyards.",
-    origin: "Tandur / Cuddapah Belt",
-    density: "2,580 kg/m³",
-    compressive: "135 MPa",
-    waterAbs: "0.55%",
-  },
-];
 
 function ProductsContent() {
   const searchParams = useSearchParams();
@@ -437,20 +245,6 @@ function ProductsContent() {
       {/* ── BREADCRUMB & HEADER SECTION ── */}
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 mb-8">
         
-        {/* Breadcrumb Navigation */}
-        <div className="flex items-center gap-2 text-xs font-sans text-[#747474] mb-4">
-          <Link href="/" className="hover:text-[#241919] transition-colors">
-            Home
-          </Link>
-          <span>›</span>
-          <span className="text-[#241919] font-medium">Natural Stones & Tiles</span>
-        </div>
-
-        {/* Counter */}
-        <p className="text-xs font-mono uppercase tracking-[0.16em] text-[#747474] mb-2 font-medium">
-          Showing {filteredProducts.length * 12 + 24} results ({filteredProducts.length} verified quarry specimens)
-        </p>
-
         {/* Title */}
         <h1
           className="font-display font-light text-[#241919] leading-[1.04] tracking-[-0.015em] mb-4"
@@ -478,7 +272,7 @@ function ProductsContent() {
           <button
             type="button"
             onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
-            className="text-[#8b4513] font-medium text-xs hover:underline mt-2 inline-block cursor-pointer"
+            className="text-[#0f172a] font-medium text-xs hover:underline mt-2 inline-block cursor-pointer"
           >
             {isDescriptionExpanded ? "Read Less" : "Read More"}
           </button>
@@ -509,7 +303,7 @@ function ProductsContent() {
               <button
                 type="button"
                 onClick={clearAllFilters}
-                className="text-xs font-sans font-semibold text-[#8b4513] hover:underline ml-2 cursor-pointer"
+                className="text-xs font-sans font-semibold text-[#0f172a] hover:underline ml-2 cursor-pointer"
               >
                 Clear All Filters X
               </button>
@@ -567,7 +361,7 @@ function ProductsContent() {
             <button
               type="button"
               onClick={clearAllFilters}
-              className="w-full py-3 bg-[#241919] hover:bg-[#3e352a] text-[#f7f2ea] text-xs font-sans font-semibold uppercase tracking-wider rounded-md shadow-xs transition-all cursor-pointer"
+              className="w-full py-3 bg-[#241919] hover:bg-[#3e352a] text-[#f1f5f9] text-xs font-sans font-semibold uppercase tracking-wider rounded-md shadow-xs transition-all cursor-pointer"
             >
               Clear All Filters
             </button>
@@ -751,7 +545,7 @@ function ProductsContent() {
           <main className="lg:col-span-9">
             
             {filteredProducts.length === 0 ? (
-              <div className="text-center py-20 bg-[#f7f2ea] border border-[#747474]/15 rounded-lg p-8">
+              <div className="text-center py-20 bg-[#f1f5f9] border border-[#747474]/15 rounded-lg p-8">
                 <p className="text-base font-sans text-[#241919] mb-3">
                   No matching natural stone tiles found for your selected filters.
                 </p>
@@ -775,26 +569,35 @@ function ProductsContent() {
               >
                 {filteredProducts.map((product) => {
                   const isWishlisted = wishlist[product.id];
-                  const curImgIdx = imageIndex[product.id] || 0;
 
                   return (
                     <div
                       key={product.id}
-                      className="border border-[#747474]/20 rounded-md overflow-hidden bg-white shadow-xs hover:shadow-lg transition-all duration-300 flex flex-col justify-between group"
+                      className="border border-[#747474]/20 rounded-2xl overflow-hidden bg-white shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
                     >
-                      {/* Image Frame with Wishlist Heart & Carousel Arrows */}
+                      {/* Image Frame with Link to Product Detail Page */}
                       <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#141619]">
-                        {/* Dynamic Surface Gradient / Mockup */}
-                        <div
-                          className="absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-105"
-                          style={{ background: product.gradient }}
-                        />
+                        <Link href={`/products/${product.id}`} className="block w-full h-full">
+                          {product.image ? (
+                            <img
+                              src={product.image}
+                              alt={product.name}
+                              className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                            />
+                          ) : (
+                            <div
+                              className="w-full h-full transition-transform duration-700 ease-out group-hover:scale-105"
+                              style={{ background: product.gradient }}
+                            />
+                          )}
+                        </Link>
 
                         {/* Top-Left Wishlist Heart Icon */}
                         <button
                           type="button"
                           onClick={() => toggleWishlist(product.id)}
-                          className="absolute top-3 left-3 w-8 h-8 rounded-full bg-white/80 hover:bg-white flex items-center justify-center text-[#241919] shadow-sm transition-all cursor-pointer z-10"
+                          className="absolute top-3 left-3 w-8 h-8 rounded-full bg-white/85 hover:bg-white flex items-center justify-center text-[#241919] shadow-sm transition-all cursor-pointer z-10"
+                          title="Save to shortlist"
                         >
                           <Heart
                             className={`w-4 h-4 transition-colors ${
@@ -803,108 +606,53 @@ function ProductsContent() {
                           />
                         </button>
 
-                        {/* Left / Right Carousel Slider Arrows */}
-                        <button
-                          type="button"
-                          onClick={(e) => handlePrevImage(product.id, e)}
-                          className="absolute left-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-black/40 hover:bg-black/70 text-white flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer z-10"
-                        >
-                          <ChevronLeft className="w-4 h-4" />
-                        </button>
-
-                        <button
-                          type="button"
-                          onClick={(e) => handleNextImage(product.id, e)}
-                          className="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-black/40 hover:bg-black/70 text-white flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer z-10"
-                        >
-                          <ChevronRight className="w-4 h-4" />
-                        </button>
-
-                        {/* Image Counter Badge */}
-                        <div className="absolute bottom-2 right-2 px-2 py-0.5 bg-black/60 rounded text-[9px] font-mono text-white/80">
-                          {curImgIdx + 1}/3
+                        {/* Category Badge */}
+                        <div className="absolute top-3 right-3 px-2.5 py-1 bg-black/60 backdrop-blur-xs rounded-lg text-[9.5px] font-mono uppercase tracking-wider text-white">
+                          {product.category}
                         </div>
                       </div>
 
                       {/* Product Content Details */}
-                      <div className="p-5 flex-1 flex flex-col justify-between">
+                      <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
                         <div>
-                          {/* Company / Category Tag */}
-                          <div className="flex items-center justify-between text-[10px] font-mono uppercase tracking-wider mb-1.5">
-                            <span className="text-[#8b4513] font-semibold">{product.company}</span>
-                            <span className="text-[#747474]">{product.origin}</span>
+                          {/* Company / Origin Tag */}
+                          <div className="flex items-center justify-between text-[10.5px] font-mono uppercase tracking-wider mb-1.5">
+                            <span className="text-[#c85a32] font-semibold">{product.company}</span>
+                            <span className="text-[#747474] text-[10px]">{product.origin.split(",")[0]}</span>
                           </div>
 
-                          {/* Stone Name */}
-                          <h3 className="font-sans font-bold text-[15px] sm:text-[16px] text-[#241919] leading-snug mb-3 group-hover:text-[#8b4513] transition-colors">
-                            {product.name}
-                          </h3>
-
-                          {/* ── 3 KEY SPECIFICATIONS: SIZES, THICKNESS, FINISHES ── */}
-                          <div className="space-y-2.5 py-3 my-2 border-y border-[#747474]/15 bg-[#faf6f0]/60 p-3 rounded">
-                            
-                            {/* 1) Available Sizes */}
-                            <div>
-                              <span className="text-[10px] font-mono uppercase tracking-wider text-[#747474] font-bold block">
-                                1) Available Sizes:
-                              </span>
-                              <div className="flex flex-wrap gap-1 mt-1">
-                                {product.availableSizes.map((sz) => (
-                                  <span
-                                    key={sz}
-                                    className="px-2 py-0.5 bg-white border border-[#747474]/20 rounded text-[10.5px] font-sans font-medium text-[#241919]"
-                                  >
-                                    {sz}
-                                  </span>
-                                ))}
-                              </div>
-                            </div>
-
-                            {/* 2) Thickness */}
-                            <div className="flex items-center justify-between pt-1 border-t border-[#747474]/10">
-                              <span className="text-[10px] font-mono uppercase tracking-wider text-[#747474] font-bold">
-                                2) Thickness:
-                              </span>
-                              <span className="text-[11.5px] font-mono font-bold text-[#8b4513]">
-                                {product.thickness}
-                              </span>
-                            </div>
-
-                            {/* 3) Available Finishes */}
-                            <div className="pt-1 border-t border-[#747474]/10">
-                              <span className="text-[10px] font-mono uppercase tracking-wider text-[#747474] font-bold block">
-                                3) Available Finishes:
-                              </span>
-                              <div className="flex flex-wrap gap-1 mt-1">
-                                {product.availableFinishes.map((fn) => (
-                                  <span
-                                    key={fn}
-                                    className="px-2 py-0.5 bg-white border border-[#747474]/20 rounded text-[10.5px] font-sans text-[#454545]"
-                                  >
-                                    {fn}
-                                  </span>
-                                ))}
-                              </div>
-                            </div>
-
-                          </div>
+                          {/* Stone Name (Clickable link) */}
+                          <Link href={`/products/${product.id}`}>
+                            <h3 className="font-sans font-bold text-[16px] sm:text-[17px] text-[#241919] leading-snug group-hover:text-[#c85a32] transition-colors">
+                              {product.name}
+                            </h3>
+                          </Link>
                         </div>
 
-                        {/* Quick Action Footer */}
-                        <div className="pt-3 flex items-center justify-between gap-2">
+                        {/* Action Buttons: View Details + Sample + Enquire */}
+                        <div className="space-y-2 pt-1">
                           <Link
-                            href="/request-sample"
-                            className="flex-1 text-center py-2.5 px-3 bg-[#f5efe6] hover:bg-[#e8decb] text-[#241919] rounded text-[11px] font-sans font-semibold uppercase tracking-wider transition-colors"
+                            href={`/products/${product.id}`}
+                            className="w-full text-center py-2.5 px-3 bg-[#241919] hover:bg-[#c85a32] text-white rounded-xl text-xs font-sans font-semibold uppercase tracking-wider transition-colors block shadow-2xs hover:shadow-xs"
                           >
-                            Sample
+                            View Stone Details →
                           </Link>
 
-                          <Link
-                            href="/#contact"
-                            className="flex-1 text-center py-2.5 px-3 bg-[#241919] hover:bg-[#3e352a] text-white rounded text-[11px] font-sans font-semibold uppercase tracking-wider transition-colors"
-                          >
-                            Enquire
-                          </Link>
+                          <div className="flex items-center gap-2">
+                            <Link
+                              href={`/request-sample?stone=${product.id}`}
+                              className="flex-1 text-center py-2 px-2.5 bg-[#faf8f5] hover:bg-[#f0ebe1] border border-[#747474]/20 text-[#241919] rounded-lg text-[10px] font-mono uppercase tracking-wider transition-colors"
+                            >
+                              Sample
+                            </Link>
+
+                            <Link
+                              href="/#contact"
+                              className="flex-1 text-center py-2 px-2.5 bg-[#faf8f5] hover:bg-[#f0ebe1] border border-[#747474]/20 text-[#241919] rounded-lg text-[10px] font-mono uppercase tracking-wider transition-colors"
+                            >
+                              Enquire
+                            </Link>
+                          </div>
                         </div>
                       </div>
 

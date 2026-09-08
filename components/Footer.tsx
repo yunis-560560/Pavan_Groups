@@ -1,7 +1,8 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { scrollToHash } from "@/components/SmoothScroll";
 import {
   Globe2,
@@ -38,7 +39,7 @@ const DIVISIONS = [
 
 const NAVIGATION_COLUMNS = [
   {
-    title: "Quick Navigation",
+    title: "Quick Links",
     links: [
       { label: "Stone Ecosystem", href: "#products" },
       { label: "Explore Collections", href: "#browse" },
@@ -50,7 +51,17 @@ const NAVIGATION_COLUMNS = [
     ],
   },
   {
-    title: "Global Export Desks",
+    title: "Products",
+    links: [
+      { label: "Premium Granite", href: "/companies/pavan-granite" },
+      { label: "Natural Slate", href: "/companies/pavan-impex" },
+      { label: "Limestone & Pavers", href: "/companies/sai-balaji-impex" },
+      { label: "Quartzite", href: "/companies/pavan-impex" },
+      { label: "Architectural Stones", href: "#products" },
+    ],
+  },
+  {
+    title: "Map Location",
     links: [
       { label: "🇺🇸 United States (USNYC, USLAX)", href: "#shipping" },
       { label: "🇦🇺 Australia (Sydney, Melbourne)", href: "#shipping" },
@@ -58,16 +69,6 @@ const NAVIGATION_COLUMNS = [
       { label: "🇬🇧 United Kingdom (Felixstowe)", href: "#shipping" },
       { label: "🇪🇺 Europe (Rotterdam, Hamburg)", href: "#shipping" },
       { label: "Landed Freight Cost Radar", href: "#shipping" },
-    ],
-  },
-  {
-    title: "Compliance & Specs",
-    links: [
-      { label: "ISPM-15 Fumigated Wooden Crates", href: "#shipping" },
-      { label: "ASTM C615 & EN 1341 Standards", href: "#shipping" },
-      { label: "100% Pre-Shipment Dry-Lay", href: "#shipping" },
-      { label: "FOB / CIF Trade Terms", href: "#shipping" },
-      { label: "Request Architectural Sample Box", href: "#contact", isContact: true },
     ],
   },
 ];
@@ -79,6 +80,23 @@ export default function Footer() {
   const [subscribed, setSubscribed] = useState(false);
   const [istTime, setIstTime] = useState("");
   const [aestTime, setAestTime] = useState("");
+
+  // Scroll-linked parallax reveal under the FAQ section
+  const quoteBannerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: quoteBannerRef,
+    offset: ["start end", "center 45%"],
+  });
+
+  // Slowly and smoothly slides out from under the bottom of the FAQ
+  const rawY = useTransform(scrollYProgress, [0, 1], [-150, 0]);
+  const rawOpacity = useTransform(scrollYProgress, [0, 0.75], [0.15, 1]);
+  const rawScale = useTransform(scrollYProgress, [0, 1], [0.93, 1]);
+
+  // Spring physics for slow, weighted, ultra-smooth movement
+  const bannerY = useSpring(rawY, { stiffness: 50, damping: 22, restDelta: 0.001 });
+  const bannerOpacity = useSpring(rawOpacity, { stiffness: 50, damping: 22 });
+  const bannerScale = useSpring(rawScale, { stiffness: 50, damping: 22 });
 
   // Live clocks for India HQ and Global client hubs
   useEffect(() => {
@@ -109,9 +127,8 @@ export default function Footer() {
 
   const handleNavClick = (href: string, isContact = false) => (e: React.MouseEvent) => {
     e.preventDefault();
-    if (isContact || href === "#contact") {
-      scrollToHash("#contact", 1.6);
-      window.history.replaceState(null, "", "#contact");
+    if (isContact || href === "/contact") {
+      router.push("/contact");
       return;
     }
 
@@ -143,7 +160,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative bg-[#faf6ef] text-[#241919] border-t border-[#747474]/20 overflow-hidden z-20">
+    <footer className="relative bg-[#ffffff] text-[#241919] border-t border-[#747474]/20 overflow-hidden z-20">
       
       {/* Background Architectural Monogram Watermark */}
       <div className="absolute inset-0 pointer-events-none opacity-[0.03] select-none flex items-center justify-center overflow-hidden">
@@ -155,123 +172,103 @@ export default function Footer() {
         </span>
       </div>
 
-      {/* Top Banner: Global Trade Callout & Newsletter Specsheet Dispatch */}
-      <div className="border-b border-[#747474]/15 px-6 sm:px-10 lg:px-16 py-12 md:py-16 relative z-10 bg-[#f4ede2]">
-        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row lg:items-center justify-between gap-8">
-          
-          <div className="max-w-xl space-y-3">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-white border border-[#747474]/20 text-[9.5px] font-mono uppercase tracking-[0.24em] text-[#8b4513] shadow-xs rounded-sm">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#8b4513] animate-pulse" />
-              <span className="font-bold">DIRECT EXPORT &amp; ARCHITECTURAL SPECIFICATION DESK</span>
-            </div>
+      {/* ── TOP BANNER: FLOATING ELEVATED LUXURY CARD REVEALING UNDER THE FAQ SLOWLY & SMOOTHLY ── */}
+      <div
+        ref={quoteBannerRef}
+        className="relative z-10 w-full overflow-hidden bg-[#fafafa] py-20 sm:py-24 md:py-28 px-4 sm:px-6 md:px-12 lg:px-16 border-b border-[#747474]/20"
+      >
 
-            <h3
-              className="font-display font-light text-[#241919] leading-tight"
-              style={{ fontSize: "clamp(28px, 3.4vw, 44px)" }}
-            >
-              Direct From Indian Quarries to{" "}
-              <span className="italic text-[#8b4513] font-normal">Your Global Jobsite.</span>
-            </h3>
+        {/* Ambient Subtle Radial Light Layer */}
+        <motion.div
+          style={{ opacity: bannerOpacity, scale: bannerScale }}
+          className="absolute inset-0 pointer-events-none flex items-center justify-center"
+        >
+          <div
+            className="w-[750px] h-[380px] rounded-full blur-[120px] pointer-events-none opacity-30"
+            style={{
+              background: "radial-gradient(circle, rgba(200,90,50,0.18) 0%, rgba(200,90,50,0.04) 60%, transparent 80%)",
+            }}
+          />
+        </motion.div>
 
-            <p className="text-xs sm:text-[14.5px] text-[#454545] font-light leading-relaxed">
-              Order calibrated slate, anti-skid limestone pavers, and monolithic granite slabs directly with guaranteed ISPM-15 export crating, 100% dry-lay inspection, and turnkey container port clearing worldwide.
-            </p>
-          </div>
-
-          {/* Instant Specsheet Dispatch Input */}
-          <div className="lg:max-w-md w-full p-6 bg-white border border-[#747474]/20 rounded-xl shadow-xs">
-            <span className="text-[10px] font-mono uppercase tracking-wider text-[#8b4513] font-bold block mb-1">
-              REQUEST 2026 ARCHITECTURAL SPEC CATALOG
-            </span>
-            <p className="text-[12px] text-[#454545] mb-3 font-light">
-              Receive container loading schedules, tolerance standards, and FOB/CIF freight indices.
-            </p>
-
-            {subscribed ? (
-              <div className="p-3 bg-[#f7f2ea] border border-[#8b4513] text-xs font-mono text-[#8b4513] font-semibold flex items-center gap-2 rounded-lg">
-                <CheckCircle2 className="w-4 h-4 text-[#8b4513]" />
-                <span>Spec Catalog &amp; Export Index dispatched to your inbox!</span>
-              </div>
-            ) : (
-              <form onSubmit={handleSubscribe} className="flex gap-2">
-                <input
-                  type="email"
-                  required
-                  placeholder="architect@domain.com"
-                  value={emailInput}
-                  onChange={(e) => setEmailInput(e.target.value)}
-                  className="flex-1 px-3.5 py-2.5 bg-[#faf6ef] border border-[#747474]/25 text-xs font-mono text-[#241919] placeholder:text-[#747474] focus:outline-none focus:border-[#8b4513] rounded-lg"
-                />
-                <button
-                  type="submit"
-                  className="px-5 py-2.5 text-[10px] font-mono uppercase tracking-wider font-bold bg-[#241919] hover:bg-[#3e352a] text-[#f7f2ea] transition-all cursor-pointer border-none shadow-sm rounded-lg flex-none"
+        {/* Floating Elevated Luxury Architectural Card (Reveals Under FAQ slowly & smoothly) */}
+        <motion.div
+          style={{ y: bannerY, opacity: bannerOpacity, scale: bannerScale }}
+          className="relative z-10 max-w-6xl mx-auto will-change-transform"
+        >
+          <div className="bg-white border border-[#747474]/25 p-8 sm:p-12 md:p-14 rounded-xl sm:rounded-2xl shadow-md hover:shadow-lg transition-shadow">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 lg:gap-12">
+              
+              {/* Left Column: Heading & Narrative */}
+              <div className="max-w-2xl space-y-4">
+                <h3
+                  className="font-display font-light text-[#241919] leading-tight"
+                  style={{ fontSize: "clamp(28px, 3.4vw, 44px)" }}
                 >
-                  Send Specs →
-                </button>
-              </form>
-            )}
-          </div>
+                  Get Your Stone Quote{" "}
+                  <span className="italic text-[#c85a32] font-normal">Within 24 Hours.</span>
+                </h3>
 
-        </div>
-      </div>
-
-      {/* Middle Grid: 3 Corporate Divisions Showcase (Hidden on Mobile) */}
-      <div className="hidden md:block border-b border-[#747474]/15 px-6 sm:px-10 lg:px-16 py-12 relative z-10 bg-white/60">
-        <div className="max-w-7xl mx-auto space-y-6">
-          <span className="text-[9.5px] font-mono uppercase tracking-[0.28em] text-[#747474] block font-bold">
-            PAVAN GROUPS · 3 INTEGRATED EXPORT DIVISIONS
-          </span>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {DIVISIONS.map((div, idx) => (
-              <div
-                key={div.name}
-                className="p-6 bg-white border border-[#747474]/20 hover:border-[#8b4513] hover:shadow-md transition-all duration-300 rounded-xl group"
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <span className="px-2.5 py-0.5 bg-[#f7f2ea] border border-[#8b4513]/30 text-[#8b4513] text-[9.5px] font-mono font-bold uppercase rounded">
-                    0{idx + 1} · {div.focus}
-                  </span>
-                  <span className="text-[9px] font-mono text-[#747474] uppercase">
-                    Direct Extraction
-                  </span>
-                </div>
-
-                <h4 className="font-display text-xl text-[#241919] font-medium group-hover:text-[#8b4513] transition-colors mb-1">
-                  {div.name}
-                </h4>
-
-                <span className="text-[11px] font-mono text-[#747474] block mb-3">
-                  Quarry Hub: {div.origin}
-                </span>
-
-                <div className="space-y-1.5 pt-3 border-t border-[#747474]/15">
-                  {div.products.map((p, pIdx) => (
-                    <div key={pIdx} className="flex items-center gap-2 text-[12px] text-[#454545] font-light">
-                      <span className="text-[#8b4513] text-sm leading-none">•</span>
-                      <span>{p}</span>
-                    </div>
-                  ))}
-                </div>
+                <p className="text-xs sm:text-[14.5px] text-[#241919]/80 font-normal leading-relaxed">
+                  We understand the pace of modern architecture. Submit your requirements today and our export specialists will provide a comprehensive proposal including FOB/CIF freight indices, tolerance standards, and container loading schedules.
+                </p>
               </div>
-            ))}
+
+              {/* Right Column: Instant Specsheet Form Card */}
+              <div className="lg:max-w-md w-full p-6 sm:p-7 bg-[#faf8f5] border border-[#747474]/20 rounded-xl space-y-3">
+                <span className="text-[10px] font-mono uppercase tracking-wider text-[#c85a32] font-bold block mb-1">
+                  PRIORITY RESPONSE
+                </span>
+                <p className="text-[12px] text-[#241919]/90 mb-3 font-medium leading-relaxed">
+                  Enter your professional email to initiate your direct 24-hour consultation.
+                </p>
+
+                {subscribed ? (
+                  <div className="p-3.5 bg-white border border-[#c85a32] text-xs font-mono text-[#c85a32] font-semibold flex items-center gap-2 rounded-lg">
+                    <CheckCircle2 className="w-4 h-4 text-[#c85a32]" />
+                    <span>Spec Catalog &amp; Export Index dispatched to your inbox!</span>
+                  </div>
+                ) : (
+                  <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-2.5">
+                    <input
+                      type="email"
+                      required
+                      placeholder="architect@domain.com"
+                      value={emailInput}
+                      onChange={(e) => setEmailInput(e.target.value)}
+                      className="flex-1 px-3.5 py-3 bg-white border border-[#747474]/25 text-xs font-mono text-[#241919] placeholder:text-[#747474]/70 font-medium focus:outline-none focus:border-[#c85a32] rounded-lg shadow-2xs"
+                    />
+                    <button
+                      type="submit"
+                      className="px-5 py-3 text-[10.5px] font-mono uppercase tracking-wider font-bold bg-[#c85a32] hover:bg-[#a84a27] text-white transition-all cursor-pointer border border-[#c85a32] hover:border-[#a84a27] rounded-lg flex-none shadow-sm hover:shadow-md active:scale-95"
+                    >
+                      Send Specs →
+                    </button>
+                  </form>
+                )}
+              </div>
+
+            </div>
           </div>
-        </div>
+        </motion.div>
+
       </div>
+
+
 
       {/* Main Navigation & Telemetry Hub */}
-      <div className="px-6 sm:px-10 lg:px-16 py-14 md:py-16 relative z-10 bg-[#faf6ef]">
+      <div className="px-6 sm:px-10 lg:px-16 py-14 md:py-16 relative z-10 bg-[#ffffff]">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-12">
           
           {/* Brand Identity & Global Factory Telemetry (5 Cols) */}
           <div className="lg:col-span-5 space-y-6">
             <div>
               <Link href="/" className="inline-block mb-2 group">
-                <span className="font-display text-2xl tracking-[0.2em] uppercase text-[#241919] group-hover:text-[#8b4513] transition-colors font-medium">
+                <span className="font-display text-2xl tracking-[0.2em] uppercase text-[#241919] group-hover:text-[#0f172a] transition-colors font-medium">
                   PAVAN GROUPS
                 </span>
                 <span className="text-[9.5px] font-mono uppercase tracking-[0.35em] text-[#747474] block mt-0.5">
-                  Natural Stone Extraction &amp; Global Exports · Est. 1994
+                  Natural Stone Extraction &amp; Global Exports · Est. 2000
                 </span>
               </Link>
 
@@ -280,44 +277,17 @@ export default function Footer() {
               </p>
             </div>
 
-            {/* Live Dual-Time Telemetry Bar */}
-            <div className="p-4 bg-white border border-[#747474]/20 rounded-xl shadow-xs space-y-3">
-              <span className="text-[9.5px] font-mono uppercase tracking-wider text-[#8b4513] font-bold block">
-                LIVE LOGISTICS RADAR &amp; FACTORY STATUS
-              </span>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div className="p-3 bg-[#f7f2ea] border border-[#747474]/15 rounded-lg">
-                  <div className="flex items-center justify-between text-[9px] font-mono text-[#747474] mb-0.5">
-                    <span>🇮🇳 MARKAPUR HQ</span>
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  </div>
-                  <span className="font-mono text-sm font-bold text-[#241919] block">{istTime || "18:30 IST"}</span>
-                  <span className="text-[8.5px] font-mono text-emerald-700 font-medium">Processing Plants Active</span>
-                </div>
-
-                <div className="p-3 bg-[#f7f2ea] border border-[#747474]/15 rounded-lg">
-                  <div className="flex items-center justify-between text-[9px] font-mono text-[#747474] mb-0.5">
-                    <span>🇦🇺 SYDNEY DESK</span>
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  </div>
-                  <span className="font-mono text-sm font-bold text-[#241919] block">{aestTime || "23:00 AEST"}</span>
-                  <span className="text-[8.5px] font-mono text-[#747474]">Port Logistics Active</span>
-                </div>
-              </div>
-            </div>
-
             {/* Contact Details */}
             <div className="space-y-2 text-xs font-mono text-[#241919]">
               <div className="flex items-center gap-2">
-                <span className="text-[#8b4513] font-bold">Direct Quarry Line:</span>
-                <a href="tel:+919246462600" className="text-[#241919] hover:text-[#8b4513] hover:underline underline-offset-2">
+                <span className="text-[#0f172a] font-bold">Direct Quarry Line:</span>
+                <a href="tel:+919246462600" className="text-[#241919] hover:text-[#0f172a] hover:underline underline-offset-2">
                   +91 9246462600
                 </a>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-[#8b4513] font-bold">Export Desk:</span>
-                <a href="mailto:export@pavangroups.com" className="text-[#241919] hover:text-[#8b4513] hover:underline underline-offset-2">
+                <span className="text-[#0f172a] font-bold">Export Desk:</span>
+                <a href="mailto:export@pavangroups.com" className="text-[#241919] hover:text-[#0f172a] hover:underline underline-offset-2">
                   export@pavangroups.com
                 </a>
               </div>
@@ -332,7 +302,7 @@ export default function Footer() {
           <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-8">
             {NAVIGATION_COLUMNS.map((col) => (
               <div key={col.title} className="space-y-4">
-                <span className="text-[10px] font-mono uppercase tracking-[0.24em] text-[#8b4513] font-bold block pb-2 border-b border-[#747474]/20">
+                <span className="text-[10px] font-mono uppercase tracking-[0.24em] text-[#0f172a] font-bold block pb-2 border-b border-[#747474]/20">
                   {col.title}
                 </span>
 
@@ -340,8 +310,8 @@ export default function Footer() {
                   {col.links.map((link) => (
                     <li key={link.label}>
                       <button
-                        onClick={handleNavClick(link.href, link.isContact)}
-                        className="text-[#454545] hover:text-[#8b4513] hover:translate-x-1 transition-all duration-200 cursor-pointer border-none bg-transparent p-0 text-left block text-xs"
+                        onClick={handleNavClick(link.href, (link as any).isContact)}
+                        className="text-[#454545] hover:text-[#0f172a] hover:translate-x-1 transition-all duration-200 cursor-pointer border-none bg-transparent p-0 text-left block text-xs"
                       >
                         {link.label}
                       </button>
@@ -356,23 +326,16 @@ export default function Footer() {
       </div>
 
       {/* Bottom Bar: Copyright, Compliance, and Smooth Back to Top */}
-      <div className="border-t border-[#747474]/15 px-6 sm:px-10 lg:px-16 py-6 relative z-10 bg-[#f0e8dc]">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-[#747474]">
+      <div className="border-t border-[#747474]/15 px-6 sm:px-10 lg:px-16 py-6 relative z-10 bg-white">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-4 text-xs font-mono text-[#747474]">
           
           <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-center sm:text-left">
             <span className="text-[#241919] font-medium">© {new Date().getFullYear()} Pavan Groups. All Rights Reserved.</span>
             <span className="hidden sm:inline-block text-[#747474]/40">•</span>
-            <span>Registered ISO 9001:2015 &amp; ISPM-15 Biosecurity Certified</span>
+            <Link href="/privacy-policy" className="hover:text-[#c85a32] transition-colors">Privacy Policy</Link>
+            <span className="hidden sm:inline-block text-[#747474]/40">•</span>
+            <Link href="/terms" className="hover:text-[#c85a32] transition-colors">Terms &amp; Conditions</Link>
           </div>
-
-          {/* Interactive Smooth Back To Top Button */}
-          <button
-            onClick={handleScrollToTop}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-[#747474]/20 text-[10px] font-mono uppercase tracking-wider text-[#241919] hover:text-white hover:bg-[#241919] transition-all cursor-pointer shadow-2xs rounded group"
-          >
-            <span>Back To Top</span>
-            <ArrowUp className="w-3 h-3 text-[#8b4513] group-hover:text-white group-hover:-translate-y-0.5 transition-transform duration-200" />
-          </button>
 
         </div>
       </div>
