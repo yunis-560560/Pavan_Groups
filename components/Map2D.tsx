@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import { IndianPort, DestinationPort } from "@/lib/shippingData";
 import { Info } from "lucide-react";
+import { getAssetPath } from "@/lib/basePath";
 
 interface Map2DProps {
   origin: IndianPort | null;
@@ -23,7 +24,7 @@ export default function Map2D({
   const [worldData, setWorldData] = useState<any>(null);
 
   useEffect(() => {
-    fetch("/world.geojson")
+    fetch(getAssetPath("/world.geojson"))
       .then((res) => res.json())
       .then((data) => {
         setWorldData(data);
@@ -178,7 +179,7 @@ export default function Map2D({
 
         shipGroup
           .append("image")
-          .attr("href", "/ship.png")
+          .attr("href", getAssetPath("/ship.png"))
           .attr("width", 32)
           .attr("height", 32)
           .attr("x", -16)

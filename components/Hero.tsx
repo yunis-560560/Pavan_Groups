@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
+import { getAssetPath } from "@/lib/basePath";
 
 const MARQUEE_ITEMS = [
   "Granite", "·", "Limestone", "·", "Slate", "·", "Cobbles",
@@ -36,7 +37,7 @@ export default function Hero() {
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <video
           ref={videoRef}
-          src="/assets/webpage_front_display_video.mp4"
+          src={getAssetPath("/assets/webpage_front_display_video.mp4")}
           autoPlay
           loop
           muted
@@ -44,9 +45,7 @@ export default function Hero() {
           preload="auto"
           className="w-full h-full object-cover object-center"
         >
-          <source src="/assets/webpage_front_display_video.mp4" type="video/mp4" />
-          <source src="/assets/webpage%20front%20display%20video.mp4" type="video/mp4" />
-          <source src="/assets/Silver_jewellery_website_design_202607221307_2.mp4" type="video/mp4" />
+          <source src={getAssetPath("/assets/webpage_front_display_video.mp4")} type="video/mp4" />
         </video>
 
         {/* ── SUBTLE CINEMATIC HAZE LAYER ── */}

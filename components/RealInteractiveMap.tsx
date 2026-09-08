@@ -7,6 +7,7 @@ import {
   CHENNAI_ORIGIN,
   PortCoord,
 } from "@/lib/portsData";
+import { getAssetPath } from "@/lib/basePath";
 
 interface RealInteractiveMapProps {
   selectedPortId: string;
@@ -394,7 +395,7 @@ export default function RealInteractiveMap({
   // Load GeoJSON data on mount
   useEffect(() => {
     let isMounted = true;
-    fetch("/world.geojson")
+    fetch(getAssetPath("/world.geojson"))
       .then((res) => {
         if (!res.ok) throw new Error("Network response was not ok");
         return res.json();
@@ -695,7 +696,7 @@ export default function RealInteractiveMap({
 
         shipGroup
           .append("image")
-          .attr("href", "/ship.png")
+          .attr("href", getAssetPath("/ship.png"))
           .attr("width", 32)
           .attr("height", 32)
           .attr("x", -16)
